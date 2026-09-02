@@ -104,6 +104,28 @@
     {{-- Footer --}}
     @include('layouts.footer')
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#0d9488',
+                customClass: { popup: 'rounded-2xl shadow-xl' }
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#e11d48',
+                customClass: { popup: 'rounded-2xl shadow-xl' }
+            });
+        @endif
+    </script>
     @stack('scripts')
 </body>
 </html>

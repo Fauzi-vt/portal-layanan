@@ -68,6 +68,14 @@ Route::middleware('auth')->group(function () {
             Route::post('/permohonan/{submission}/kirim-draft', [WargaSubmissionController::class, 'submitDraft'])->name('submissions.submit-draft');
             Route::post('/permohonan/{submission}/revisi', [WargaSubmissionController::class, 'updateRevision'])->name('submissions.update-revision');
             Route::get('/permohonan/{submission}/unduh-hasil', [WargaSubmissionController::class, 'downloadOutput'])->name('submissions.download-output');
+
+            // Profil Saya (User Profile)
+            Route::get('/profil', [\App\Http\Controllers\Warga\ProfileController::class, 'edit'])->name('profile.edit');
+            Route::put('/profil', [\App\Http\Controllers\Warga\ProfileController::class, 'update'])->name('profile.update');
+            Route::put('/profil/password', [\App\Http\Controllers\Warga\ProfileController::class, 'updatePassword'])->name('profile.password');
+            Route::get('/desas/{kecamatan}', function (\App\Models\Kecamatan $kecamatan) {
+                return response()->json($kecamatan->desas()->orderBy('nama_desa')->get(['id', 'nama_desa']));
+            })->name('desas.by-kecamatan');
         });
 
     // ─────────────────────────────────────────────────────────────────────────
