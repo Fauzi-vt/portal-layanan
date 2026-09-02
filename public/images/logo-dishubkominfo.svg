@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="100%" height="100%">
+    <!-- Definitions for styling -->
+    <style>
+        .dishub-blue { fill: #0a4f9b; font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-weight: 800; }
+        .kominfo-cyan { fill: #5cc2e6; font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-weight: 700; }
+        .sub-text { fill: #0a4f9b; font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-weight: 600; letter-spacing: 0.5px; }
+        .tower-amber { fill: #fab005; }
+        .stroke-amber { stroke: #fab005; stroke-width: 4; stroke-linecap: round; fill: none; }
+    </style>
+
+    <!-- Top Text: D ishub -->
+    <!-- Letter D -->
+    <text x="10" y="68" font-size="74" class="dishub-blue">D</text>
+
+    <!-- Letter i as radio tower -->
+    <!-- Dot of i -->
+    <circle cx="68" cy="35" r="6" class="tower-amber" />
+    <!-- Radio wave arc above dot -->
+    <path d="M 72 24 A 12 12 0 0 1 82 34" class="stroke-amber" stroke-width="3.5" />
+    <!-- Stem of i -->
+    <rect x="63" y="47" width="10" height="68" rx="2" class="tower-amber" />
+
+    <!-- Letters shub -->
+    <text x="80" y="68" font-size="74" class="dishub-blue">shub</text>
+
+    <!-- Bottom Text: Kominfo -->
+    <g transform="translate(68, 114)">
+        <text x="0" y="0" font-size="64" class="kominfo-cyan">Kom</text>
+        <!-- Custom elongated i for Kominfo -->
+        <circle cx="140" cy="-48" r="6" class="kominfo-cyan" />
+        <rect x="135" y="-36" width="10" height="58" rx="2" class="kominfo-cyan" />
+        <text x="150" y="0" font-size="64" class="kominfo-cyan">nfo</text>
+    </g>
+
+    <!-- Subtitle: Kab. Tasikmalaya -->
+    <text x="64" y="138" font-size="16" class="sub-text">Kab. Tasikmalaya</text>
+</svg>
