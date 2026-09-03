@@ -12,7 +12,7 @@
                     Portal Pelayanan Publik Terintegrasi hadir untuk mewujudkan kemudahan akses administrasi kependudukan dan surat keterangan masyarakat secara cepat, transparan, akuntabel, dan bebas pungutan liar di seluruh 39 wilayah kecamatan.
                 </p>
                 <div class="flex items-center gap-4 text-xs text-slate-500 pt-2">
-                    <span>📍 Kompleks Perkantoran Pemkab Tasikmalaya, Jl. Bojongkoneng No. 257, Singaparna</span>
+                    <span>📍 Kantor Dishubkominfo Kab. Tasikmalaya, Cintaraja, Kec. Singaparna, Kabupaten Tasikmalaya, Jawa Barat 46182</span>
                 </div>
             </div>
 
@@ -24,6 +24,7 @@
                     <li><span class="hover:text-teal-300 transition-colors">Perekaman e-KTP Biometrik</span></li>
                     <li><span class="hover:text-teal-300 transition-colors">Pembuatan & Perbaikan KK</span></li>
                     <li><span class="hover:text-teal-300 transition-colors">Surat Pindah Antar Kecamatan</span></li>
+                    <li><span class="hover:text-teal-300 transition-colors">Surat Datang Antar Kecamatan</span></li>
                     <li><span class="hover:text-teal-300 transition-colors">Surat Dispensasi Nikah</span></li>
                     <li><span class="hover:text-teal-300 transition-colors">Surat Keterangan Administrasi</span></li>
                 </ul>
@@ -50,11 +51,11 @@
         </div>
 
         <div class="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-center sm:text-left">
-            <p>&copy; {{ date('Y') }} Dishubkominfo Kab. Tasikmalaya. Hak Cipta Dilindungi Undang-Undang.</p>
+            <p>&copy; {{ date('Y') }} Dinas Komunikasi dan Informatika (Diskominfo) Kabupaten Tasikmalaya. Seluruh Hak Cipta Dilindungi.</p>
             <div class="flex items-center gap-4 sm:gap-6 text-slate-500 text-center sm:text-right">
                 <span>Pelayanan Terpadu Satu Pintu</span>
                 <span>•</span>
-                <span>39 Kecamatan Aktif</span>
+                <span>39 Kecamatan se-Kabupaten Tasikmalaya</span>
             </div>
         </div>
     </div>

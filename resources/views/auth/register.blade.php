@@ -1,87 +1,102 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-full bg-slate-50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Pendaftaran Akun Warga — Portal Layanan Publik">
-    <title>Daftar — Portal Layanan Publik</title>
+    <meta name="description" content="Pendaftaran Akun Warga — Portal Layanan Publik Terpadu Kabupaten Tasikmalaya">
+    <title>Daftar Akun — Portal Layanan Publik Terintegrasi</title>
 
-    {{-- Google Fonts --}}
+    {{-- Google Fonts: Inter --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        * { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-
-        .bg-komdigi-blue {
-            background-color: #0b256b;
-            background: linear-gradient(135deg, #091f58 0%, #0b256b 60%, #0d348a 100%);
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+        body { letter-spacing: -0.01em; }
+        h1, h2, h3 { letter-spacing: -0.02em; }
+        [data-lucide] { display: inline-block; vertical-align: middle; }
 
-        .input-komdigi {
-            background-color: #f0f4f9;
-            border: 1px solid #dce4ee;
-            color: #1e293b;
-        }
-
-        .input-komdigi:focus {
-            background-color: #ffffff;
-            border-color: #0b256b;
-            box-shadow: 0 0 0 2px rgba(11, 37, 107, 0.15);
-            outline: none;
-        }
-
-        .btn-komdigi-active {
-            background-color: #0b256b;
-            color: #ffffff;
-            transition: all 0.2s ease;
-        }
-        .btn-komdigi-active:hover {
-            background-color: #081c52;
-        }
-
-        /* Halftone gold dot pattern */
-        .gold-dots {
-            background-image: radial-gradient(#f59e0b 2px, transparent 2px);
-            background-size: 16px 16px;
+        .ambient-glow {
+            filter: blur(80px);
+            opacity: 0.45;
+            pointer-events: none;
         }
     </style>
 </head>
-<body class="min-h-screen bg-white flex flex-col justify-between">
+<body class="min-h-screen bg-[#f1f5f9] text-slate-800 flex flex-col justify-center items-center p-4 sm:p-6 lg:p-8 relative overflow-x-hidden">
 
-    <div class="min-h-screen grid grid-cols-1 lg:grid-cols-12 w-full">
+    {{-- ═══════════════════════════════════════════════════════════════════════════
+         AMBIENT BACKGROUND LIGHTS & PATTERN
+    ═══════════════════════════════════════════════════════════════════════════ --}}
+    <div class="fixed -top-32 -left-32 w-96 h-96 rounded-full bg-blue-400 ambient-glow"></div>
+    <div class="fixed -bottom-32 -right-32 w-96 h-96 rounded-full bg-teal-400 ambient-glow"></div>
+    <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-indigo-200/30 ambient-glow"></div>
 
-        {{-- ═══════════════════════════════════════════════════════════════════════
-             LEFT COLUMN — REGISTER FORM (Komdigi Blue Background)
-        ═══════════════════════════════════════════════════════════════════════ --}}
-        <div class="lg:col-span-6 bg-komdigi-blue text-white flex flex-col justify-center px-8 sm:px-14 lg:px-20 py-12 relative shadow-2xl">
-            <div class="max-w-md w-full mx-auto space-y-6 relative z-10">
+    <div class="fixed inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40 pointer-events-none"></div>
+
+    {{-- ═══════════════════════════════════════════════════════════════════════════
+         FLOATING TOP NAVIGATION / CLOSE BUTTON ('✕')
+    ═══════════════════════════════════════════════════════════════════════════ --}}
+    <div class="fixed top-4 sm:top-6 right-4 sm:right-6 z-50 flex items-center gap-3">
+        <a href="{{ url('/') }}"
+           class="group flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/90 hover:bg-white text-slate-700 hover:text-slate-950 border border-slate-200/80 shadow-sm hover:shadow-md transition-all backdrop-blur-md"
+           title="Tutup dan kembali ke Halaman Utama">
+            <span class="text-xs sm:text-sm font-semibold hidden sm:inline-block">Kembali ke Beranda</span>
+            <div class="w-7 h-7 rounded-xl bg-slate-100 group-hover:bg-rose-50 text-slate-500 group-hover:text-rose-600 flex items-center justify-center transition-all group-hover:rotate-90">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </div>
+        </a>
+    </div>
+
+    {{-- ═══════════════════════════════════════════════════════════════════════════
+         MAIN REGISTER CARD CONTAINER
+    ═══════════════════════════════════════════════════════════════════════════ --}}
+    <div class="relative z-10 w-full max-w-5xl bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden my-auto grid grid-cols-1 lg:grid-cols-12">
+
+        {{-- ── LEFT COLUMN: REGISTER FORM ── --}}
+        <div class="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-between">
+            <div class="space-y-6">
+
+                {{-- Mobile Brand Logo Header --}}
+                <div class="flex items-center justify-between lg:hidden pb-4 border-b border-slate-100">
+                    <a href="{{ url('/') }}">
+                        <img src="{{ asset('images/logo2.png') }}" alt="Dishub Kominfo" class="h-9 w-auto object-contain">
+                    </a>
+                    <span class="text-xs font-bold px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-100">
+                        Pendaftaran
+                    </span>
+                </div>
 
                 {{-- Heading --}}
                 <div>
-                    <h1 class="text-4xl font-extrabold text-white tracking-tight">Daftar</h1>
-                    <p class="text-sm text-slate-200 mt-2 font-normal">
-                        Sudah punya akun?
-                        <a href="{{ route('login') }}" class="text-amber-400 hover:text-amber-300 font-bold transition-colors underline-offset-4 hover:underline">
-                            Masuk
-                        </a>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                        Daftar Akun Baru
+                    </h1>
+                    <p class="text-sm text-slate-500 mt-1.5 font-medium">
+                        Lengkapi formulir di bawah ini untuk membuat akun pemohon layanan publik.
                     </p>
                 </div>
 
                 {{-- Alert Error --}}
                 @if ($errors->any())
-                    <div class="rounded-xl bg-rose-950/80 border border-rose-500/50 p-4 flex items-start gap-3 text-rose-100 shadow-md" role="alert">
-                        <svg class="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                        </svg>
+                    <div class="rounded-2xl bg-rose-50 border border-rose-200 p-4 flex items-start gap-3.5 text-rose-900 shadow-xs" role="alert">
+                        <div class="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center flex-shrink-0 mt-0.5 font-bold">
+                            <i data-lucide="alert-circle" class="w-5 h-5"></i>
+                        </div>
                         <div class="flex-1">
-                            <p class="text-xs font-bold text-rose-200">Pendaftaran Gagal</p>
-                            <ul class="text-xs text-rose-300 mt-0.5 list-disc list-inside">
+                            <p class="text-xs font-bold text-rose-900 uppercase tracking-wider">Pendaftaran Gagal</p>
+                            <ul class="text-xs sm:text-sm text-rose-700 mt-1 space-y-0.5">
                                 @foreach ($errors->all() as $err)
-                                    <li>{{ $err }}</li>
+                                    <li>• {{ $err }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -92,25 +107,31 @@
                 <form method="POST" action="{{ route('register') }}" class="space-y-4" id="regForm">
                     @csrf
 
-                    {{-- Nama Depan & Nama Belakang (2 Columns) --}}
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label for="nama_depan" class="block text-sm font-medium text-slate-100 mb-1.5">
-                                Nama Depan
+                    {{-- Nama Depan & Nama Belakang --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label for="nama_depan" class="block text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">
+                                Nama Depan <span class="text-rose-500">*</span>
                             </label>
-                            <input
-                                type="text"
-                                id="nama_depan"
-                                name="nama_depan"
-                                value="{{ old('nama_depan') }}"
-                                placeholder="Masukan Nama Depan"
-                                required
-                                autofocus
-                                class="w-full px-4 py-3 rounded-lg text-sm text-slate-900 bg-white border border-slate-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 outline-none placeholder:text-slate-400 shadow-xs"
-                            >
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                    <i data-lucide="user" class="w-4 h-4"></i>
+                                </div>
+                                <input
+                                    type="text"
+                                    id="nama_depan"
+                                    name="nama_depan"
+                                    value="{{ old('nama_depan') }}"
+                                    placeholder="Contoh: Ahmad"
+                                    required
+                                    autofocus
+                                    class="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm sm:text-base text-slate-900 bg-slate-50/70 border border-slate-200 focus:bg-white focus:border-[#0a2558] focus:ring-4 focus:ring-blue-500/15 outline-none placeholder:text-slate-400 transition-all font-medium"
+                                >
+                            </div>
                         </div>
-                        <div>
-                            <label for="nama_belakang" class="block text-sm font-medium text-slate-100 mb-1.5">
+
+                        <div class="space-y-1.5">
+                            <label for="nama_belakang" class="block text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">
                                 Nama Belakang
                             </label>
                             <input
@@ -118,154 +139,229 @@
                                 id="nama_belakang"
                                 name="nama_belakang"
                                 value="{{ old('nama_belakang') }}"
-                                placeholder="Masukan Nama Belakang"
-                                class="w-full px-4 py-3 rounded-lg text-sm text-slate-900 bg-white border border-slate-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 outline-none placeholder:text-slate-400 shadow-xs"
+                                placeholder="Contoh: Fauzi"
+                                class="w-full px-4 py-2.5 rounded-xl text-sm sm:text-base text-slate-900 bg-slate-50/70 border border-slate-200 focus:bg-white focus:border-[#0a2558] focus:ring-4 focus:ring-blue-500/15 outline-none placeholder:text-slate-400 transition-all font-medium"
                             >
                         </div>
                     </div>
 
                     {{-- Email Field --}}
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-slate-100 mb-1.5">
-                            Email
+                    <div class="space-y-1.5">
+                        <label for="email" class="block text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">
+                            Alamat Email Aktif <span class="text-rose-500">*</span>
                         </label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value="{{ old('email') }}"
-                            placeholder="Masukan email"
-                            required
-                            class="w-full px-4 py-3 rounded-lg text-sm text-slate-900 bg-white border border-slate-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 outline-none placeholder:text-slate-400 shadow-xs"
-                        >
-                    </div>
-
-                    {{-- Password Field --}}
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-slate-100 mb-1.5">
-                            Password
-                        </label>
-                        <div class="flex rounded-lg overflow-hidden border border-slate-200 focus-within:border-amber-400 focus-within:ring-2 focus-within:ring-amber-400/30 bg-white shadow-xs">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <i data-lucide="mail" class="w-4 h-4"></i>
+                            </div>
                             <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                placeholder="Masukan password"
+                                type="email"
+                                id="email"
+                                name="email"
+                                value="{{ old('email') }}"
+                                placeholder="nama@email.com"
                                 required
-                                class="w-full px-4 py-3 bg-white text-sm text-slate-900 outline-none placeholder:text-slate-400"
+                                class="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm sm:text-base text-slate-900 bg-slate-50/70 border border-slate-200 focus:bg-white focus:border-[#0a2558] focus:ring-4 focus:ring-blue-500/15 outline-none placeholder:text-slate-400 transition-all font-medium"
                             >
-                            <button type="button" id="toggleRegPassword" class="px-3.5 bg-slate-50 border-l border-slate-200 text-slate-600 hover:text-slate-900 flex items-center justify-center cursor-pointer">
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
-                            </button>
                         </div>
                     </div>
 
-                    {{-- Konfirmasi Password Field --}}
-                    <div>
-                        <label for="password_confirmation" class="block text-sm font-medium text-slate-100 mb-1.5">
-                            Konfirmasi Password
-                        </label>
-                        <div class="flex rounded-lg overflow-hidden border border-slate-200 focus-within:border-amber-400 focus-within:ring-2 focus-within:ring-amber-400/30 bg-white shadow-xs">
-                            <input
-                                type="password"
-                                id="password_confirmation"
-                                name="password_confirmation"
-                                placeholder="Silahkan Konfirmasi Password"
-                                required
-                                class="w-full px-4 py-3 bg-white text-sm text-slate-900 outline-none placeholder:text-slate-400"
-                            >
-                            <button type="button" id="toggleConfPassword" class="px-3.5 bg-slate-50 border-l border-slate-200 text-slate-600 hover:text-slate-900 flex items-center justify-center cursor-pointer">
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    {{-- reCAPTCHA simulated widget --}}
-                    <div class="pt-1">
-                        <div class="w-64 p-3 bg-white rounded-lg flex items-center justify-between shadow-xs border border-white/20">
-                            <label class="flex items-center gap-3 cursor-pointer select-none">
-                                <input type="checkbox" name="captcha" required checked class="w-5 h-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500 cursor-pointer">
-                                <span class="text-xs text-slate-800 font-medium">Saya bukan robot</span>
+                    {{-- Password & Confirmation --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label for="password" class="block text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">
+                                Kata Sandi <span class="text-rose-500">*</span>
                             </label>
-                            <div class="flex flex-col items-center">
-                                <svg class="w-6 h-6 text-sky-600" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm1 14.5a1.5 1.5 0 111.5-1.5 1.5 1.5 0 01-1.5 1.5zm2.5-6.5a2.5 2.5 0 00-5 0h-2a4.5 4.5 0 019 0c0 1.66-1.34 2.5-2.25 3.12-.53.37-.75.63-.75 1.38h-2c0-1.5.85-2.14 1.58-2.65.6-.42 1.42-.97 1.42-1.85z"/>
-                                </svg>
-                                <span class="text-[9px] text-slate-400 font-semibold tracking-tighter">reCAPTCHA</span>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                    <i data-lucide="lock" class="w-4 h-4"></i>
+                                </div>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Min. 6 karakter"
+                                    required
+                                    class="w-full pl-10 pr-10 py-2.5 rounded-xl text-sm sm:text-base text-slate-900 bg-slate-50/70 border border-slate-200 focus:bg-white focus:border-[#0a2558] focus:ring-4 focus:ring-blue-500/15 outline-none placeholder:text-slate-400 transition-all font-medium"
+                                >
+                                <button type="button" id="toggleRegPassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 cursor-pointer">
+                                    <i data-lucide="eye" id="eyeIconReg" class="w-4 h-4"></i>
+                                    <i data-lucide="eye-off" id="eyeOffIconReg" class="w-4 h-4 hidden"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label for="password_confirmation" class="block text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">
+                                Ulangi Sandi <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                    <i data-lucide="lock" class="w-4 h-4"></i>
+                                </div>
+                                <input
+                                    type="password"
+                                    id="password_confirmation"
+                                    name="password_confirmation"
+                                    placeholder="Ketik ulang sandi"
+                                    required
+                                    class="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm sm:text-base text-slate-900 bg-slate-50/70 border border-slate-200 focus:bg-white focus:border-[#0a2558] focus:ring-4 focus:ring-blue-500/15 outline-none placeholder:text-slate-400 transition-all font-medium"
+                                >
                             </div>
                         </div>
                     </div>
 
+                    {{-- Persetujuan Syarat Ketentuan --}}
+                    <div class="pt-1">
+                        <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                            <input type="checkbox" required checked class="w-4 h-4 mt-0.5 rounded border-slate-300 text-[#0a2558] focus:ring-blue-500 cursor-pointer">
+                            <span class="text-xs text-slate-600 font-medium leading-relaxed">
+                                Saya menyetujui <a href="#" onclick="alert('Syarat & Ketentuan Layanan Publik Kabupaten Tasikmalaya');" class="text-blue-700 font-bold underline">Syarat & Ketentuan</a> serta Kebijakan Privasi Portal Layanan Publik.
+                            </span>
+                        </label>
+                    </div>
+
                     {{-- Submit Button --}}
-                    <div class="pt-3">
+                    <div class="pt-2">
                         <button
                             type="submit"
-                            class="w-full py-3 px-6 rounded-lg text-sm font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                            id="submitBtn"
+                            class="w-full py-3.5 px-6 rounded-xl text-sm sm:text-base font-bold bg-[#0a2558] hover:bg-[#0d3070] text-white shadow-lg shadow-blue-950/20 hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer group hover:-translate-y-0.5 active:translate-y-0"
                         >
-                            Daftar
+                            <span id="btnText" class="flex items-center gap-2">
+                                <span>Buat Akun Sekarang</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                            </span>
+                            <span id="btnLoading" class="hidden items-center gap-2">
+                                <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+                                <span>Membuat akun...</span>
+                            </span>
                         </button>
                     </div>
                 </form>
 
+                {{-- Login Footer Link --}}
+                <div class="pt-3 border-t border-slate-100 text-center">
+                    <p class="text-xs sm:text-sm text-slate-600 font-medium">
+                        Sudah memiliki akun?
+                        <a href="{{ route('login') }}" class="font-bold text-blue-700 hover:text-blue-900 hover:underline transition-colors ml-1">
+                            Masuk ke Akun Anda
+                        </a>
+                    </p>
+                </div>
+
+            </div>
+
+            {{-- Security Footer Note --}}
+            <div class="mt-6 pt-3 flex items-center justify-center gap-2 text-xs text-slate-400">
+                <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+                <span>Data Pribadi Anda Dilindungi oleh Sistem Keamanan Terenkripsi</span>
             </div>
         </div>
 
-        {{-- ═══════════════════════════════════════════════════════════════════════
-             RIGHT COLUMN — OFFICIAL LIGHT BRANDING (Logo clearly visible)
-        ═══════════════════════════════════════════════════════════════════════ --}}
-        <div class="lg:col-span-6 bg-gradient-to-br from-slate-50 via-sky-50/40 to-slate-100 text-slate-800 relative flex flex-col justify-between p-8 sm:p-12 overflow-hidden min-h-[500px] lg:min-h-full border-l border-slate-200/60">
+        {{-- ── RIGHT COLUMN: BRANDING & HIGHLIGHTS ── --}}
+        <div class="lg:col-span-5 relative text-white flex flex-col justify-between p-8 sm:p-12 overflow-hidden"
+             style="background: linear-gradient(135deg, #0a2558 0%, #113470 50%, #1a4a8d 100%)">
 
-            {{-- 1. SVG Wavy Curves & Geometric Art Decor --}}
-            <div class="absolute top-12 left-8 w-24 h-40 gold-dots opacity-40 pointer-events-none"></div>
-            <div class="absolute top-1/4 right-12 w-6 h-6 text-slate-300 font-mono text-xl select-none pointer-events-none">✕</div>
-            <div class="absolute bottom-1/3 left-12 w-6 h-6 text-slate-300 font-mono text-xl select-none pointer-events-none">✕</div>
-            <div class="absolute top-16 right-1/3 w-4 h-4 rounded-full border border-slate-300 pointer-events-none"></div>
-            <div class="absolute bottom-10 left-1/4 w-4 h-4 rounded-full border border-slate-300 pointer-events-none"></div>
+            <div class="absolute -top-12 -right-12 w-64 h-64 rounded-full bg-white/5 pointer-events-none"></div>
+            <div class="absolute -bottom-16 -left-16 w-64 h-64 rounded-full bg-white/5 pointer-events-none"></div>
+            <div class="absolute top-1/2 right-4 w-32 h-32 rounded-full bg-teal-400/10 blur-2xl pointer-events-none"></div>
 
-            {{-- Curved Wave Vectors (SVG) --}}
-            <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-40" preserveAspectRatio="none" viewBox="0 0 600 700" fill="none">
-                <path d="M500 0 C450 200, 600 400, 480 700 L600 700 L600 0 Z" fill="#0b256b" opacity="0.08"/>
-                <path d="M420 0 C380 220, 560 380, 420 700 L600 700 L600 0 Z" fill="#0284c7" opacity="0.05"/>
-                <path d="M480 0 C420 180, 580 360, 450 700" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
-                <path d="M510 0 C460 190, 620 370, 480 700" stroke="#0b256b" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
-                <path d="M280 700 C360 520, 480 580, 600 500" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
-                <path d="M250 700 C340 500, 460 560, 600 480" stroke="#0b256b" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
-            </svg>
+            <div class="relative z-10 space-y-8">
+                <div class="bg-white/95 rounded-2xl p-4 sm:p-5 shadow-lg max-w-[280px]">
+                    <img src="{{ asset('images/logo.png') }}" alt="Dishub Kominfo - Pelayanan Terpadu Satu Pintu" class="h-10 sm:h-12 w-auto object-contain mx-auto">
+                </div>
 
-            {{-- 2. Top Right Header Links --}}
-            <div class="relative z-10 flex items-center justify-end gap-6 text-sm font-semibold text-slate-700">
-                <a href="{{ url('/') }}" class="hover:text-blue-700 transition-colors">Beranda</a>
-                <a href="#" onclick="alert('Pusat Bantuan & FAQ Portal Layanan');" class="hover:text-blue-700 transition-colors">FAQ</a>
-                <a href="#" onclick="alert('Kontak Diskominfo: (0265) 545123');" class="hover:text-blue-700 transition-colors">Hubungi Kami</a>
-            </div>
+                <div class="space-y-3">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/20 text-teal-200 text-xs font-bold border border-teal-300/30">
+                        <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+                        Registrasi Pemohon
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
+                        Mulai Akses Seluruh Layanan Pemerintah Daerah
+                    </h2>
+                    <p class="text-sm text-blue-100/90 leading-relaxed font-normal">
+                        Daftarkan diri Anda dalam beberapa langkah mudah untuk mulai mengajukan berbagai permohonan surat izin dan administrasi kependudukan.
+                    </p>
+                </div>
 
-            {{-- 3. Center Branding: Official Dishub Kominfo Logo --}}
-            <div class="relative z-10 my-auto text-center py-8 sm:py-12 px-4 sm:px-6 flex items-center justify-center">
-                <div class="w-full max-w-[360px] sm:max-w-[440px] lg:max-w-[500px] xl:max-w-[540px] flex items-center justify-center p-4">
-                    <x-application-logo class="w-full h-auto max-h-[160px] sm:max-h-[220px] drop-shadow-sm transition-transform duration-300 hover:scale-[1.02]" />
+                <div class="space-y-4 pt-2">
+                    <div class="flex items-start gap-3.5">
+                        <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 text-teal-300">
+                            <i data-lucide="user-check" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-white">Satu Akun untuk Semua Layanan</p>
+                            <p class="text-xs text-blue-200/80 mt-0.5">Akses berbagai permohonan tanpa perlu membuat akun berulang.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3.5">
+                        <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 text-teal-300">
+                            <i data-lucide="clock" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-white">Layanan 24 Jam Mandiri</p>
+                            <p class="text-xs text-blue-200/80 mt-0.5">Unggah berkas permohonan kapan saja tanpa terikat jam kantor.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3.5">
+                        <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 text-teal-300">
+                            <i data-lucide="file-badge-2" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-white">Unduh Izin Digital Resmi</p>
+                            <p class="text-xs text-blue-200/80 mt-0.5">Surat keputusan dan izin diterbitkan langsung dalam format digital.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="relative z-10 h-6"></div>
+            <div class="relative z-10 pt-8 mt-6 border-t border-white/10 flex items-center justify-between text-xs text-blue-200/70">
+                <span>&copy; {{ date('Y') }} Dinas Kominfo</span>
+                <span>Kabupaten Tasikmalaya</span>
+            </div>
+
         </div>
 
     </div>
 
+    {{-- Script --}}
     <script>
-        const p1 = document.getElementById('password');
-        const p2 = document.getElementById('password_confirmation');
-        document.getElementById('toggleRegPassword')?.addEventListener('click', () => {
-            p1.type = p1.type === 'password' ? 'text' : 'password';
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
         });
-        document.getElementById('toggleConfPassword')?.addEventListener('click', () => {
-            p2.type = p2.type === 'password' ? 'text' : 'password';
-        });
+
+        // Password Toggle
+        const toggleRegPassword = document.getElementById('toggleRegPassword');
+        const passwordInput     = document.getElementById('password');
+        const eyeIconReg        = document.getElementById('eyeIconReg');
+        const eyeOffIconReg     = document.getElementById('eyeOffIconReg');
+
+        if (toggleRegPassword && passwordInput) {
+            toggleRegPassword.addEventListener('click', () => {
+                const isPass = passwordInput.type === 'password';
+                passwordInput.type = isPass ? 'text' : 'password';
+                eyeIconReg.classList.toggle('hidden', isPass);
+                eyeOffIconReg.classList.toggle('hidden', !isPass);
+            });
+        }
+
+        // Submit state
+        const form      = document.getElementById('regForm');
+        const btnText   = document.getElementById('btnText');
+        const btnLoad   = document.getElementById('btnLoading');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (form && submitBtn) {
+            form.addEventListener('submit', () => {
+                btnText.classList.add('hidden');
+                btnLoad.classList.remove('hidden');
+                btnLoad.classList.add('flex');
+                submitBtn.disabled = true;
+            });
+        }
     </script>
 </body>
 </html>

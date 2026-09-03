@@ -88,7 +88,7 @@
             <div class="absolute inset-0 bg-gradient-to-br from-rose-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div class="relative flex items-start justify-between gap-4">
                 <div class="space-y-1">
-                    <p class="text-xs sm:text-sm font-bold text-slate-500 uppercase tracking-wide">Permohonan Ditolak</p>
+                    <p class="text-xs sm:text-sm font-bold text-slate-500 uppercase tracking-wide">Ditolak / Revisi</p>
                     <p class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
                         {{ $stats['revision_required'] ?? 0 }}
                     </p>

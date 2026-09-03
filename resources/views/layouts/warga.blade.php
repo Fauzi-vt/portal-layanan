@@ -348,7 +348,7 @@
                                 <i data-lucide="user-pen" class="w-5 h-5 {{ request()->routeIs('warga.profile.*') ? 'text-blue-700' : 'text-slate-400' }}"></i>
                                 <span>Profil Saya</span>
                             </a>
-                            <a href="{{ route('warga.submissions.index', ['status' => 'submitted']) }}"
+                            <a href="{{ route('warga.submissions.index') }}"
                                class="ripple-btn flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm sm:text-base text-slate-700 hover:bg-slate-100 hover:text-slate-900 font-medium transition-colors">
                                 <i data-lucide="clipboard-list" class="w-5 h-5 text-slate-400"></i>
                                 <span>Daftar Permohonan</span>
@@ -463,25 +463,52 @@
                              x-transition:leave-end="opacity-0 -translate-y-2"
                              class="pl-11 pr-2 py-1.5 space-y-1 overflow-hidden">
 
+                            <a href="{{ route('warga.submissions.index') }}"
+                               class="ripple-btn flex items-center justify-between gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all
+                                      {{ request()->routeIs('warga.submissions.index') && !request('status') ? 'bg-slate-100 text-slate-900 border border-slate-200' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70' }}">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="layers" class="w-4 h-4 flex-shrink-0"></i>
+                                    <span>Semua</span>
+                                </div>
+                                <span class="px-1.5 py-0.5 text-[10px] font-bold rounded-md bg-slate-200/80 text-slate-700">
+                                    {{ auth()->user()->submissions()->count() }}
+                                </span>
+                            </a>
+
                             <a href="{{ route('warga.submissions.index', ['status' => 'submitted']) }}"
-                               class="ripple-btn flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all
+                               class="ripple-btn flex items-center justify-between gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all
                                       {{ request()->routeIs('warga.submissions.index') && request('status') === 'submitted' ? 'bg-blue-50 text-blue-800 border border-blue-200' : 'text-slate-600 hover:text-blue-700 hover:bg-blue-50/70' }}">
-                                <i data-lucide="send" class="w-4 h-4 flex-shrink-0"></i>
-                                <span>Terkirim (Proses)</span>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="send" class="w-4 h-4 flex-shrink-0"></i>
+                                    <span>Terkirim (Proses)</span>
+                                </div>
+                                <span class="px-1.5 py-0.5 text-[10px] font-bold rounded-md bg-blue-100 text-blue-700">
+                                    {{ auth()->user()->submissions()->whereIn('status', ['submitted', 'in_review', 'processed'])->count() }}
+                                </span>
                             </a>
 
                             <a href="{{ route('warga.submissions.index', ['status' => 'rejected']) }}"
-                               class="ripple-btn flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all
+                               class="ripple-btn flex items-center justify-between gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all
                                       {{ request()->routeIs('warga.submissions.index') && request('status') === 'rejected' ? 'bg-rose-50 text-rose-800 border border-rose-200' : 'text-slate-600 hover:text-rose-700 hover:bg-rose-50/70' }}">
-                                <i data-lucide="x-circle" class="w-4 h-4 flex-shrink-0"></i>
-                                <span>Ditolak / Revisi</span>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="x-circle" class="w-4 h-4 flex-shrink-0"></i>
+                                    <span>Ditolak / Revisi</span>
+                                </div>
+                                <span class="px-1.5 py-0.5 text-[10px] font-bold rounded-md bg-rose-100 text-rose-700">
+                                    {{ auth()->user()->submissions()->whereIn('status', ['rejected', 'revision_required'])->count() }}
+                                </span>
                             </a>
 
                             <a href="{{ route('warga.submissions.index', ['status' => 'completed']) }}"
-                               class="ripple-btn flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all
+                               class="ripple-btn flex items-center justify-between gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all
                                       {{ request()->routeIs('warga.submissions.index') && request('status') === 'completed' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'text-slate-600 hover:text-emerald-700 hover:bg-emerald-50/70' }}">
-                                <i data-lucide="badge-check" class="w-4 h-4 flex-shrink-0"></i>
-                                <span>Terbit (Selesai)</span>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="badge-check" class="w-4 h-4 flex-shrink-0"></i>
+                                    <span>Terbit (Selesai)</span>
+                                </div>
+                                <span class="px-1.5 py-0.5 text-[10px] font-bold rounded-md bg-emerald-100 text-emerald-700">
+                                    {{ auth()->user()->submissions()->where('status', 'completed')->count() }}
+                                </span>
                             </a>
                         </div>
                     </div>

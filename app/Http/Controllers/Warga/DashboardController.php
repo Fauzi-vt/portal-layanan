@@ -22,7 +22,10 @@ class DashboardController extends Controller
                 SubmissionStatus::InReview,
                 SubmissionStatus::Processed,
             ])->count(),
-            'revision_required' => $user->submissions()->where('status', SubmissionStatus::RevisionRequired)->count(),
+            'revision_required' => $user->submissions()->whereIn('status', [
+                SubmissionStatus::Rejected,
+                SubmissionStatus::RevisionRequired,
+            ])->count(),
             'completed'         => $user->submissions()->where('status', SubmissionStatus::Completed)->count(),
         ];
 

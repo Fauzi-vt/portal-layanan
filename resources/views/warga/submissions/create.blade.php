@@ -66,6 +66,7 @@
                             @elseif ($srv->kode_layanan === 'KK_ADD') 👶
                             @elseif ($srv->kode_layanan === 'KK_DEL') 📋
                             @elseif ($srv->kode_layanan === 'PINDAH') 🚚
+                            @elseif ($srv->kode_layanan === 'DATANG') 🏠
                             @elseif ($srv->kode_layanan === 'NIKAH') 💍
                             @else 📄
                             @endif
@@ -111,6 +112,7 @@
                         @elseif ($service->kode_layanan === 'KK_ADD') 👶
                         @elseif ($service->kode_layanan === 'KK_DEL') 📋
                         @elseif ($service->kode_layanan === 'PINDAH') 🚚
+                        @elseif ($service->kode_layanan === 'DATANG') 🏠
                         @elseif ($service->kode_layanan === 'NIKAH') 💍
                         @else 📄
                         @endif
@@ -197,29 +199,59 @@
                 @endif
             </div>
 
-            {{-- Form Section 2: Upload Persyaratan --}}
+            {{-- Form Section: Formulir Digital F-1.01 Biodata Keluarga (Jika Layanan KK Baru / Terkait F-1.01) --}}
+            @if ($service->kode_layanan === 'KK_BARU' || $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01')))
+                <div class="space-y-3">
+                    <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                        <span>2. Pengisian Formulir Digital F-1.01 (Biodata Keluarga)</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">Interaktif Online</span>
+                    </h3>
+                    @include('warga.submissions.partials.form-f101')
+                </div>
+            @endif
+
+            {{-- Form Section: Upload Persyaratan --}}
             <div class="bg-white rounded-xl border border-slate-200 shadow-xs p-6 space-y-5">
                 <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
                     <h3 class="text-sm font-bold text-slate-900">
-                        2. Dokumen Persyaratan
+                        {{ ($service->kode_layanan === 'KK_BARU' || $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01'))) ? '3. Dokumen Persyaratan & Berkas Pendukung' : '2. Dokumen Persyaratan' }}
                     </h3>
                     <span class="text-xs text-slate-400">PDF, JPG, PNG (Maks 5 MB)</span>
                 </div>
 
                 <div class="space-y-4">
                     @foreach ($service->requirements as $req)
-                        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60 space-y-2">
+                        @php
+                            $isF101Doc = str_contains($req->nama_persyaratan, 'F-1.01');
+                        @endphp
+                        <div class="p-4 rounded-xl border {{ $isF101Doc ? 'border-blue-200 bg-blue-50/40' : 'border-slate-200 bg-slate-50/60' }} space-y-2.5">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <h4 class="text-xs font-bold text-slate-800">{{ $req->nama_persyaratan }}</h4>
-                                    @if ($req->is_required)
+                                    @if ($isF101Doc)
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                            ✓ Sudah Diisi Online (Scan Fisik Opsional)
+                                        </span>
+                                    @elseif ($req->is_required)
                                         <span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-rose-100 text-rose-700">Wajib</span>
                                     @else
                                         <span class="px-1.5 py-0.2 rounded text-[10px] font-semibold bg-slate-200 text-slate-600">Opsional</span>
                                     @endif
                                 </div>
                             </div>
-                            <p class="text-[11px] text-slate-500">{{ $req->deskripsi }}</p>
+                            <p class="text-[11px] text-slate-500 leading-relaxed">{{ $req->deskripsi }}</p>
+
+                            @if ($isF101Doc)
+                                <div class="p-3 bg-white border border-blue-200 rounded-xl text-xs text-slate-700 space-y-1">
+                                    <div class="flex items-center gap-1.5 text-blue-800 font-bold">
+                                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-500"></i>
+                                        <span>Kemudahan Layanan Online:</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600">
+                                        Karena Anda telah mengisi <strong>Formulir F-1.01 Digital</strong> pada bagian formulir di atas, pengunggahan scan formulir kertas ini bersifat <strong>opsional</strong>. Namun jika Anda sudah memiliki scan bertanda tangan basah dari Desa, Anda tetap dapat melampirkannya di bawah.
+                                    </p>
+                                </div>
+                            @endif
 
                             <input type="file"
                                    name="documents[{{ $req->id }}]"

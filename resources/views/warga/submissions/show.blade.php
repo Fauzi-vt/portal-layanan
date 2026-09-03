@@ -192,13 +192,27 @@
                 </div>
             </div>
 
-            @if ($submission->output_document_path)
+            <div class="flex flex-wrap items-center gap-3">
                 <a href="{{ route('warga.submissions.download-output', $submission) }}" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-600/20 transition-all whitespace-nowrap">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                     <span>Unduh e-Dokumen Hasil</span>
                 </a>
-            @endif
+
+                @if ($submission->form_data && isset($submission->form_data['f101']))
+                    <a href="{{ route('warga.submissions.print-f101', $submission) }}" target="_blank" class="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl font-bold text-xs sm:text-sm text-emerald-950 bg-white hover:bg-emerald-100 border border-emerald-300 shadow-xs transition-all whitespace-nowrap">
+                        <i data-lucide="printer" class="w-4 h-4 text-emerald-700"></i>
+                        <span>Cetak Formulir F-1.01 Resmi</span>
+                    </a>
+                @endif
+            </div>
         </div>
+    @endif
+
+    {{-- ═══════════════════════════════════════════════════════════════════════════
+         4.5. FORMULIR BIODATA KELUARGA (F-1.01)
+    ═══════════════════════════════════════════════════════════════════════════ --}}
+    @if ($submission->form_data && isset($submission->form_data['f101']))
+        <x-f101-detail :f101="$submission->form_data['f101']" :submission="$submission" />
     @endif
 
     {{-- ═══════════════════════════════════════════════════════════════════════════

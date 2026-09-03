@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/permohonan/{submission}/kirim-draft', [WargaSubmissionController::class, 'submitDraft'])->name('submissions.submit-draft');
             Route::post('/permohonan/{submission}/revisi', [WargaSubmissionController::class, 'updateRevision'])->name('submissions.update-revision');
             Route::get('/permohonan/{submission}/unduh-hasil', [WargaSubmissionController::class, 'downloadOutput'])->name('submissions.download-output');
+            Route::get('/permohonan/{submission}/cetak-f101', [WargaSubmissionController::class, 'printF101'])->name('submissions.print-f101');
 
             // Profil Saya (User Profile)
             Route::get('/profil', [\App\Http\Controllers\Warga\ProfileController::class, 'edit'])->name('profile.edit');
@@ -91,6 +92,7 @@ Route::middleware('auth')->group(function () {
             // Verifikasi & Pengelolaan Pengajuan Warga di Wilayahnya
             Route::get('/verifikasi', [KecamatanSubmissionController::class, 'index'])->name('submissions.index');
             Route::get('/verifikasi/{submission}', [KecamatanSubmissionController::class, 'show'])->name('submissions.show');
+            Route::get('/verifikasi/{submission}/cetak-f101', [KecamatanSubmissionController::class, 'printF101'])->name('submissions.print-f101');
             Route::post('/verifikasi/{submission}/tinjau', [KecamatanSubmissionController::class, 'review'])->name('submissions.review');
             Route::post('/verifikasi/{submission}/jadwal-biometrik', [KecamatanSubmissionController::class, 'scheduleBiometric'])->name('submissions.schedule-biometric');
             Route::post('/verifikasi/{submission}/selesaikan', [KecamatanSubmissionController::class, 'complete'])->name('submissions.complete');

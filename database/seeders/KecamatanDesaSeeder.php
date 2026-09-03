@@ -215,7 +215,23 @@ class KecamatanDesaSeeder extends Seeder
                 ],
             ],
 
-            // 7. Surat Dispensasi Nikah (Hybrid)
+            // 7. Surat Datang Antar Kecamatan (Hybrid)
+            [
+                'kode_layanan'           => 'DATANG',
+                'nama_layanan'           => 'Surat Datang Antar Kecamatan',
+                'deskripsi'              => 'Pengajuan Surat Keterangan Datang bagi warga yang pindah domisili masuk antar kecamatan dalam Kabupaten Tasikmalaya.',
+                'jenis_proses'           => ServiceProcessType::Hybrid,
+                'template_formulir_path' => null,
+                'ikon'                   => 'inbox',
+                'urutan'                 => 7,
+                'requirements'           => [
+                    ['nama' => 'Surat Pindah dari Kecamatan Asal', 'deskripsi' => 'Unggah scan/foto Surat Keterangan Pindah (SKPWNI) dari kecamatan asal', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
+                    ['nama' => 'Kartu Keluarga Asli', 'deskripsi' => 'Scan/foto asli Kartu Keluarga (KK)', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
+                    ['nama' => 'E-KTP Pemohon', 'deskripsi' => 'Scan/foto Kartu Tanda Penduduk Elektronik (e-KTP) pemohon', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
+                ],
+            ],
+
+            // 8. Surat Dispensasi Nikah (Hybrid)
             [
                 'kode_layanan'           => 'NIKAH',
                 'nama_layanan'           => 'Surat Dispensasi / Rekomendasi Nikah',
@@ -223,7 +239,7 @@ class KecamatanDesaSeeder extends Seeder
                 'jenis_proses'           => ServiceProcessType::Hybrid,
                 'template_formulir_path' => 'templates/n1_n4_rekomendasi_nikah.pdf',
                 'ikon'                   => 'heart',
-                'urutan'                 => 7,
+                'urutan'                 => 8,
                 'requirements'           => [
                     ['nama' => 'Formulir N1 - N4 dari Desa', 'deskripsi' => 'Unduh form N1-N4, lengkapi tanda tangan dan stempel Kepala Desa/Kelurahan setempat', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
                     ['nama' => 'Surat Pengantar / Rekomendasi KUA Asal', 'deskripsi' => 'Scan surat pengantar resmi dari Kantor Urusan Agama (KUA) kecamatan domisili', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
@@ -233,7 +249,7 @@ class KecamatanDesaSeeder extends Seeder
                 ],
             ],
 
-            // 8. Surat Keterangan Lainnya (Dynamic Service Engine)
+            // 9. Surat Keterangan Lainnya (Dynamic Service Engine)
             [
                 'kode_layanan'           => 'LAINNYA',
                 'nama_layanan'           => 'Surat Keterangan Umum & Administrasi Lainnya',
@@ -241,7 +257,7 @@ class KecamatanDesaSeeder extends Seeder
                 'jenis_proses'           => ServiceProcessType::FullDigital,
                 'template_formulir_path' => null,
                 'ikon'                   => 'document-text',
-                'urutan'                 => 8,
+                'urutan'                 => 9,
                 'requirements'           => [
                     ['nama' => 'Surat Pengantar dari Desa / Kelurahan', 'deskripsi' => 'Scan surat pengantar resmi dari Kantor Desa mengenai perihal surat yang dibutuhkan', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
                     ['nama' => 'Kartu Tanda Penduduk (e-KTP)', 'deskripsi' => 'Scan/Foto e-KTP pemohon yang masih berlaku', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],

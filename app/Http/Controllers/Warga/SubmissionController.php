@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Warga;
 
+use App\Enums\SubmissionStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Submission\StoreSubmissionRequest;
 use App\Http\Requests\Submission\UpdateRevisionRequest;
@@ -26,15 +27,45 @@ class SubmissionController extends Controller
     public function index(Request $request): View
     {
         $statusFilter = $request->query('status');
+        $user = $request->user();
 
-        $submissions = $request->user()->submissions()
+        // Hitung badge counter untuk tab & navigasi
+        $counts = [
+            'all'       => $user->submissions()->count(),
+            'submitted' => $user->submissions()->whereIn('status', [
+                SubmissionStatus::Submitted,
+                SubmissionStatus::InReview,
+                SubmissionStatus::Processed,
+            ])->count(),
+            'rejected'  => $user->submissions()->whereIn('status', [
+                SubmissionStatus::Rejected,
+                SubmissionStatus::RevisionRequired,
+            ])->count(),
+            'completed' => $user->submissions()->where('status', SubmissionStatus::Completed)->count(),
+        ];
+
+        $submissions = $user->submissions()
             ->with(['service', 'kecamatan'])
-            ->when($statusFilter, fn($q) => $q->where('status', $statusFilter))
+            ->when($statusFilter, function ($query, $status) {
+                return match ($status) {
+                    'submitted', 'dikirim', 'proses' => $query->whereIn('status', [
+                        SubmissionStatus::Submitted,
+                        SubmissionStatus::InReview,
+                        SubmissionStatus::Processed,
+                    ]),
+                    'rejected', 'ditolak', 'revisi' => $query->whereIn('status', [
+                        SubmissionStatus::Rejected,
+                        SubmissionStatus::RevisionRequired,
+                    ]),
+                    'completed', 'terbit', 'selesai' => $query->where('status', SubmissionStatus::Completed),
+                    default => $query->where('status', $status),
+                };
+            })
             ->latest()
             ->paginate(10)
             ->withQueryString();
 
-        return view('warga.submissions.index', compact('submissions', 'statusFilter'));
+        return view('warga.submissions.index', compact('submissions', 'statusFilter', 'counts'));
     }
 
     /**
@@ -55,8 +86,11 @@ class SubmissionController extends Controller
         $services = Service::where('is_active', true)->orderBy('urutan')->get();
         $kecamatans = Kecamatan::orderBy('nama_kecamatan')->get();
         $user = $request->user()->load(['kecamatan', 'desa']);
+        $desas = $user->kecamatan_id
+            ? \App\Models\Desa::where('kecamatan_id', $user->kecamatan_id)->orderBy('nama_desa')->get()
+            : collect();
 
-        return view('warga.submissions.create', compact('service', 'services', 'kecamatans', 'user'));
+        return view('warga.submissions.create', compact('service', 'services', 'kecamatans', 'desas', 'user'));
     }
 
     /**
@@ -134,7 +168,20 @@ class SubmissionController extends Controller
     {
         $this->authorize('view', $submission);
 
+        // Jika status selesai, pastikan file fisik dokumen hasil ada pada storage
+        if ($submission->isCompleted()) {
+            if (! $submission->output_document_path || ! Storage::disk('public')->exists($submission->output_document_path)) {
+                $uploadService = app(\App\Services\DocumentUploadService::class);
+                $generatedPath = $uploadService->generateDefaultOutputPdf($submission);
+                $submission->update(['output_document_path' => $generatedPath]);
+            }
+        }
+
         if (! $submission->output_document_path || ! Storage::disk('public')->exists($submission->output_document_path)) {
+            if ($submission->form_data && isset($submission->form_data['f101'])) {
+                return redirect()->route('warga.submissions.print-f101', $submission);
+            }
+
             return back()->with('error', 'Dokumen hasil belum tersedia atau file tidak ditemukan.');
         }
 
@@ -142,5 +189,18 @@ class SubmissionController extends Controller
             $submission->output_document_path,
             "{$submission->nomor_tiket}_{$submission->service->kode_layanan}_Dokumen_Hasil.pdf"
         );
+    }
+
+    /**
+     * Cetak dokumen resmi Formulir F-1.01 Biodata Keluarga pemohon.
+     */
+    public function printF101(Submission $submission): View
+    {
+        $this->authorize('view', $submission);
+
+        $submission->load(['service', 'kecamatan', 'user.desa']);
+        $f101 = $submission->form_data['f101'] ?? null;
+
+        return view('submissions.print-f101', compact('submission', 'f101'));
     }
 }

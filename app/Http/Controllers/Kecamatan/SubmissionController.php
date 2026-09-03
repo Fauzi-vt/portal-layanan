@@ -159,4 +159,17 @@ class SubmissionController extends Controller
             ->route('kecamatan.submissions.show', $submission)
             ->with('warning', "Permohonan {$submission->nomor_tiket} telah ditolak.");
     }
+
+    /**
+     * Cetak dokumen resmi Formulir F-1.01 Biodata Keluarga sesuai format standar Ditjen Dukcapil.
+     */
+    public function printF101(Submission $submission): View
+    {
+        $this->authorize('review', $submission);
+
+        $submission->load(['service', 'kecamatan', 'user.desa']);
+        $f101 = $submission->form_data['f101'] ?? null;
+
+        return view('submissions.print-f101', compact('submission', 'f101'));
+    }
 }

@@ -31,9 +31,12 @@
 
     {{-- Top Heading & Breadcrumb Bar --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <h1 class="text-xl font-bold text-slate-900 tracking-tight">
-            {{ $pageTitle }}
-        </h1>
+        <div>
+            <h1 class="text-xl font-bold text-slate-900 tracking-tight">
+                {{ $pageTitle }}
+            </h1>
+            <p class="text-xs text-slate-500 mt-0.5">Kelola dan pantau seluruh status berkas permohonan layanan publik Anda.</p>
+        </div>
         
         {{-- Breadcrumb --}}
         <div class="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
@@ -42,6 +45,57 @@
             <a href="{{ route('warga.submissions.index') }}" class="text-blue-600 hover:text-blue-800 hover:underline">Permohonan</a>
             <span>/</span>
             <span class="font-bold text-slate-900">{{ $breadcrumbStatus }}</span>
+        </div>
+    </div>
+
+    {{-- Filter Tabs Bar --}}
+    <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
+        <a href="{{ route('warga.submissions.index') }}"
+           class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all
+                  {{ !$statusFilter ? 'bg-[#0a2558] text-white shadow-sm' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
+            <i data-lucide="layers" class="w-4 h-4"></i>
+            <span>Semua</span>
+            <span class="px-1.5 py-0.2 text-[10px] font-bold rounded-md {{ !$statusFilter ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700' }}">
+                {{ $counts['all'] ?? 0 }}
+            </span>
+        </a>
+
+        <a href="{{ route('warga.submissions.index', ['status' => 'submitted']) }}"
+           class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all
+                  {{ in_array($statusFilter, ['submitted', 'dikirim', 'proses']) ? 'bg-blue-600 text-white shadow-sm' : 'bg-white text-slate-700 hover:bg-blue-50 hover:text-blue-700 border border-slate-200' }}">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            <span>Terkirim (Proses)</span>
+            <span class="px-1.5 py-0.2 text-[10px] font-bold rounded-md {{ in_array($statusFilter, ['submitted', 'dikirim', 'proses']) ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-800' }}">
+                {{ $counts['submitted'] ?? 0 }}
+            </span>
+        </a>
+
+        <a href="{{ route('warga.submissions.index', ['status' => 'rejected']) }}"
+           class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all
+                  {{ in_array($statusFilter, ['rejected', 'ditolak', 'revisi']) ? 'bg-rose-600 text-white shadow-sm' : 'bg-white text-slate-700 hover:bg-rose-50 hover:text-rose-700 border border-slate-200' }}">
+            <i data-lucide="x-circle" class="w-4 h-4"></i>
+            <span>Ditolak / Revisi</span>
+            <span class="px-1.5 py-0.2 text-[10px] font-bold rounded-md {{ in_array($statusFilter, ['rejected', 'ditolak', 'revisi']) ? 'bg-white/20 text-white' : 'bg-rose-100 text-rose-800' }}">
+                {{ $counts['rejected'] ?? 0 }}
+            </span>
+        </a>
+
+        <a href="{{ route('warga.submissions.index', ['status' => 'completed']) }}"
+           class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all
+                  {{ in_array($statusFilter, ['completed', 'terbit', 'selesai']) ? 'bg-emerald-600 text-white shadow-sm' : 'bg-white text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 border border-slate-200' }}">
+            <i data-lucide="badge-check" class="w-4 h-4"></i>
+            <span>Terbit (Selesai)</span>
+            <span class="px-1.5 py-0.2 text-[10px] font-bold rounded-md {{ in_array($statusFilter, ['completed', 'terbit', 'selesai']) ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800' }}">
+                {{ $counts['completed'] ?? 0 }}
+            </span>
+        </a>
+
+        <div class="sm:ml-auto">
+            <a href="{{ route('warga.submissions.create') }}"
+               class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-[#0a2558] text-white hover:bg-blue-900 transition-all shadow-xs">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>Buat Permohonan</span>
+            </a>
         </div>
     </div>
 
@@ -134,8 +188,18 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="py-12 text-center text-slate-400 font-medium">
-                                No data available in table
+                            <td colspan="5" class="py-12 text-center text-slate-400">
+                                <div class="flex flex-col items-center justify-center gap-2.5">
+                                    <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center">
+                                        <i data-lucide="inbox" class="w-6 h-6"></i>
+                                    </div>
+                                    <p class="font-semibold text-slate-700 text-sm">Belum ada permohonan pada kategori ini</p>
+                                    <p class="text-xs text-slate-400 max-w-sm">Silakan ajukan permohonan baru untuk memulai pengurusan dokumen kependudukan Anda.</p>
+                                    <a href="{{ route('warga.submissions.create') }}" class="mt-2 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0a2558] text-white text-xs font-bold hover:bg-blue-900 transition-colors shadow-xs">
+                                        <i data-lucide="plus" class="w-4 h-4"></i>
+                                        <span>Buat Permohonan Baru</span>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     @endforelse
