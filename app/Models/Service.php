@@ -21,15 +21,17 @@ class Service extends Model
         'template_formulir_path',
         'ikon',
         'is_active',
+        'requires_desa_approval',
         'urutan',
     ];
 
     protected function casts(): array
     {
         return [
-            'jenis_proses' => ServiceProcessType::class,
-            'is_active'    => 'boolean',
-            'urutan'       => 'integer',
+            'jenis_proses'           => ServiceProcessType::class,
+            'is_active'              => 'boolean',
+            'requires_desa_approval' => 'boolean',
+            'urutan'                 => 'integer',
         ];
     }
 

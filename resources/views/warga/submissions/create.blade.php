@@ -199,12 +199,12 @@
                 @endif
             </div>
 
-            {{-- Form Section: Formulir Digital F-1.01 Biodata Keluarga (Jika Layanan KK Baru / Terkait F-1.01) --}}
-            @if ($service->kode_layanan === 'KK_BARU' || $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01')))
+            {{-- Form Section: Formulir Pembuatan Kartu Keluarga Baru (Jika Layanan KK Baru / Terkait KK) --}}
+            @if ($service->kode_layanan === 'KK_BARU' || $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01') || str_contains($r->nama_persyaratan, 'F-1.15') || str_contains($r->nama_persyaratan, 'Kartu Keluarga')))
                 <div class="space-y-3">
                     <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                        <span>2. Pengisian Formulir Digital F-1.01 (Biodata Keluarga)</span>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">Interaktif Online</span>
+                        <span>2. Pengisian Formulir Pembuatan Kartu Keluarga Baru</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">Format Resmi Dukcapil</span>
                     </h3>
                     @include('warga.submissions.partials.form-f101')
                 </div>
@@ -214,7 +214,7 @@
             <div class="bg-white rounded-xl border border-slate-200 shadow-xs p-6 space-y-5">
                 <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
                     <h3 class="text-sm font-bold text-slate-900">
-                        {{ ($service->kode_layanan === 'KK_BARU' || $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01'))) ? '3. Dokumen Persyaratan & Berkas Pendukung' : '2. Dokumen Persyaratan' }}
+                        {{ ($service->kode_layanan === 'KK_BARU' || $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01') || str_contains($r->nama_persyaratan, 'F-1.15'))) ? '3. Dokumen Persyaratan & Berkas Pendukung' : '2. Dokumen Persyaratan' }}
                     </h3>
                     <span class="text-xs text-slate-400">PDF, JPG, PNG (Maks 5 MB)</span>
                 </div>
@@ -222,7 +222,7 @@
                 <div class="space-y-4">
                     @foreach ($service->requirements as $req)
                         @php
-                            $isF101Doc = str_contains($req->nama_persyaratan, 'F-1.01');
+                            $isF101Doc = str_contains($req->nama_persyaratan, 'F-1.01') || str_contains($req->nama_persyaratan, 'F-1.15');
                         @endphp
                         <div class="p-4 rounded-xl border {{ $isF101Doc ? 'border-blue-200 bg-blue-50/40' : 'border-slate-200 bg-slate-50/60' }} space-y-2.5">
                             <div class="flex items-center justify-between">
@@ -248,7 +248,7 @@
                                         <span>Kemudahan Layanan Online:</span>
                                     </div>
                                     <p class="text-[11px] text-slate-600">
-                                        Karena Anda telah mengisi <strong>Formulir F-1.01 Digital</strong> pada bagian formulir di atas, pengunggahan scan formulir kertas ini bersifat <strong>opsional</strong>. Namun jika Anda sudah memiliki scan bertanda tangan basah dari Desa, Anda tetap dapat melampirkannya di bawah.
+                                        Karena Anda telah mengisi <strong>Formulir Digital F-1.15</strong> pada bagian formulir di atas, pengunggahan scan formulir kertas ini bersifat <strong>opsional</strong>. Namun jika Anda sudah memiliki scan bertanda tangan basah dari Desa, Anda tetap dapat melampirkannya di bawah.
                                     </p>
                                 </div>
                             @endif

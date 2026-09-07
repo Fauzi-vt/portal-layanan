@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Desa\DashboardController as DesaDashboardController;
+use App\Http\Controllers\Desa\SubmissionController as DesaSubmissionController;
 use App\Http\Controllers\Kecamatan\DashboardController as KecamatanDashboardController;
 use App\Http\Controllers\Kecamatan\SubmissionController as KecamatanSubmissionController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
+use App\Http\Controllers\SuperAdmin\ServiceController as SuperAdminServiceController;
 use App\Http\Controllers\Warga\DashboardController as WargaDashboardController;
 use App\Http\Controllers\Warga\SubmissionController as WargaSubmissionController;
 use Illuminate\Support\Facades\Route;
@@ -46,9 +49,14 @@ Route::middleware('auth')->group(function () {
         return match (auth()->user()->role) {
             \App\Enums\UserRole::SuperAdmin      => redirect()->route('superadmin.dashboard'),
             \App\Enums\UserRole::AdminKecamatan  => redirect()->route('kecamatan.dashboard'),
+            \App\Enums\UserRole::AdminDesa       => redirect()->route('desa.dashboard'),
             default                              => redirect()->route('warga.dashboard'),
         };
     })->name('dashboard');
+
+    // ── Akses Dokumen Berkas Aman (Policy & Tenant Protected) ─────────────────
+    Route::get('/dokumen/{document}/lihat', [\App\Http\Controllers\DocumentController::class, 'show'])->name('documents.show');
+    Route::get('/dokumen/{document}/unduh', [\App\Http\Controllers\DocumentController::class, 'download'])->name('documents.download');
 
     // ─────────────────────────────────────────────────────────────────────────
     // 1. WORKSPACE: WARGA / MASYARAKAT
@@ -80,7 +88,24 @@ Route::middleware('auth')->group(function () {
         });
 
     // ─────────────────────────────────────────────────────────────────────────
-    // 2. WORKSPACE: ADMIN KECAMATAN (39 KECAMATAN SCOPED)
+    // 2. WORKSPACE: KASI PELAYANAN (ADMIN DESA)
+    // ─────────────────────────────────────────────────────────────────────────
+    Route::middleware('role:admin_desa')
+        ->prefix('desa')
+        ->name('desa.')
+        ->group(function () {
+            // Dashboard Desa
+            Route::get('/dashboard', [DesaDashboardController::class, 'index'])->name('dashboard');
+
+            // Pengajuan Masuk Desa
+            Route::get('/verifikasi', [DesaSubmissionController::class, 'index'])->name('submissions.index');
+            Route::get('/verifikasi/{submission}', [DesaSubmissionController::class, 'show'])->name('submissions.show');
+            Route::get('/verifikasi/{submission}/cetak-f101', [DesaSubmissionController::class, 'printF101'])->name('submissions.print-f101');
+            Route::post('/verifikasi/{submission}/verifikasi', [DesaSubmissionController::class, 'verify'])->name('submissions.verify');
+        });
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // 3. WORKSPACE: ADMIN KECAMATAN (39 KECAMATAN SCOPED)
     // ─────────────────────────────────────────────────────────────────────────
     Route::middleware('role:admin_kecamatan')
         ->prefix('kecamatan')
@@ -108,5 +133,16 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             // Dashboard Global Analytics
             Route::get('/dashboard', [SuperAdminDashboardController::class, 'index'])->name('dashboard');
+
+            // Manajemen Master Layanan & Persyaratan Dokumen
+            Route::get('/layanan', [SuperAdminServiceController::class, 'index'])->name('services.index');
+            Route::get('/layanan/{service}/edit', [SuperAdminServiceController::class, 'edit'])->name('services.edit');
+            Route::put('/layanan/{service}', [SuperAdminServiceController::class, 'update'])->name('services.update');
+            Route::patch('/layanan/{service}/toggle', [SuperAdminServiceController::class, 'toggle'])->name('services.toggle');
+
+            // Manajemen Persyaratan Dokumen Layanan
+            Route::post('/layanan/{service}/persyaratan', [SuperAdminServiceController::class, 'storeRequirement'])->name('services.requirements.store');
+            Route::put('/layanan/{service}/persyaratan/{requirement}', [SuperAdminServiceController::class, 'updateRequirement'])->name('services.requirements.update');
+            Route::delete('/layanan/{service}/persyaratan/{requirement}', [SuperAdminServiceController::class, 'destroyRequirement'])->name('services.requirements.destroy');
         });
 });

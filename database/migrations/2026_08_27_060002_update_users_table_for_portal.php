@@ -44,11 +44,11 @@ return new class extends Migration
                 ->after('email')
                 ->comment('Nomor telepon aktif');
 
-            // Role baru: 3 level sesuai spesifikasi sistem
-            $table->enum('role', ['warga', 'admin_kecamatan', 'super_admin'])
+            // Role baru: sesuai spesifikasi sistem
+            $table->enum('role', ['warga', 'admin_desa', 'admin_kecamatan', 'super_admin'])
                 ->default('warga')
                 ->after('phone')
-                ->comment('Role: warga | admin_kecamatan | super_admin');
+                ->comment('Role: warga | admin_desa | admin_kecamatan | super_admin');
 
             // Foreign Key ke kecamatans:
             //   - Warga      : kecamatan domisili

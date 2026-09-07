@@ -84,7 +84,7 @@ class SubmissionController extends Controller
         }
 
         $services = Service::where('is_active', true)->orderBy('urutan')->get();
-        $kecamatans = Kecamatan::orderBy('nama_kecamatan')->get();
+        $kecamatans = Kecamatan::with('desas')->orderBy('nama_kecamatan')->get();
         $user = $request->user()->load(['kecamatan', 'desa']);
         $desas = $user->kecamatan_id
             ? \App\Models\Desa::where('kecamatan_id', $user->kecamatan_id)->orderBy('nama_desa')->get()
@@ -124,6 +124,7 @@ class SubmissionController extends Controller
             'documents.requirement',
             'kecamatan',
             'user.desa',
+            'histories.user',
         ]);
 
         return view('warga.submissions.show', compact('submission'));
@@ -170,14 +171,21 @@ class SubmissionController extends Controller
 
         // Jika status selesai, pastikan file fisik dokumen hasil ada pada storage
         if ($submission->isCompleted()) {
-            if (! $submission->output_document_path || ! Storage::disk('public')->exists($submission->output_document_path)) {
+            $hasLocal = $submission->output_document_path && Storage::disk('local')->exists($submission->output_document_path);
+            $hasPublic = $submission->output_document_path && Storage::disk('public')->exists($submission->output_document_path);
+
+            if (! $hasLocal && ! $hasPublic) {
                 $uploadService = app(\App\Services\DocumentUploadService::class);
                 $generatedPath = $uploadService->generateDefaultOutputPdf($submission);
                 $submission->update(['output_document_path' => $generatedPath]);
             }
         }
 
-        if (! $submission->output_document_path || ! Storage::disk('public')->exists($submission->output_document_path)) {
+        $activeDisk = ($submission->output_document_path && Storage::disk('local')->exists($submission->output_document_path))
+            ? 'local'
+            : 'public';
+
+        if (! $submission->output_document_path || ! Storage::disk($activeDisk)->exists($submission->output_document_path)) {
             if ($submission->form_data && isset($submission->form_data['f101'])) {
                 return redirect()->route('warga.submissions.print-f101', $submission);
             }
@@ -185,7 +193,7 @@ class SubmissionController extends Controller
             return back()->with('error', 'Dokumen hasil belum tersedia atau file tidak ditemukan.');
         }
 
-        return Storage::disk('public')->download(
+        return Storage::disk($activeDisk)->download(
             $submission->output_document_path,
             "{$submission->nomor_tiket}_{$submission->service->kode_layanan}_Dokumen_Hasil.pdf"
         );

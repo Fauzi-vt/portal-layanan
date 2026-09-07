@@ -1,669 +1,908 @@
-<div x-data="f101BiodataComponent({
+@php
+    // Siapkan daftar kecamatan beserta desa untuk autocomplete otomatis
+    $kecamatanMap = ($kecamatans ?? collect())->mapWithKeys(function($k) {
+        return [
+            strtoupper($k->nama_kecamatan) => $k->desas ? $k->desas->pluck('nama_desa')->map(fn($d) => strtoupper($d))->values() : []
+        ];
+    });
+@endphp
+
+<div x-data="kkBaruComponent({
     userName: @js($user->name),
     userNik: @js($user->nik ?? ''),
     userPhone: @js($user->phone ?? ''),
     userEmail: @js($user->email ?? ''),
     userAlamat: @js($user->alamat_detail ?? ''),
-    kecamatanName: @js($user->kecamatan?->nama_kecamatan ?? ''),
-    desaName: @js($user->desa?->nama_desa ?? '')
-})" class="bg-white rounded-2xl border-2 border-blue-200/80 shadow-md overflow-hidden space-y-0 transition-all">
+    kecamatanName: @js($user->kecamatan?->nama_kecamatan ?? 'SINGAPARNA'),
+    desaName: @js($user->desa?->nama_desa ?? ''),
+    kecamatanMap: @js($kecamatanMap)
+})" class="bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden space-y-0 transition-all font-sans">
 
-    {{-- Header Banner F-1.01 --}}
-    <div class="bg-gradient-to-r from-[#0a2558] via-[#12397d] to-[#1e5799] text-white p-5 sm:p-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div class="space-y-1">
-                <div class="flex items-center gap-2">
-                    <span class="px-2.5 py-0.5 rounded-md bg-amber-400 text-slate-900 font-extrabold text-[11px] uppercase tracking-wider shadow-xs">
-                        FORMULIR F-1.01
-                    </span>
-                    <span class="text-xs text-blue-200 font-medium">Standar Ditjen Dukcapil Kemendagri</span>
-                </div>
-                <h3 class="text-lg sm:text-xl font-bold tracking-tight text-white">
-                    Formulir Biodata Keluarga
-                </h3>
-                <p class="text-xs text-blue-100/90 leading-relaxed max-w-2xl">
-                    Silakan isi formulir biodata keluarga secara digital di bawah ini. Data ini digunakan untuk penerbitan Kartu Keluarga (KK) baru dan langsung tersimpan ke sistem.
-                </p>
+    {{-- ═══════════════════════════════════════════════════════════════════════
+         HEADER FORMULIR DIGITAL KK BARU
+    ═══════════════════════════════════════════════════════════════════════ --}}
+    <div class="p-6 bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-400/20 border border-blue-400/30 text-blue-200 text-xs font-bold uppercase tracking-wider mb-2">
+                <svg class="w-4 h-4 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <span>Formulir Digital Kartu Keluarga</span>
             </div>
-
-            <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/20 text-center sm:text-right shrink-0">
-                <span class="text-[11px] text-blue-200 block uppercase font-medium">Jumlah Anggota Keluarga</span>
-                <span class="text-2xl font-black text-white" x-text="anggota.length + ' Orang'"></span>
-            </div>
+            <h2 class="text-xl sm:text-2xl font-black tracking-wide text-white uppercase">
+                FORMULIR PEMBUATAN KARTU KELUARGA BARU
+            </h2>
+            <p class="text-xs text-blue-100/80 mt-1 max-w-2xl leading-relaxed">
+                Pengisian formulir digital terpadu dengan otomatisasi alamat wilayah dan tabel data anggota keluarga yang fleksibel.
+            </p>
         </div>
 
-        {{-- Nav Tabs Form --}}
-        <div class="flex flex-wrap gap-2 pt-5 border-t border-white/15 mt-5">
-            <button type="button"
-                    @click="activeTab = 'kepala'"
-                    :class="activeTab === 'kepala' ? 'bg-white text-[#0a2558] shadow-sm font-bold' : 'bg-white/10 text-white hover:bg-white/20 font-medium'"
-                    class="px-4 py-2 rounded-xl text-xs flex items-center gap-2 transition-all">
-                <i data-lucide="user-check" class="w-4 h-4"></i>
-                <span>1. Data Kepala Keluarga & Alamat</span>
-            </button>
-
-            <button type="button"
-                    @click="activeTab = 'wilayah'"
-                    :class="activeTab === 'wilayah' ? 'bg-white text-[#0a2558] shadow-sm font-bold' : 'bg-white/10 text-white hover:bg-white/20 font-medium'"
-                    class="px-4 py-2 rounded-xl text-xs flex items-center gap-2 transition-all">
-                <i data-lucide="map-pin" class="w-4 h-4"></i>
-                <span>2. Data Wilayah Domisili</span>
-            </button>
-
-            <button type="button"
-                    @click="activeTab = 'anggota'"
-                    :class="activeTab === 'anggota' ? 'bg-white text-[#0a2558] shadow-sm font-bold' : 'bg-white/10 text-white hover:bg-white/20 font-medium'"
-                    class="px-4 py-2 rounded-xl text-xs flex items-center gap-2 transition-all">
-                <i data-lucide="users" class="w-4 h-4"></i>
-                <span>3. Rincian Anggota Keluarga</span>
-                <span class="px-1.5 py-0.2 rounded-full text-[10px] font-bold"
-                      :class="activeTab === 'anggota' ? 'bg-blue-100 text-blue-800' : 'bg-white/20 text-white'"
-                      x-text="anggota.length"></span>
-            </button>
+        <div class="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/15">
+            <div class="text-right">
+                <span class="block text-[11px] text-blue-200 font-medium">Total Terdaftar</span>
+                <span class="text-sm font-black text-white" x-text="anggota.length + ' Anggota Keluarga'"></span>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-blue-500 text-white flex items-center justify-center font-black text-base shadow-sm">
+                <span x-text="anggota.length"></span>
+            </div>
         </div>
     </div>
 
-    {{-- Content Container --}}
-    <div class="p-5 sm:p-7 space-y-6">
+    {{-- ═══════════════════════════════════════════════════════════════════════
+         BAGIAN 1: TABEL ALAMAT RUMAH & WILAYAH (OTOMATISASI KECAMATAN / KAB / PROV / NEGARA)
+    ═══════════════════════════════════════════════════════════════════════ --}}
+    <div class="p-6 bg-slate-50/80 border-b border-slate-200 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-800 flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                <span>Data Kepala Keluarga & Wilayah Alamat Rumah</span>
+            </h3>
+            <span class="text-[11px] text-emerald-700 font-bold bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg flex items-center gap-1.5 self-start sm:self-auto">
+                <span>⚡</span>
+                <span>Otomatisasi Wilayah Aktif (Dapat diedit bebas oleh pemohon)</span>
+            </span>
+        </div>
 
-        {{-- ═══════════════════════════════════════════════════════════════════════
-             TAB 1: DATA KEPALA KELUARGA & ALAMAT
-        ═══════════════════════════════════════════════════════════════════════ --}}
-        <div x-show="activeTab === 'kepala'" class="space-y-5">
-            {{-- Pilihan Jenis Pemohon --}}
-            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
-                <label class="block text-xs font-bold text-slate-800 uppercase tracking-wide">
-                    Pilihan Jenis Formulir Kependudukan:
-                </label>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                    <label class="flex items-center gap-2 p-3 rounded-lg border bg-white cursor-pointer hover:border-blue-500 transition-colors"
-                           :class="jenisPilihan === 'wni' ? 'border-blue-600 bg-blue-50/50 text-blue-900 font-bold' : 'border-slate-200 text-slate-700'">
-                        <input type="radio" name="form_data[f101][jenis_pilihan]" value="wni" x-model="jenisPilihan" class="text-blue-600">
-                        <span>Kepala & Anggota Keluarga WNI</span>
-                    </label>
-
-                    <label class="flex items-center gap-2 p-3 rounded-lg border bg-white cursor-pointer hover:border-blue-500 transition-colors"
-                           :class="jenisPilihan === 'asing' ? 'border-blue-600 bg-blue-50/50 text-blue-900 font-bold' : 'border-slate-200 text-slate-700'">
-                        <input type="radio" name="form_data[f101][jenis_pilihan]" value="asing" x-model="jenisPilihan" class="text-blue-600">
-                        <span>Keluarga Orang Asing (WNA)</span>
-                    </label>
-
-                    <label class="flex items-center gap-2 p-3 rounded-lg border bg-white cursor-pointer hover:border-blue-500 transition-colors"
-                           :class="jenisPilihan === 'wni_luar_negeri' ? 'border-blue-600 bg-blue-50/50 text-blue-900 font-bold' : 'border-slate-200 text-slate-700'">
-                        <input type="radio" name="form_data[f101][jenis_pilihan]" value="wni_luar_negeri" x-model="jenisPilihan" class="text-blue-600">
-                        <span>WNI di Luar Negeri</span>
-                    </label>
-                </div>
-            </div>
-
-            {{-- Kolom Data Kepala Keluarga --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="sm:col-span-2">
-                    <label class="block text-xs font-bold text-slate-700 mb-1">
-                        1. Nama Kepala Keluarga <span class="text-rose-500">*</span>
+        {{-- Grid Tabular 4 Kolom untuk Alamat & Wilayah --}}
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4 text-xs">
+            {{-- Baris 1: Nama Kepala Keluarga & Alamat Jalan --}}
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="md:col-span-2">
+                    <label class="block font-bold text-slate-800 mb-1">
+                        Nama Kepala Keluarga <span class="text-rose-600">*</span>
                     </label>
                     <input type="text"
                            name="form_data[f101][nama_kepala_keluarga]"
-                           x-model="kepalaKeluarga.nama"
+                           x-model="meta.nama_kepala_keluarga"
                            required
-                           placeholder="Nama lengkap kepala keluarga sesuai KTP"
-                           class="w-full text-xs font-medium rounded-xl border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 py-2.5 px-3">
+                           placeholder="Contoh: AHMAD FAUZI"
+                           class="w-full text-xs font-bold uppercase rounded-xl border-slate-300 py-2.5 px-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
+                    <input type="hidden" name="form_data[f101][nama_pemohon]" :value="meta.nama_kepala_keluarga">
                 </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">
-                        NIK Kepala Keluarga <span class="text-rose-500">*</span>
+                <div class="md:col-span-2">
+                    <label class="block font-bold text-slate-800 mb-1">
+                        Alamat Tempat Tinggal (Jalan / Dusun / Kampung) <span class="text-rose-600">*</span>
                     </label>
                     <input type="text"
-                           name="form_data[f101][nik_kepala_keluarga]"
-                           x-model="kepalaKeluarga.nik"
-                           maxlength="16"
+                           name="form_data[f101][alamat]"
+                           x-model="meta.alamat"
                            required
-                           placeholder="16 Digit NIK Kepala Keluarga"
-                           class="w-full text-xs font-mono font-medium rounded-xl border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 py-2.5 px-3">
+                           placeholder="Contoh: Jl. Pahlawan No. 45, Dusun Sukamaju"
+                           class="w-full text-xs font-medium uppercase rounded-xl border-slate-300 py-2.5 px-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
                 </div>
+            </div>
 
+            {{-- Baris 2: RT/RW, Kode Pos, Kecamatan (Auto-trigger), Desa --}}
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                {{-- Kolom 1: RT / RW --}}
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">
-                        Nomor Telepon / Handphone <span class="text-rose-500">*</span>
+                    <label class="block font-bold text-slate-800 mb-1">
+                        RT / RW <span class="text-rose-600">*</span>
                     </label>
-                    <input type="text"
-                           name="form_data[f101][telepon]"
-                           x-model="kepalaKeluarga.telepon"
-                           required
-                           placeholder="08xxxxxxxxxx"
-                           class="w-full text-xs font-medium rounded-xl border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 py-2.5 px-3">
-                </div>
-
-                <div class="sm:col-span-2">
-                    <label class="block text-xs font-bold text-slate-700 mb-1">
-                        2. Alamat Lengkap Rumah <span class="text-rose-500">*</span>
-                    </label>
-                    <textarea name="form_data[f101][alamat]"
-                              x-model="kepalaKeluarga.alamat"
-                              rows="2"
-                              required
-                              placeholder="Nama jalan, gang, nomor rumah"
-                              class="w-full text-xs font-medium rounded-xl border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 p-3"></textarea>
-                </div>
-
-                <div class="grid grid-cols-3 gap-3 sm:col-span-2">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">4. RT <span class="text-rose-500">*</span></label>
+                    <div class="flex items-center gap-2">
                         <input type="text"
                                name="form_data[f101][rt]"
-                               x-model="kepalaKeluarga.rt"
+                               x-model="meta.rt"
                                maxlength="3"
-                               placeholder="001"
-                               class="w-full text-xs font-mono font-medium rounded-xl border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 py-2.5 px-3">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">5. RW <span class="text-rose-500">*</span></label>
+                               placeholder="RT"
+                               class="w-full font-mono text-center text-xs font-bold rounded-xl border-slate-300 py-2.5 px-2 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-600">
+                        <span class="text-slate-400 font-bold">/</span>
                         <input type="text"
                                name="form_data[f101][rw]"
-                               x-model="kepalaKeluarga.rw"
+                               x-model="meta.rw"
                                maxlength="3"
-                               placeholder="001"
-                               class="w-full text-xs font-mono font-medium rounded-xl border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 py-2.5 px-3">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">3. Kode Pos</label>
-                        <input type="text"
-                               name="form_data[f101][kode_pos]"
-                               x-model="kepalaKeluarga.kode_pos"
-                               maxlength="5"
-                               placeholder="46182"
-                               class="w-full text-xs font-mono font-medium rounded-xl border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 py-2.5 px-3">
+                               placeholder="RW"
+                               class="w-full font-mono text-center text-xs font-bold rounded-xl border-slate-300 py-2.5 px-2 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-600">
                     </div>
                 </div>
 
+                {{-- Kolom 2: Kode Pos --}}
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Email Kepala Keluarga</label>
-                    <input type="email"
-                           name="form_data[f101][email]"
-                           x-model="kepalaKeluarga.email"
-                           placeholder="alamat.email@domain.com"
-                           class="w-full text-xs font-medium rounded-xl border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 py-2.5 px-3">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">6. Jumlah Anggota Keluarga</label>
-                    <div class="p-2.5 bg-slate-100 rounded-xl text-xs font-bold text-slate-800 flex items-center justify-between border border-slate-200">
-                        <span x-text="anggota.length + ' Orang Terdaftar'"></span>
-                        <span class="text-[10px] text-slate-500 font-normal">Otomatis terhitung</span>
-                    </div>
-                    <input type="hidden" name="form_data[f101][jumlah_anggota]" :value="anggota.length">
-                </div>
-            </div>
-
-            <div class="pt-3 flex justify-end">
-                <button type="button"
-                        @click="activeTab = 'wilayah'"
-                        class="px-5 py-2.5 rounded-xl bg-[#0a2558] text-white text-xs font-bold hover:bg-blue-900 transition-colors flex items-center gap-2">
-                    <span>Lanjut ke Data Wilayah</span>
-                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </button>
-            </div>
-        </div>
-
-        {{-- ═══════════════════════════════════════════════════════════════════════
-             TAB 2: DATA WILAYAH
-        ═══════════════════════════════════════════════════════════════════════ --}}
-        <div x-show="activeTab === 'wilayah'" class="space-y-5">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">9. Provinsi</label>
+                    <label class="block font-bold text-slate-800 mb-1">
+                        Kode Pos <span class="text-rose-600">*</span>
+                    </label>
                     <input type="text"
-                           name="form_data[f101][nama_provinsi]"
-                           value="32 - JAWA BARAT"
-                           readonly
-                           class="w-full text-xs font-semibold rounded-xl border-slate-200 bg-slate-100 text-slate-600 py-2.5 px-3 cursor-not-allowed">
+                           name="form_data[f101][kode_pos]"
+                           x-model="meta.kode_pos"
+                           maxlength="5"
+                           placeholder="46182"
+                           class="w-full font-mono text-center text-xs font-bold rounded-xl border-slate-300 py-2.5 px-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-600">
                 </div>
 
+                {{-- Kolom 3: Kecamatan (Otomatis memicu Kabupaten, Provinsi, Negara) --}}
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">10. Kabupaten / Kota</label>
-                    <input type="text"
-                           name="form_data[f101][nama_kabupaten]"
-                           value="06 - KAB. TASIKMALAYA"
-                           readonly
-                           class="w-full text-xs font-semibold rounded-xl border-slate-200 bg-slate-100 text-slate-600 py-2.5 px-3 cursor-not-allowed">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">
-                        11. Kecamatan <span class="text-rose-500">*</span>
+                    <label class="block font-bold text-slate-800 mb-1 flex items-center justify-between">
+                        <span>Kecamatan <span class="text-rose-600">*</span></span>
+                        <span class="text-[10px] text-blue-600 font-semibold">Pilih/Ketik</span>
                     </label>
                     <input type="text"
                            name="form_data[f101][nama_kecamatan]"
-                           x-model="wilayah.kecamatan"
-                           required
-                           placeholder="Nama Kecamatan Domisili"
-                           class="w-full text-xs font-medium rounded-xl border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 py-2.5 px-3">
+                           x-model="meta.kecamatan"
+                           @input="onKecamatanInput()"
+                           @change="onKecamatanInput()"
+                           list="list-kecamatan-auto"
+                           placeholder="Ketik Kecamatan, misal: Singaparna"
+                           class="w-full text-xs font-bold uppercase rounded-xl border-slate-300 py-2.5 px-3 bg-white focus:ring-2 focus:ring-blue-600 focus:border-blue-600 shadow-2xs">
+                    <datalist id="list-kecamatan-auto">
+                        @foreach ($kecamatans ?? [] as $kec)
+                            <option value="{{ strtoupper($kec->nama_kecamatan) }}"></option>
+                        @endforeach
+                    </datalist>
                 </div>
 
+                {{-- Kolom 4: Desa / Kelurahan --}}
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">
-                        12. Kelurahan / Desa <span class="text-rose-500">*</span>
+                    <label class="block font-bold text-slate-800 mb-1 flex items-center justify-between">
+                        <span>Desa / Kelurahan <span class="text-rose-600">*</span></span>
+                        <span class="text-[10px] text-slate-400 font-normal">Pilih/Ketik</span>
                     </label>
                     <input type="text"
                            name="form_data[f101][nama_desa]"
-                           x-model="wilayah.desa"
-                           required
-                           placeholder="Nama Desa / Kelurahan"
-                           class="w-full text-xs font-medium rounded-xl border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 py-2.5 px-3">
-                </div>
-
-                <div class="sm:col-span-2">
-                    <label class="block text-xs font-bold text-slate-700 mb-1">
-                        13. Nama Dusun / Dukuh / Kampung <span class="text-rose-500">*</span>
-                    </label>
-                    <input type="text"
-                           name="form_data[f101][nama_dusun]"
-                           x-model="wilayah.dusun"
-                           required
-                           placeholder="Contoh: Kp. Kaum Wetan / Dusun Sukamaju"
-                           class="w-full text-xs font-medium rounded-xl border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 py-2.5 px-3">
+                           x-model="meta.desa"
+                           list="list-desa-auto"
+                           placeholder="Nama Desa/Kelurahan"
+                           class="w-full text-xs font-bold uppercase rounded-xl border-slate-300 py-2.5 px-3 bg-white focus:ring-2 focus:ring-blue-600 focus:border-blue-600 shadow-2xs">
+                    <datalist id="list-desa-auto">
+                        <template x-for="desa in availableDesas" :key="desa">
+                            <option :value="desa"></option>
+                        </template>
+                    </datalist>
                 </div>
             </div>
 
-            <div class="pt-3 flex justify-between">
-                <button type="button"
-                        @click="activeTab = 'kepala'"
-                        class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold hover:bg-slate-200 transition-colors flex items-center gap-2">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                    <span>Kembali</span>
-                </button>
-
-                <button type="button"
-                        @click="activeTab = 'anggota'"
-                        class="px-5 py-2.5 rounded-xl bg-[#0a2558] text-white text-xs font-bold hover:bg-blue-900 transition-colors flex items-center gap-2">
-                    <span>Lanjut ke Anggota Keluarga</span>
-                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </button>
-            </div>
-        </div>
-
-        {{-- ═══════════════════════════════════════════════════════════════════════
-             TAB 3: DATA ANGGOTA KELUARGA (Multi-Row Dinamis)
-        ═══════════════════════════════════════════════════════════════════════ --}}
-        <div x-show="activeTab === 'anggota'" class="space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-                <div>
-                    <h4 class="text-sm font-bold text-slate-800">
-                        Daftar Anggota Keluarga (Kolom 1 s.d 41 F-1.01)
-                    </h4>
-                    <p class="text-xs text-slate-500">
-                        Masukkan seluruh anggota keluarga (Kepala Keluarga, Istri, Anak, dll.) yang akan dicantumkan dalam KK ini.
-                    </p>
-                </div>
-
-                <button type="button"
-                        @click="tambahAnggota()"
-                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-xs shrink-0 cursor-pointer">
-                    <i data-lucide="user-plus" class="w-4 h-4"></i>
-                    <span>+ Tambah Anggota Keluarga</span>
-                </button>
-            </div>
-
-            {{-- Kartu Anggota Per Baris --}}
-            <div class="space-y-4">
-                <template x-for="(item, index) in anggota" :key="index">
-                    <div class="p-5 rounded-2xl border border-slate-200 bg-slate-50/70 hover:bg-white transition-all space-y-4 shadow-2xs">
-                        
-                        {{-- Header Row per Anggota --}}
-                        <div class="flex items-center justify-between pb-3 border-b border-slate-200/80">
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-7 h-7 rounded-lg bg-[#0a2558] text-white flex items-center justify-center font-bold text-xs"
-                                      x-text="index + 1"></span>
-                                <div>
-                                    <span class="text-xs font-bold text-slate-800" x-text="item.nama || 'Anggota #' + (index + 1)"></span>
-                                    <span class="ml-2 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 uppercase"
-                                          x-text="item.shdk"></span>
-                                </div>
-                            </div>
-
-                            <button type="button"
-                                    x-show="anggota.length > 1"
-                                    @click="hapusAnggota(index)"
-                                    class="text-rose-600 hover:text-rose-800 p-1.5 rounded-lg hover:bg-rose-50 text-xs font-semibold flex items-center gap-1 transition-colors">
-                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                                <span>Hapus</span>
-                            </button>
+            {{-- Baris 3: Otomatisasi Wilayah (Kabupaten, Provinsi, Negara) - TIDAK PATEN & BEBAS DIEDIT USER --}}
+            <div class="pt-3 border-t border-slate-100">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {{-- Kabupaten / Kota --}}
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1 flex items-center justify-between">
+                            <span>Kabupaten / Kota</span>
+                            <span class="text-[10px] text-slate-400 font-normal">Dapat diedit bebas</span>
+                        </label>
+                        <div class="relative">
+                            <input type="text"
+                                   name="form_data[f101][nama_kabupaten]"
+                                   x-model="meta.kabupaten"
+                                   placeholder="Contoh: KABUPATEN TASIKMALAYA"
+                                   class="w-full text-xs font-bold uppercase rounded-xl border-slate-300 py-2 px-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
+                            <span class="absolute right-2.5 top-2.5 text-slate-400 text-xs">✏️</span>
                         </div>
-
-                        {{-- Form Kolom Anggota Keluarga --}}
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3.5 text-xs">
-                            {{-- Nama Lengkap --}}
-                            <div class="md:col-span-2">
-                                <label class="block font-bold text-slate-700 mb-1">
-                                    Nama Lengkap <span class="text-rose-500">*</span>
-                                </label>
-                                <input type="text"
-                                       :name="'form_data[f101][anggota][' + index + '][nama]'"
-                                       x-model="item.nama"
-                                       required
-                                       placeholder="Nama lengkap sesuai akta / KTP"
-                                       class="w-full text-xs font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600 focus:border-blue-600">
-                            </div>
-
-                            {{-- NIK --}}
-                            <div class="md:col-span-2">
-                                <label class="block font-bold text-slate-700 mb-1">
-                                    NIK (16 Digit) <span class="text-rose-500">*</span>
-                                </label>
-                                <input type="text"
-                                       :name="'form_data[f101][anggota][' + index + '][nik]'"
-                                       x-model="item.nik"
-                                       maxlength="16"
-                                       required
-                                       placeholder="3206xxxxxxxxxxxx"
-                                       class="w-full text-xs font-mono font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600 focus:border-blue-600">
-                            </div>
-
-                            {{-- Jenis Kelamin --}}
-                            <div>
-                                <label class="block font-bold text-slate-700 mb-1">Jenis Kelamin <span class="text-rose-500">*</span></label>
-                                <select :name="'form_data[f101][anggota][' + index + '][jenis_kelamin]'"
-                                        x-model="item.jenis_kelamin"
-                                        class="w-full text-xs font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                                    <option value="L">Laki-laki</option>
-                                    <option value="P">Perempuan</option>
-                                </select>
-                            </div>
-
-                            {{-- Tempat Lahir --}}
-                            <div>
-                                <label class="block font-bold text-slate-700 mb-1">Tempat Lahir <span class="text-rose-500">*</span></label>
-                                <input type="text"
-                                       :name="'form_data[f101][anggota][' + index + '][tempat_lahir]'"
-                                       x-model="item.tempat_lahir"
-                                       required
-                                       placeholder="Kota/Kab. Lahir"
-                                       class="w-full text-xs font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                            </div>
-
-                            {{-- Tanggal Lahir --}}
-                            <div>
-                                <label class="block font-bold text-slate-700 mb-1">Tanggal Lahir <span class="text-rose-500">*</span></label>
-                                <input type="date"
-                                       :name="'form_data[f101][anggota][' + index + '][tanggal_lahir]'"
-                                       x-model="item.tanggal_lahir"
-                                       required
-                                       class="w-full text-xs font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                            </div>
-
-                            {{-- Golongan Darah --}}
-                            <div>
-                                <label class="block font-bold text-slate-700 mb-1">Golongan Darah</label>
-                                <select :name="'form_data[f101][anggota][' + index + '][gol_darah]'"
-                                        x-model="item.gol_darah"
-                                        class="w-full text-xs font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                                    <option value="-">Tidak Tahu</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="AB">AB</option>
-                                    <option value="O">O</option>
-                                    <option value="A+">A+</option>
-                                    <option value="A-">A-</option>
-                                    <option value="B+">B+</option>
-                                    <option value="B-">B-</option>
-                                    <option value="AB+">AB+</option>
-                                    <option value="AB-">AB-</option>
-                                    <option value="O+">O+</option>
-                                    <option value="O-">O-</option>
-                                </select>
-                            </div>
-
-                            {{-- Agama --}}
-                            <div>
-                                <label class="block font-bold text-slate-700 mb-1">Agama <span class="text-rose-500">*</span></label>
-                                <select :name="'form_data[f101][anggota][' + index + '][agama]'"
-                                        x-model="item.agama"
-                                        class="w-full text-xs font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                                    <option value="Islam">Islam</option>
-                                    <option value="Kristen Protestan">Kristen Protestan</option>
-                                    <option value="Katolik">Katolik</option>
-                                    <option value="Hindu">Hindu</option>
-                                    <option value="Buddha">Buddha</option>
-                                    <option value="Konghucu">Konghucu</option>
-                                    <option value="Kepercayaan Lainnya">Kepercayaan Terhadap Tuhan YME</option>
-                                </select>
-                            </div>
-
-                            {{-- SHDK --}}
-                            <div>
-                                <label class="block font-bold text-slate-700 mb-1">Hubungan Keluarga (SHDK) <span class="text-rose-500">*</span></label>
-                                <select :name="'form_data[f101][anggota][' + index + '][shdk]'"
-                                        x-model="item.shdk"
-                                        class="w-full text-xs font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                                    <option value="Kepala Keluarga">Kepala Keluarga</option>
-                                    <option value="Suami">Suami</option>
-                                    <option value="Istri">Istri</option>
-                                    <option value="Anak">Anak</option>
-                                    <option value="Menantu">Menantu</option>
-                                    <option value="Cucu">Cucu</option>
-                                    <option value="Orang Tua">Orang Tua</option>
-                                    <option value="Mertua">Mertua</option>
-                                    <option value="Famili Lain">Famili Lain</option>
-                                    <option value="Pembantu">Pembantu</option>
-                                    <option value="Lainnya">Lainnya</option>
-                                </select>
-                            </div>
-
-                            {{-- Status Perkawinan --}}
-                            <div>
-                                <label class="block font-bold text-slate-700 mb-1">Status Perkawinan <span class="text-rose-500">*</span></label>
-                                <select :name="'form_data[f101][anggota][' + index + '][status_kawin]'"
-                                        x-model="item.status_kawin"
-                                        class="w-full text-xs font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                                    <option value="Belum Kawin">Belum Kawin</option>
-                                    <option value="Kawin Tercatat">Kawin Tercatat</option>
-                                    <option value="Kawin Belum Tercatat">Kawin Belum Tercatat</option>
-                                    <option value="Cerai Hidup">Cerai Hidup</option>
-                                    <option value="Cerai Mati">Cerai Mati</option>
-                                </select>
-                            </div>
-
-                            {{-- Pendidikan --}}
-                            <div>
-                                <label class="block font-bold text-slate-700 mb-1">Pendidikan Terakhir <span class="text-rose-500">*</span></label>
-                                <select :name="'form_data[f101][anggota][' + index + '][pendidikan]'"
-                                        x-model="item.pendidikan"
-                                        class="w-full text-xs font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                                    <option value="Tidak / Belum Sekolah">Tidak / Belum Sekolah</option>
-                                    <option value="Belum Tamat SD/Sederajat">Belum Tamat SD/Sederajat</option>
-                                    <option value="Tamat SD / Sederajat">Tamat SD / Sederajat</option>
-                                    <option value="SLTP / Sederajat">SLTP / Sederajat</option>
-                                    <option value="SLTA / Sederajat">SLTA / Sederajat</option>
-                                    <option value="Diploma I / II">Diploma I / II</option>
-                                    <option value="Akademi / Diploma III / Sarjana Muda">Akademi / D-III / S. Muda</option>
-                                    <option value="Diploma IV / Strata I">Diploma IV / Strata I</option>
-                                    <option value="Strata II">Strata II</option>
-                                    <option value="Strata III">Strata III</option>
-                                </select>
-                            </div>
-
-                            {{-- Pekerjaan --}}
-                            <div class="md:col-span-2">
-                                <label class="block font-bold text-slate-700 mb-1">Jenis Pekerjaan <span class="text-rose-500">*</span></label>
-                                <select :name="'form_data[f101][anggota][' + index + '][pekerjaan]'"
-                                        x-model="item.pekerjaan"
-                                        class="w-full text-xs font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                                    <option value="Belum / Tidak Bekerja">Belum / Tidak Bekerja</option>
-                                    <option value="Mengurus Rumah Tangga">Mengurus Rumah Tangga</option>
-                                    <option value="Pelajar / Mahasiswa">Pelajar / Mahasiswa</option>
-                                    <option value="Pegawai Negeri Sipil (PNS)">Pegawai Negeri Sipil (PNS)</option>
-                                    <option value="TNI / Polri">TNI / Polri</option>
-                                    <option value="Karyawan Swasta">Karyawan Swasta</option>
-                                    <option value="Karyawan BUMN / BUMD">Karyawan BUMN / BUMD</option>
-                                    <option value="Wiraswasta">Wiraswasta</option>
-                                    <option value="Petani / Pekebun">Petani / Pekebun</option>
-                                    <option value="Buruh Harian Lepas">Buruh Harian Lepas</option>
-                                    <option value="Pedagang">Pedagang</option>
-                                    <option value="Pensiunan">Pensiunan</option>
-                                    <option value="Lainnya">Lainnya</option>
-                                </select>
-                            </div>
-
-                            {{-- No Akta Lahir --}}
-                            <div class="md:col-span-2">
-                                <label class="block font-bold text-slate-700 mb-1">Nomor Akta Kelahiran (Jika Ada)</label>
-                                <input type="text"
-                                       :name="'form_data[f101][anggota][' + index + '][no_akta_lahir]'"
-                                       x-model="item.no_akta_lahir"
-                                       placeholder="Nomor kutipan akta lahir"
-                                       class="w-full text-xs font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                            </div>
-
-                            {{-- Orang Tua --}}
-                            <div>
-                                <label class="block font-bold text-slate-700 mb-1">Nama Ibu Kandung <span class="text-rose-500">*</span></label>
-                                <input type="text"
-                                       :name="'form_data[f101][anggota][' + index + '][nama_ibu]'"
-                                       x-model="item.nama_ibu"
-                                       required
-                                       placeholder="Nama ibu kandung"
-                                       class="w-full text-xs font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                            </div>
-
-                            <div>
-                                <label class="block font-bold text-slate-700 mb-1">NIK Ibu Kandung</label>
-                                <input type="text"
-                                       :name="'form_data[f101][anggota][' + index + '][nik_ibu]'"
-                                       x-model="item.nik_ibu"
-                                       maxlength="16"
-                                       placeholder="16 Digit NIK Ibu"
-                                       class="w-full text-xs font-mono font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                            </div>
-
-                            <div>
-                                <label class="block font-bold text-slate-700 mb-1">Nama Ayah Kandung <span class="text-rose-500">*</span></label>
-                                <input type="text"
-                                       :name="'form_data[f101][anggota][' + index + '][nama_ayah]'"
-                                       x-model="item.nama_ayah"
-                                       required
-                                       placeholder="Nama ayah kandung"
-                                       class="w-full text-xs font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                            </div>
-
-                            <div>
-                                <label class="block font-bold text-slate-700 mb-1">NIK Ayah Kandung</label>
-                                <input type="text"
-                                       :name="'form_data[f101][anggota][' + index + '][nik_ayah]'"
-                                       x-model="item.nik_ayah"
-                                       maxlength="16"
-                                       placeholder="16 Digit NIK Ayah"
-                                       class="w-full text-xs font-mono font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                            </div>
-
-                            {{-- Disabilitas --}}
-                            <div class="md:col-span-4">
-                                <label class="block font-bold text-slate-700 mb-1">Kelainan Fisik & Mental / Penyandang Cacat</label>
-                                <select :name="'form_data[f101][anggota][' + index + '][disabilitas]'"
-                                        x-model="item.disabilitas"
-                                        class="w-full text-xs font-medium rounded-xl border-slate-300 bg-white py-2 px-3 focus:ring-1 focus:ring-blue-600">
-                                    <option value="Tidak Ada">Tidak Ada</option>
-                                    <option value="Cacat Fisik">Cacat Fisik</option>
-                                    <option value="Cacat Netra / Buta">Cacat Netra / Buta</option>
-                                    <option value="Cacat Rungu / Wicara">Cacat Rungu / Wicara</option>
-                                    <option value="Cacat Mental / Jiwa">Cacat Mental / Jiwa</option>
-                                    <option value="Cacat Fisik dan Mental">Cacat Fisik dan Mental</option>
-                                    <option value="Cacat Lainnya">Cacat Lainnya</option>
-                                </select>
-                            </div>
-                        </div>
-
                     </div>
-                </template>
-            </div>
 
-            <div class="pt-2 flex justify-between">
-                <button type="button"
-                        @click="activeTab = 'wilayah'"
-                        class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold hover:bg-slate-200 transition-colors flex items-center gap-2">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                    <span>Kembali ke Wilayah</span>
-                </button>
+                    {{-- Provinsi --}}
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1 flex items-center justify-between">
+                            <span>Provinsi</span>
+                            <span class="text-[10px] text-slate-400 font-normal">Dapat diedit bebas</span>
+                        </label>
+                        <div class="relative">
+                            <input type="text"
+                                   name="form_data[f101][nama_provinsi]"
+                                   x-model="meta.provinsi"
+                                   placeholder="Contoh: JAWA BARAT"
+                                   class="w-full text-xs font-bold uppercase rounded-xl border-slate-300 py-2 px-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
+                            <span class="absolute right-2.5 top-2.5 text-slate-400 text-xs">✏️</span>
+                        </div>
+                    </div>
 
-                <div class="text-right">
-                    <span class="text-xs text-emerald-700 font-bold flex items-center gap-1.5">
-                        <i data-lucide="check-circle" class="w-4 h-4"></i>
-                        Formulir F-1.01 Siap Diajukan
-                    </span>
+                    {{-- Negara --}}
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1 flex items-center justify-between">
+                            <span>Negara</span>
+                            <span class="text-[10px] text-slate-400 font-normal">Dapat diedit bebas</span>
+                        </label>
+                        <div class="relative">
+                            <input type="text"
+                                   name="form_data[f101][negara]"
+                                   x-model="meta.negara"
+                                   placeholder="INDONESIA"
+                                   class="w-full text-xs font-bold uppercase rounded-xl border-slate-300 py-2 px-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
+                            <span class="absolute right-2.5 top-2.5 text-slate-400 text-xs">✏️</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
+
+    {{-- ═══════════════════════════════════════════════════════════════════════
+         BAGIAN 2: DAFTAR ANGGOTA KELUARGA (TABEL MODERN & USER FRIENDLY)
+    ═══════════════════════════════════════════════════════════════════════ --}}
+    <div class="p-6 space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <h3 class="text-sm font-black text-slate-900 uppercase tracking-wide flex items-center gap-2">
+                    <span>👨‍👩‍👧‍👦</span>
+                    <span>Tabel Daftar Anggota Keluarga Pemohon</span>
+                </h3>
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Tambahkan setiap anggota keluarga yang akan tercantum dalam Kartu Keluarga Baru.
+                </p>
+            </div>
+
+            <button type="button"
+                    x-show="!showMemberForm"
+                    @click="openAddMember()"
+                    class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all transform hover:-translate-y-0.5 self-start sm:self-auto">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                </svg>
+                <span>+ Tambah Anggota Keluarga</span>
+            </button>
+        </div>
+
+        {{-- FORMULIR TABULAR 4 KOLOM PENGISIAN ANGGOTA (TERORGANISIR & MUDAH) --}}
+        <div x-show="showMemberForm"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 -translate-y-3"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             class="bg-blue-50/70 border-2 border-blue-400 rounded-2xl p-5 sm:p-6 space-y-5 shadow-sm"
+             style="display: none;">
+
+            {{-- Form Header --}}
+            <div class="flex items-center justify-between border-b border-blue-200 pb-3">
+                <div class="flex items-center gap-3">
+                    <span class="w-9 h-9 rounded-xl bg-blue-600 text-white font-black flex items-center justify-center text-sm shadow-xs">
+                        <span x-text="editingIndex !== null ? (editingIndex + 1) : (anggota.length + 1)"></span>
+                    </span>
+                    <div>
+                        <h4 class="font-extrabold text-slate-900 text-sm"
+                            x-text="editingIndex !== null ? '✏️ Ubah Data Anggota Keluarga' : '📝 Input Anggota Keluarga Baru (Formulir 4 Kolom)'">
+                        </h4>
+                        <p class="text-[11px] text-blue-700">
+                            Lengkapi 17 kolom isian di bawah, lalu klik <strong>"Terapkan ke Tabel (Apply)"</strong>.
+                        </p>
+                    </div>
+                </div>
+
+                <button type="button"
+                        @click="showMemberForm = false"
+                        class="text-xs font-bold text-slate-500 hover:text-slate-800 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition-colors">
+                    ✕ Batal
+                </button>
+            </div>
+
+            {{-- Error Banner --}}
+            <div x-show="validationError"
+                 x-transition
+                 class="p-3 bg-rose-50 border border-rose-300 text-rose-800 rounded-xl text-xs flex items-center gap-2">
+                <svg class="w-4 h-4 text-rose-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                <span class="font-bold" x-text="validationError"></span>
+            </div>
+
+            {{-- FORMULIR TABULAR 4 KOLOM --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+
+                {{-- KOLOM 1: IDENTITAS POKOK --}}
+                <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3 shadow-2xs">
+                    <div class="border-b border-slate-100 pb-2 flex items-center gap-2 text-blue-800 font-bold">
+                        <span class="w-5 h-5 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center text-[10px]">1</span>
+                        <span>Identitas Pokok</span>
+                    </div>
+
+                    {{-- (1) Nama Lengkap --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1">
+                            (1) Nama Lengkap <span class="text-rose-600">*</span>
+                        </label>
+                        <input type="text"
+                               x-model="formMember.nama"
+                               placeholder="Nama Sesuai KTP"
+                               class="w-full text-xs font-bold uppercase rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                    </div>
+
+                    {{-- (2) NIK --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1 flex items-center justify-between">
+                            <span>(2) NIK (16 Digit) <span class="text-rose-600">*</span></span>
+                            <span class="font-mono text-[10px]" :class="formMember.nik.length === 16 ? 'text-emerald-600 font-bold' : 'text-slate-400'" x-text="formMember.nik.length + '/16'"></span>
+                        </label>
+                        <input type="text"
+                               x-model="formMember.nik"
+                               @input="formMember.nik = formMember.nik.replace(/[^0-9]/g, '').slice(0,16)"
+                               placeholder="16 digit angka"
+                               class="w-full font-mono text-xs font-bold text-blue-900 rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                    </div>
+
+                    {{-- (3) Jenis Kelamin --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1">
+                            (3) Jenis Kelamin <span class="text-rose-600">*</span>
+                        </label>
+                        <select x-model="formMember.jenis_kelamin" class="w-full text-xs font-bold rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                            <option value="LAKI-LAKI">LAKI-LAKI</option>
+                            <option value="PEREMPUAN">PEREMPUAN</option>
+                        </select>
+                    </div>
+
+                    {{-- (9) Golongan Darah --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1">
+                            (9) Golongan Darah <span class="text-rose-600">*</span>
+                        </label>
+                        <select x-model="formMember.gol_darah" class="w-full text-xs font-bold rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                            <option value="-">- (TIDAK TAHU)</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="AB">AB</option>
+                            <option value="O">O</option>
+                        </select>
+                    </div>
+                </div>
+
+                {{-- KOLOM 2: KELAHIRAN & AGAMA --}}
+                <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3 shadow-2xs">
+                    <div class="border-b border-slate-100 pb-2 flex items-center gap-2 text-emerald-800 font-bold">
+                        <span class="w-5 h-5 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center text-[10px]">2</span>
+                        <span>Kelahiran & Agama</span>
+                    </div>
+
+                    {{-- (4) Tempat Lahir --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1">
+                            (4) Tempat Lahir <span class="text-rose-600">*</span>
+                        </label>
+                        <input type="text"
+                               x-model="formMember.tempat_lahir"
+                               placeholder="Kota/Kabupaten Lahir"
+                               class="w-full text-xs font-medium uppercase rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                    </div>
+
+                    {{-- (5) Tanggal Lahir --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1 flex items-center justify-between">
+                            <span>(5) Tanggal Lahir <span class="text-rose-600">*</span></span>
+                            <span class="text-[10px] text-blue-600 font-bold" x-text="calculateAge(formMember.tanggal_lahir)"></span>
+                        </label>
+                        <input type="date"
+                               x-model="formMember.tanggal_lahir"
+                               class="w-full text-xs font-bold rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                    </div>
+
+                    {{-- (6) Agama --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1">
+                            (6) Agama <span class="text-rose-600">*</span>
+                        </label>
+                        <select x-model="formMember.agama" class="w-full text-xs font-semibold rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                            <option value="ISLAM">ISLAM</option>
+                            <option value="KRISTEN PROTESTAN">KRISTEN PROTESTAN</option>
+                            <option value="KATOLIK">KATOLIK</option>
+                            <option value="HINDU">HINDU</option>
+                            <option value="BUDDHA">BUDDHA</option>
+                            <option value="KHONGHUCU">KHONGHUCU</option>
+                        </select>
+                    </div>
+
+                    {{-- (7) Pendidikan Terakhir --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1">
+                            (7) Pendidikan Terakhir <span class="text-rose-600">*</span>
+                        </label>
+                        <select x-model="formMember.pendidikan" class="w-full text-xs font-semibold rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                            <option value="TIDAK / BELUM SEKOLAH">TIDAK / BELUM SEKOLAH</option>
+                            <option value="BELUM TAMAT SD/SEDERAJAT">BELUM TAMAT SD/SEDERAJAT</option>
+                            <option value="TAMAT SD / SEDERAJAT">TAMAT SD / SEDERAJAT</option>
+                            <option value="SLTP/SEDERAJAT">SLTP/SEDERAJAT</option>
+                            <option value="SLTA / SEDERAJAT">SLTA / SEDERAJAT</option>
+                            <option value="DIPLOMA I / II">DIPLOMA I / II</option>
+                            <option value="AKADEMI/DIPLOMA III/S.MUDA">AKADEMI/DIPLOMA III/S.MUDA</option>
+                            <option value="DIPLOMA IV/ STRATA I">DIPLOMA IV/ STRATA I</option>
+                            <option value="STRATA II">STRATA II</option>
+                            <option value="STRATA III">STRATA III</option>
+                        </select>
+                    </div>
+                </div>
+
+                {{-- KOLOM 3: PEKERJAAN & HUBUNGAN KELUARGA --}}
+                <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3 shadow-2xs">
+                    <div class="border-b border-slate-100 pb-2 flex items-center gap-2 text-amber-800 font-bold">
+                        <span class="w-5 h-5 rounded-md bg-amber-100 text-amber-700 flex items-center justify-center text-[10px]">3</span>
+                        <span>Pekerjaan & Hubungan</span>
+                    </div>
+
+                    {{-- (8) Jenis Pekerjaan --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1">
+                            (8) Jenis Pekerjaan <span class="text-rose-600">*</span>
+                        </label>
+                        <input type="text"
+                               x-model="formMember.pekerjaan"
+                               placeholder="Contoh: Wiraswasta"
+                               class="w-full text-xs font-bold uppercase rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                        <div class="flex flex-wrap gap-1 mt-1.5">
+                            <template x-for="job in ['WIRASWASTA', 'KARYAWAN SWASTA', 'PELAJAR', 'IRT', 'PNS']" :key="job">
+                                <button type="button"
+                                        @click="formMember.pekerjaan = (job === 'IRT' ? 'MENGURUS RUMAH TANGGA' : (job === 'PELAJAR' ? 'PELAJAR/MAHASISWA' : job))"
+                                        class="px-1.5 py-0.5 rounded text-[9px] bg-slate-100 hover:bg-blue-100 text-slate-600"
+                                        x-text="job">
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+
+                    {{-- (12) SHDK --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1">
+                            (12) Hubungan Keluarga (SHDK) <span class="text-rose-600">*</span>
+                        </label>
+                        <select x-model="formMember.shdk" class="w-full text-xs font-bold rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                            <option value="KEPALA KELUARGA">KEPALA KELUARGA</option>
+                            <option value="SUAMI">SUAMI</option>
+                            <option value="ISTRI">ISTRI</option>
+                            <option value="ANAK">ANAK</option>
+                            <option value="MENANTU">MENANTU</option>
+                            <option value="CUCU">CUCU</option>
+                            <option value="ORANG TUA">ORANG TUA</option>
+                            <option value="MERTUA">MERTUA</option>
+                            <option value="FAMILI LAIN">FAMILI LAIN</option>
+                            <option value="LAINNYA">LAINNYA</option>
+                        </select>
+                    </div>
+
+                    {{-- (10) Status Perkawinan --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1">
+                            (10) Status Perkawinan <span class="text-rose-600">*</span>
+                        </label>
+                        <select x-model="formMember.status_kawin" class="w-full text-xs font-bold rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                            <option value="BELUM KAWIN">BELUM KAWIN</option>
+                            <option value="KAWIN TERCATAT">KAWIN TERCATAT</option>
+                            <option value="KAWIN BELUM TERCATAT">KAWIN BELUM TERCATAT</option>
+                            <option value="CERAI HIDUP">CERAI HIDUP</option>
+                            <option value="CERAI MATI">CERAI MATI</option>
+                        </select>
+                    </div>
+
+                    {{-- (11) Tanggal Perkawinan --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1 flex items-center justify-between">
+                            <span>(11) Tanggal Perkawinan</span>
+                            <span class="text-[10px] text-slate-400 font-normal">Bila kawin</span>
+                        </label>
+                        <input type="date"
+                               x-model="formMember.tgl_kawin"
+                               class="w-full text-xs font-medium rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                    </div>
+                </div>
+
+                {{-- KOLOM 4: ORANG TUA & KEWARGANEGARAAN --}}
+                <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3 shadow-2xs">
+                    <div class="border-b border-slate-100 pb-2 flex items-center gap-2 text-purple-800 font-bold">
+                        <span class="w-5 h-5 rounded-md bg-purple-100 text-purple-700 flex items-center justify-center text-[10px]">4</span>
+                        <span>Orang Tua & Imigrasi</span>
+                    </div>
+
+                    {{-- (16) Nama Ayah --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1">
+                            (16) Nama Ayah Kandung <span class="text-rose-600">*</span>
+                        </label>
+                        <input type="text"
+                               x-model="formMember.nama_ayah"
+                               placeholder="Nama Ayah Sesuai Akta"
+                               class="w-full text-xs font-bold uppercase rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                    </div>
+
+                    {{-- (17) Nama Ibu --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1">
+                            (17) Nama Ibu Kandung <span class="text-rose-600">*</span>
+                        </label>
+                        <input type="text"
+                               x-model="formMember.nama_ibu"
+                               placeholder="Nama Ibu Sesuai Akta"
+                               class="w-full text-xs font-bold uppercase rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                    </div>
+
+                    {{-- (13) Kewarganegaraan --}}
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-1">
+                            (13) Kewarganegaraan <span class="text-rose-600">*</span>
+                        </label>
+                        <select x-model="formMember.kewarganegaraan" class="w-full text-xs font-bold rounded-lg border-slate-300 py-2 px-2.5 bg-slate-50/50 focus:bg-white focus:ring-1 focus:ring-blue-600">
+                            <option value="WNI">WNI (Indonesia)</option>
+                            <option value="WNA">WNA (Asing)</option>
+                        </select>
+                    </div>
+
+                    {{-- (14 & 15) Paspor & KITAP (Opsional) --}}
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-bold text-slate-800 mb-1 text-[11px]">
+                                (14) No. Paspor
+                            </label>
+                            <input type="text"
+                                   x-model="formMember.no_paspor"
+                                   placeholder="Opsional"
+                                   class="w-full font-mono text-[11px] uppercase rounded-lg border-slate-300 py-2 px-2 bg-slate-50/50 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-800 mb-1 text-[11px]">
+                                (15) No. KITAP
+                            </label>
+                            <input type="text"
+                                   x-model="formMember.no_kitap"
+                                   placeholder="Opsional"
+                                   class="w-full font-mono text-[11px] uppercase rounded-lg border-slate-300 py-2 px-2 bg-slate-50/50 focus:bg-white">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            {{-- Action Buttons --}}
+            <div class="flex items-center justify-end gap-3 pt-3 border-t border-blue-200">
+                <button type="button"
+                        @click="showMemberForm = false"
+                        class="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-200 transition-colors">
+                    Batal
+                </button>
+                <button type="button"
+                        @click="applyMember()"
+                        class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-600/20 transition-all transform hover:-translate-y-0.5">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span x-text="editingIndex !== null ? 'Perbarui Data (Apply)' : 'Terapkan ke Tabel (Apply)'"></span>
+                </button>
+            </div>
+        </div>
+
+        {{-- TABEL MODERN 4-KOLOM DAFTAR ANGGOTA KELUARGA --}}
+        <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-700 border-b border-slate-200 font-bold uppercase text-[11px]">
+                            <th class="py-3 px-3 w-12 text-center">No</th>
+                            <th class="py-3 px-4 min-w-[200px]">Kolom 1: Identitas Pokok</th>
+                            <th class="py-3 px-4 min-w-[200px]">Kolom 2: Kelahiran & Hubungan</th>
+                            <th class="py-3 px-4 min-w-[190px]">Kolom 3: Pendidikan & Pekerjaan</th>
+                            <th class="py-3 px-4 min-w-[200px]">Kolom 4: Orang Tua & Status</th>
+                            <th class="py-3 px-3 w-20 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 bg-white">
+                        <template x-for="(item, index) in anggota" :key="'table-row-' + index">
+                            <tr class="hover:bg-blue-50/40 transition-colors">
+                                {{-- Nomor Urut --}}
+                                <td class="py-3 px-3 text-center font-bold text-slate-500" x-text="index + 1"></td>
+
+                                {{-- Kolom 1: Identitas Pokok (Nama, NIK, JK, Gol Darah) --}}
+                                <td class="py-3 px-4">
+                                    <div class="font-extrabold text-slate-900 uppercase text-xs" x-text="item.nama"></div>
+                                    <div class="font-mono text-[11px] font-bold text-blue-700 mt-0.5" x-text="item.nik"></div>
+                                    <div class="flex items-center gap-2 mt-1 text-[11px] text-slate-500">
+                                        <span class="px-1.5 py-0.5 rounded bg-slate-100 font-medium" x-text="item.jenis_kelamin"></span>
+                                        <span>Gol: <strong class="text-slate-800" x-text="item.gol_darah"></strong></span>
+                                    </div>
+                                </td>
+
+                                {{-- Kolom 2: Kelahiran & Hubungan (TTL, Usia, Agama, SHDK) --}}
+                                <td class="py-3 px-4">
+                                    <div class="font-semibold text-slate-800" x-text="item.tempat_lahir + ', ' + item.tanggal_lahir"></div>
+                                    <div class="text-[11px] text-blue-600 font-medium" x-text="calculateAge(item.tanggal_lahir)"></div>
+                                    <div class="flex items-center gap-1.5 mt-1">
+                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase"
+                                              :class="getShdkBadgeClass(item.shdk)"
+                                              x-text="item.shdk"></span>
+                                        <span class="text-[11px] text-slate-500" x-text="'(' + item.agama + ')'"></span>
+                                    </div>
+                                </td>
+
+                                {{-- Kolom 3: Pendidikan & Pekerjaan (Pendidikan, Pekerjaan, Status Kawin) --}}
+                                <td class="py-3 px-4">
+                                    <div class="font-bold text-slate-800" x-text="item.pekerjaan"></div>
+                                    <div class="text-[11px] text-slate-600" x-text="item.pendidikan"></div>
+                                    <div class="text-[11px] text-slate-500 mt-1">
+                                        Status: <strong class="text-slate-700" x-text="item.status_kawin"></strong>
+                                    </div>
+                                </td>
+
+                                {{-- Kolom 4: Orang Tua & Kewarganegaraan (Ayah, Ibu, WN, Paspor) --}}
+                                <td class="py-3 px-4">
+                                    <div class="text-[11px] text-slate-700">
+                                        Ayah: <strong class="text-slate-900 uppercase" x-text="item.nama_ayah"></strong>
+                                    </div>
+                                    <div class="text-[11px] text-slate-700 mt-0.5">
+                                        Ibu: <strong class="text-slate-900 uppercase" x-text="item.nama_ibu"></strong>
+                                    </div>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800" x-text="item.kewarganegaraan"></span>
+                                        <template x-if="item.no_paspor">
+                                            <span class="font-mono text-[10px] text-slate-500" x-text="'Paspor: ' + item.no_paspor"></span>
+                                        </template>
+                                    </div>
+                                </td>
+
+                                {{-- Aksi --}}
+                                <td class="py-3 px-3 text-center">
+                                    <div class="flex items-center justify-center gap-1.5">
+                                        <button type="button"
+                                                @click="editMember(index)"
+                                                title="Ubah baris data ini"
+                                                class="p-1.5 rounded-lg text-blue-600 hover:bg-blue-100 border border-blue-200">
+                                            ✏️
+                                        </button>
+                                        <button type="button"
+                                                @click="removeAnggota(index)"
+                                                title="Hapus baris ini"
+                                                class="p-1.5 rounded-lg text-rose-600 hover:bg-rose-100 border border-rose-200">
+                                            🗑️
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+
+                        {{-- Jika Belum Ada Anggota --}}
+                        <template x-if="anggota.length === 0">
+                            <tr>
+                                <td colspan="6" class="py-8 text-center text-slate-400">
+                                    Belum ada anggota keluarga yang dimasukkan. Silakan klik tombol <strong>"+ Tambah Anggota Keluarga"</strong> di atas.
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {{-- ═══════════════════════════════════════════════════════════════════════
+         SERIALISASI INPUT TERSEMBUNYI (SESUAI CONTROLLER LARAVEL)
+    ═══════════════════════════════════════════════════════════════════════ --}}
+    <input type="hidden" name="form_data[f101][jumlah_anggota]" :value="anggota.length">
+    <template x-for="(item, index) in anggota" :key="'serialized-' + index">
+        <div>
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][nama]'" :value="item.nama">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][nik]'" :value="item.nik">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][jenis_kelamin]'" :value="item.jenis_kelamin">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][tempat_lahir]'" :value="item.tempat_lahir">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][tanggal_lahir]'" :value="item.tanggal_lahir">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][agama]'" :value="item.agama">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][pendidikan]'" :value="item.pendidikan">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][pekerjaan]'" :value="item.pekerjaan">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][gol_darah]'" :value="item.gol_darah">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][status_kawin]'" :value="item.status_kawin">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][tgl_kawin]'" :value="item.tgl_kawin">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][shdk]'" :value="item.shdk">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][kewarganegaraan]'" :value="item.kewarganegaraan">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][no_paspor]'" :value="item.no_paspor">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][no_kitap]'" :value="item.no_kitap">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][nama_ayah]'" :value="item.nama_ayah">
+            <input type="hidden" :name="'form_data[f101][anggota][' + index + '][nama_ibu]'" :value="item.nama_ibu">
+        </div>
+    </template>
 
 </div>
 
 <script>
-    function f101BiodataComponent(initialData) {
+    function kkBaruComponent(initialData) {
         return {
-            activeTab: 'kepala',
-            jenisPilihan: 'wni',
-            kepalaKeluarga: {
-                nama: initialData.userName || '',
-                nik: initialData.userNik || '',
-                telepon: initialData.userPhone || '',
-                email: initialData.userEmail || '',
+            kecamatanMap: initialData.kecamatanMap || {},
+            availableDesas: [],
+
+            meta: {
+                nama_kepala_keluarga: initialData.userName || '',
                 alamat: initialData.userAlamat || '',
                 rt: '001',
                 rw: '001',
                 kode_pos: '46182',
-            },
-            wilayah: {
-                kecamatan: initialData.kecamatanName || '',
+                kecamatan: initialData.kecamatanName || 'SINGAPARNA',
                 desa: initialData.desaName || '',
-                dusun: '',
+                kabupaten: 'KABUPATEN TASIKMALAYA',
+                provinsi: 'JAWA BARAT',
+                negara: 'INDONESIA',
             },
+
+            showMemberForm: false,
+            editingIndex: null,
+            validationError: '',
+
+            formMember: {
+                nama: '',
+                nik: '',
+                jenis_kelamin: 'LAKI-LAKI',
+                tempat_lahir: 'TASIKMALAYA',
+                tanggal_lahir: '',
+                agama: 'ISLAM',
+                pendidikan: 'SLTA / SEDERAJAT',
+                pekerjaan: 'KARYAWAN SWASTA',
+                gol_darah: '-',
+                status_kawin: 'BELUM KAWIN',
+                tgl_kawin: '',
+                shdk: 'KEPALA KELUARGA',
+                kewarganegaraan: 'WNI',
+                no_paspor: '',
+                no_kitap: '',
+                nama_ayah: '',
+                nama_ibu: '',
+            },
+
+            // Inisialisasi awal dengan data kepala keluarga
             anggota: [
                 {
                     nama: initialData.userName || '',
                     nik: initialData.userNik || '',
-                    jenis_kelamin: 'L',
-                    tempat_lahir: 'Tasikmalaya',
-                    tanggal_lahir: '',
-                    gol_darah: '-',
-                    agama: 'Islam',
-                    status_kawin: 'Kawin Tercatat',
-                    shdk: 'Kepala Keluarga',
-                    pendidikan: 'SLTA / Sederajat',
-                    pekerjaan: 'Wiraswasta',
-                    no_akta_lahir: '',
-                    nama_ibu: '',
-                    nik_ibu: '',
+                    jenis_kelamin: 'LAKI-LAKI',
+                    tempat_lahir: 'TASIKMALAYA',
+                    tanggal_lahir: '1995-01-01',
+                    agama: 'ISLAM',
+                    pendidikan: 'SLTA / SEDERAJAT',
+                    pekerjaan: 'KARYAWAN SWASTA',
+                    gol_darah: 'O',
+                    status_kawin: 'KAWIN TERCATAT',
+                    tgl_kawin: '',
+                    shdk: 'KEPALA KELUARGA',
+                    kewarganegaraan: 'WNI',
+                    no_paspor: '',
+                    no_kitap: '',
                     nama_ayah: '',
-                    nik_ayah: '',
-                    disabilitas: 'Tidak Ada'
+                    nama_ibu: '',
                 }
             ],
-            tambahAnggota() {
-                this.anggota.push({
+
+            init() {
+                this.onKecamatanInput(false);
+            },
+
+            // Otomatisasi Kecamatan -> Kabupaten, Provinsi, Negara & Desa List
+            onKecamatanInput(resetDesa = true) {
+                const kec = (this.meta.kecamatan || '').toUpperCase().trim();
+
+                // Selalu set otomatisasi default Tasikmalaya - Jawa Barat - Indonesia bila ada isian kecamatan
+                if (kec.length > 0) {
+                    if (!this.meta.kabupaten || this.meta.kabupaten === 'TASIKMALAYA') {
+                        this.meta.kabupaten = 'KABUPATEN TASIKMALAYA';
+                    }
+                    if (!this.meta.provinsi) {
+                        this.meta.provinsi = 'JAWA BARAT';
+                    }
+                    if (!this.meta.negara) {
+                        this.meta.negara = 'INDONESIA';
+                    }
+                }
+
+                // Cek apakah kecamatan terdaftar dalam data tasikmalaya
+                if (this.kecamatanMap[kec]) {
+                    this.availableDesas = this.kecamatanMap[kec];
+                    if (resetDesa && this.availableDesas.length > 0 && !this.meta.desa) {
+                        this.meta.desa = this.availableDesas[0];
+                    }
+                } else {
+                    this.availableDesas = [];
+                }
+            },
+
+            calculateAge(dateStr) {
+                if (!dateStr) return '';
+                const birth = new Date(dateStr);
+                const diff = Date.now() - birth.getTime();
+                const age = new Date(diff).getUTCFullYear() - 1970;
+                return age >= 0 ? `Usia: ${age} Tahun` : '';
+            },
+
+            getShdkBadgeClass(shdk) {
+                switch(shdk) {
+                    case 'KEPALA KELUARGA':
+                        return 'bg-blue-600 text-white';
+                    case 'ISTRI':
+                    case 'SUAMI':
+                        return 'bg-purple-600 text-white';
+                    case 'ANAK':
+                        return 'bg-emerald-600 text-white';
+                    default:
+                        return 'bg-amber-600 text-white';
+                }
+            },
+
+            openAddMember() {
+                this.editingIndex = null;
+                this.validationError = '';
+                this.formMember = {
                     nama: '',
                     nik: '',
-                    jenis_kelamin: 'P',
-                    tempat_lahir: '',
+                    jenis_kelamin: 'PEREMPUAN',
+                    tempat_lahir: 'TASIKMALAYA',
                     tanggal_lahir: '',
+                    agama: 'ISLAM',
+                    pendidikan: 'SLTA / SEDERAJAT',
+                    pekerjaan: 'MENGURUS RUMAH TANGGA',
                     gol_darah: '-',
-                    agama: 'Islam',
-                    status_kawin: 'Kawin Tercatat',
-                    shdk: this.anggota.length === 1 ? 'Istri' : 'Anak',
-                    pendidikan: 'SLTA / Sederajat',
-                    pekerjaan: 'Mengurus Rumah Tangga',
-                    no_akta_lahir: '',
-                    nama_ibu: this.kepalaKeluarga.nama || '',
-                    nik_ibu: '',
+                    status_kawin: this.anggota.length === 1 ? 'KAWIN TERCATAT' : 'BELUM KAWIN',
+                    tgl_kawin: '',
+                    shdk: this.anggota.length === 1 ? 'ISTRI' : 'ANAK',
+                    kewarganegaraan: 'WNI',
+                    no_paspor: '',
+                    no_kitap: '',
                     nama_ayah: '',
-                    nik_ayah: '',
-                    disabilitas: 'Tidak Ada'
-                });
-                setTimeout(() => lucide.createIcons(), 50);
+                    nama_ibu: '',
+                };
+                this.showMemberForm = true;
             },
-            hapusAnggota(index) {
-                if (this.anggota.length > 1) {
+
+            editMember(index) {
+                this.editingIndex = index;
+                this.validationError = '';
+                this.formMember = { ...this.anggota[index] };
+                this.showMemberForm = true;
+            },
+
+            applyMember() {
+                this.validationError = '';
+
+                if (!this.formMember.nama || !this.formMember.nama.trim()) {
+                    this.validationError = '⚠️ (1) Nama Lengkap wajib diisi.';
+                    return;
+                }
+                if (!this.formMember.nik || this.formMember.nik.length !== 16) {
+                    this.validationError = '⚠️ (2) NIK wajib 16 digit angka.';
+                    return;
+                }
+                if (!this.formMember.tempat_lahir || !this.formMember.tempat_lahir.trim()) {
+                    this.validationError = '⚠️ (4) Tempat Lahir wajib diisi.';
+                    return;
+                }
+                if (!this.formMember.tanggal_lahir) {
+                    this.validationError = '⚠️ (5) Tanggal Lahir wajib diisi.';
+                    return;
+                }
+                if (!this.formMember.pekerjaan || !this.formMember.pekerjaan.trim()) {
+                    this.validationError = '⚠️ (8) Jenis Pekerjaan wajib diisi.';
+                    return;
+                }
+                if (!this.formMember.nama_ayah || !this.formMember.nama_ayah.trim()) {
+                    this.validationError = '⚠️ (16) Nama Ayah Kandung wajib diisi.';
+                    return;
+                }
+                if (!this.formMember.nama_ibu || !this.formMember.nama_ibu.trim()) {
+                    this.validationError = '⚠️ (17) Nama Ibu Kandung wajib diisi.';
+                    return;
+                }
+
+                if (this.editingIndex !== null) {
+                    this.anggota[this.editingIndex] = { ...this.formMember };
+                } else {
+                    this.anggota.push({ ...this.formMember });
+                }
+
+                this.showMemberForm = false;
+                this.editingIndex = null;
+                this.validationError = '';
+            },
+
+            removeAnggota(index) {
+                if (confirm('Hapus anggota keluarga ini dari daftar?')) {
                     this.anggota.splice(index, 1);
+                    if (this.editingIndex === index) {
+                        this.showMemberForm = false;
+                        this.editingIndex = null;
+                    }
                 }
             }
         };

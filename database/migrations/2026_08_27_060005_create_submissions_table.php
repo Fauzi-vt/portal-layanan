@@ -55,6 +55,7 @@ return new class extends Migration
             // rejected         : Ditolak dengan alasan
             $table->enum('status', [
                 'draft',
+                'submitted_desa',
                 'submitted',
                 'in_review',
                 'revision_required',

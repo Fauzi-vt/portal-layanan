@@ -31,8 +31,8 @@ class DocumentUploadService
         $safeFileName = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
         $uniqueName = "{$requirement->id}_{$safeFileName}_" . Str::random(8) . ".{$extension}";
 
-        // Simpan ke storage 'public' disk
-        $path = $file->storeAs($directory, $uniqueName, 'public');
+        // Simpan ke private storage 'local' disk (terproteksi di luar web root)
+        $path = $file->storeAs($directory, $uniqueName, 'local');
 
         // Update atau buat record berkas di database
         $document = SubmissionDocument::updateOrCreate(
@@ -54,7 +54,7 @@ class DocumentUploadService
     }
 
     /**
-     * Simpan e-dokumen hasil/output dari petugas kecamatan setelah selesai.
+     * Simpan e-dokumen hasil/output dari petugas kecamatan setelah selesai ke private disk.
      */
     public function storeOutputDocument(UploadedFile $file, int $submissionId): string
     {
@@ -62,7 +62,7 @@ class DocumentUploadService
         $extension = $file->getClientOriginalExtension();
         $fileName = "e_dokumen_hasil_" . Str::random(8) . ".{$extension}";
 
-        return $file->storeAs($directory, $fileName, 'public');
+        return $file->storeAs($directory, $fileName, 'local');
     }
 
     /**
@@ -70,7 +70,15 @@ class DocumentUploadService
      */
     public function deleteDocumentFile(?string $path): bool
     {
-        if ($path && Storage::disk('public')->exists($path)) {
+        if (! $path) {
+            return false;
+        }
+
+        if (Storage::disk('local')->exists($path)) {
+            return Storage::disk('local')->delete($path);
+        }
+
+        if (Storage::disk('public')->exists($path)) {
             return Storage::disk('public')->delete($path);
         }
 
@@ -110,7 +118,7 @@ class DocumentUploadService
             . sprintf("%010d 00000 n \n", 236 + 65 + $streamLen)
             . "trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n" . (310 + $streamLen) . "\n%%EOF\n";
 
-        Storage::disk('public')->put($path, $pdf);
+        Storage::disk('local')->put($path, $pdf);
 
         return $path;
     }

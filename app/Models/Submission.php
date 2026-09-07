@@ -20,9 +20,13 @@ class Submission extends Model
         'nomor_tiket',
         'user_id',
         'kecamatan_id',
+        'desa_id',
         'service_id',
         'status',
         'catatan_petugas',
+        'verified_by_desa_id',
+        'verified_desa_at',
+        'catatan_desa',
         'jadwal_biometrik',
         'nomor_antrean',
         'output_document_path',
@@ -34,6 +38,7 @@ class Submission extends Model
         return [
             'status'           => SubmissionStatus::class,
             'jadwal_biometrik' => 'datetime',
+            'verified_desa_at' => 'datetime',
             'form_data'        => 'array',
         ];
     }
@@ -59,6 +64,22 @@ class Submission extends Model
     }
 
     /**
+     * Relasi ke Desa asal pemohon / verifikasi desa.
+     */
+    public function desa(): BelongsTo
+    {
+        return $this->belongsTo(Desa::class, 'desa_id');
+    }
+
+    /**
+     * Relasi ke Petugas Kasi Pelayanan Desa yang memverifikasi.
+     */
+    public function verifiedByDesa(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'verified_by_desa_id');
+    }
+
+    /**
      * Relasi ke Jenis Layanan yang diajukan.
      */
     public function service(): BelongsTo
@@ -74,8 +95,16 @@ class Submission extends Model
         return $this->hasMany(SubmissionDocument::class, 'submission_id');
     }
 
+    /**
+     * Relasi ke Rekam Jejak Audit & Riwayat Perubahan Status.
+     */
+    public function histories(): HasMany
+    {
+        return $this->hasMany(SubmissionHistory::class, 'submission_id')->latest();
+    }
+
     // ─────────────────────────────────────────────
-    // Query Scopes (Scope Isolasi Multi-Kecamatan)
+    // Query Scopes (Scope Isolasi Multi-Tenant)
     // ─────────────────────────────────────────────
 
     /**
@@ -86,6 +115,16 @@ class Submission extends Model
     {
         $kecamatanId = $kecamatan instanceof Kecamatan ? $kecamatan->id : $kecamatan;
         return $query->where('kecamatan_id', $kecamatanId);
+    }
+
+    /**
+     * Scope untuk menyaring data pengajuan berdasarkan ID Desa tertentu.
+     * Digunakan untuk memastikan Kasi Pelayanan Desa hanya melihat data desanya.
+     */
+    public function scopeForDesa(Builder $query, int|Desa $desa): Builder
+    {
+        $desaId = $desa instanceof Desa ? $desa->id : $desa;
+        return $query->where('desa_id', $desaId);
     }
 
     /**

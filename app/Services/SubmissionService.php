@@ -7,6 +7,7 @@ use App\Enums\SubmissionStatus;
 use App\Models\Service;
 use App\Models\Submission;
 use App\Models\SubmissionDocument;
+use App\Models\SubmissionHistory;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
@@ -41,31 +42,47 @@ class SubmissionService
             // Generate nomor tiket
             $ticketNumber = Submission::generateTicketNumber($kecamatanId);
 
-            // Status awal: draft atau langsung submitted jika diminta
+            // Tentukan status awal jika submit langsung
             $isDirectSubmit = !empty($data['submit_now']);
-            $initialStatus = $isDirectSubmit ? SubmissionStatus::Submitted : SubmissionStatus::Draft;
+            if ($isDirectSubmit) {
+                $initialStatus = $service->requires_desa_approval
+                    ? SubmissionStatus::SubmittedDesa
+                    : SubmissionStatus::Submitted;
+            } else {
+                $initialStatus = SubmissionStatus::Draft;
+            }
 
             $submission = Submission::create([
                 'nomor_tiket'     => $ticketNumber,
                 'user_id'         => $citizen->id,
                 'kecamatan_id'    => $kecamatanId,
+                'desa_id'         => $citizen->desa_id,
                 'service_id'      => $service->id,
                 'status'          => $initialStatus,
                 'form_data'       => $data['form_data'] ?? null,
                 'catatan_petugas' => null,
             ]);
 
+            $this->recordHistory(
+                $submission,
+                $citizen,
+                'created',
+                null,
+                $initialStatus,
+                $isDirectSubmit ? 'Permohonan baru diajukan langsung oleh pemohon.' : 'Draft permohonan baru disimpan oleh pemohon.'
+            );
+
             // Simpan berkas yang diunggah
             if (!empty($data['documents']) && is_array($data['documents'])) {
                 $this->uploadRequirementDocuments($submission, $service, $data['documents']);
             }
 
-            return $submission->load(['service.requirements', 'documents.requirement', 'kecamatan', 'user']);
+            return $submission->load(['service.requirements', 'documents.requirement', 'kecamatan', 'desa', 'user']);
         });
     }
 
     /**
-     * Kirimkan permohonan yang masih berstatus draft ke status submitted.
+     * Kirimkan permohonan yang masih berstatus draft ke status submitted / submitted_desa.
      */
     public function submitDraft(Submission $submission): Submission
     {
@@ -76,9 +93,24 @@ class SubmissionService
         // Validasi kelengkapan dokumen wajib
         $this->assertRequiredDocumentsUploaded($submission);
 
+        $targetStatus = $submission->service->requires_desa_approval
+            ? SubmissionStatus::SubmittedDesa
+            : SubmissionStatus::Submitted;
+
+        $oldStatus = $submission->status;
         $submission->update([
-            'status' => SubmissionStatus::Submitted,
+            'status'  => $targetStatus,
+            'desa_id' => $submission->desa_id ?? $submission->user->desa_id,
         ]);
+
+        $this->recordHistory(
+            $submission,
+            $submission->user,
+            'submitted',
+            $oldStatus,
+            $targetStatus,
+            'Permohonan diajukan dari status draft.'
+        );
 
         return $submission;
     }
@@ -100,13 +132,71 @@ class SubmissionService
                 $this->uploadRequirementDocuments($submission, $service, $newDocuments);
             }
 
-            // Ubah kembali status ke submitted untuk ditinjau ulang petugas
+            // Jika butuh desa dan belum diverifikasi desa, kembalikan ke meja desa
+            $nextStatus = ($service->requires_desa_approval && is_null($submission->verified_desa_at))
+                ? SubmissionStatus::SubmittedDesa
+                : SubmissionStatus::Submitted;
+
+            $oldStatus = $submission->status;
             $submission->update([
-                'status'          => SubmissionStatus::Submitted,
+                'status'          => $nextStatus,
                 'catatan_petugas' => "Revisi berkas telah diunggah oleh pemohon pada: " . Carbon::now()->isoFormat('D MMMM Y, HH:mm') . " WIB.",
             ]);
 
-            return $submission->fresh(['documents.requirement', 'service', 'kecamatan']);
+            $this->recordHistory(
+                $submission,
+                $submission->user,
+                'revision_submitted',
+                $oldStatus,
+                $nextStatus,
+                'Pemohon telah mengunggah berkas perbaikan/revisi.'
+            );
+
+            return $submission->fresh(['documents.requirement', 'service', 'kecamatan', 'desa']);
+        });
+    }
+
+    /**
+     * Verifikasi berkas oleh Kasi Pelayanan Desa (Admin Desa).
+     */
+    public function verifyByDesa(Submission $submission, User $adminDesa, string $action, ?string $catatan = null): Submission
+    {
+        return DB::transaction(function () use ($submission, $adminDesa, $action, $catatan) {
+            $now = Carbon::now();
+            $namaDesa = $adminDesa->desa?->nama_desa ?? 'Pemerintah Desa';
+            $oldStatus = $submission->status;
+
+            if ($action === 'approve') {
+                // Berkas disetujui pihak Desa -> Diteruskan ke Antrean Kecamatan
+                $submission->update([
+                    'status'              => SubmissionStatus::Submitted,
+                    'verified_by_desa_id' => $adminDesa->id,
+                    'verified_desa_at'    => $now,
+                    'catatan_desa'        => $catatan ?: "Berkas lengkap dan telah diverifikasi oleh {$namaDesa}. Diteruskan ke Kecamatan.",
+                    'catatan_petugas'     => "Diverifikasi oleh {$namaDesa} pada " . $now->isoFormat('D MMMM Y, HH:mm') . " WIB.",
+                ]);
+                $this->recordHistory($submission, $adminDesa, 'verified_desa_approved', $oldStatus, SubmissionStatus::Submitted, $catatan ?: "Diverifikasi & disetujui oleh {$namaDesa}.");
+            } elseif ($action === 'revision') {
+                // Berkas kurang lengkap / perlu perbaikan dari warga
+                $submission->update([
+                    'status'          => SubmissionStatus::RevisionRequired,
+                    'catatan_desa'    => $catatan,
+                    'catatan_petugas' => "[Kasi Pelayanan Desa]: " . ($catatan ?: 'Mohon perbaiki berkas persyaratan yang belum sesuai.'),
+                ]);
+                $this->recordHistory($submission, $adminDesa, 'verified_desa_revision', $oldStatus, SubmissionStatus::RevisionRequired, $catatan ?: 'Desa meminta perbaikan berkas.');
+            } elseif ($action === 'reject') {
+                // Berkas ditolak di tingkat desa
+                $submission->update([
+                    'status'          => SubmissionStatus::Rejected,
+                    'catatan_desa'    => $catatan,
+                    'catatan_petugas' => "[Ditolak Desa]: " . ($catatan ?: 'Permohonan tidak memenuhi persyaratan administrasi desa.'),
+                ]);
+                $this->recordHistory($submission, $adminDesa, 'verified_desa_rejected', $oldStatus, SubmissionStatus::Rejected, $catatan ?: 'Permohonan ditolak di tingkat desa.');
+            } else {
+                throw new \InvalidArgumentException("Aksi verifikasi desa '{$action}' tidak valid.");
+            }
+
+            return $submission->fresh(['documents.requirement', 'service', 'kecamatan', 'desa', 'user', 'verifiedByDesa']);
         });
     }
 
@@ -124,7 +214,7 @@ class SubmissionService
      */
     public function reviewSubmission(Submission $submission, User $reviewer, array $reviewData): Submission
     {
-        return DB::transaction(function () use ($submission, $reviewData) {
+        return DB::transaction(function () use ($submission, $reviewer, $reviewData) {
             // Update validasi per butir dokumen
             if (!empty($reviewData['document_reviews']) && is_array($reviewData['document_reviews'])) {
                 foreach ($reviewData['document_reviews'] as $reqId => $docReview) {
@@ -141,12 +231,22 @@ class SubmissionService
                 }
             }
 
+            $oldStatus = $submission->status;
             $newStatus = SubmissionStatus::from($reviewData['status']);
 
             $submission->update([
                 'status'          => $newStatus,
                 'catatan_petugas' => $reviewData['catatan_petugas'] ?? $submission->catatan_petugas,
             ]);
+
+            $this->recordHistory(
+                $submission,
+                $reviewer,
+                'reviewed_kecamatan',
+                $oldStatus,
+                $newStatus,
+                $reviewData['catatan_petugas'] ?? "Status diverifikasi menjadi: {$newStatus->label()}"
+            );
 
             return $submission->fresh(['documents.requirement', 'service', 'kecamatan', 'user']);
         });
@@ -169,12 +269,22 @@ class SubmissionService
             $queueNumber = "A-{$nextNumber}";
         }
 
+        $oldStatus = $submission->status;
         $submission->update([
             'jadwal_biometrik' => $jadwal,
             'nomor_antrean'    => $queueNumber,
             'status'           => SubmissionStatus::Processed,
             'catatan_petugas'  => "Jadwal rekam biometrik e-KTP ditetapkan pada {$jadwal->isoFormat('dddd, D MMMM Y - HH:mm')} WIB di Kantor Kecamatan {$submission->kecamatan->nama_kecamatan}. Nomor antrean Anda: {$queueNumber}.",
         ]);
+
+        $this->recordHistory(
+            $submission,
+            auth()->user(),
+            'biometric_scheduled',
+            $oldStatus,
+            SubmissionStatus::Processed,
+            "Jadwal perekaman biometrik e-KTP ditetapkan pada {$jadwal->isoFormat('dddd, D MMMM Y - HH:mm')} WIB (Nomor antrean: {$queueNumber})."
+        );
 
         return $submission;
     }
@@ -185,6 +295,7 @@ class SubmissionService
     public function completeSubmission(Submission $submission, ?UploadedFile $outputFile = null, ?string $completionNotes = null): Submission
     {
         return DB::transaction(function () use ($submission, $outputFile, $completionNotes) {
+            $oldStatus = $submission->status;
             $outputPath = $submission->output_document_path;
 
             if ($outputFile) {
@@ -197,6 +308,15 @@ class SubmissionService
                 'catatan_petugas'      => $completionNotes ?? 'Permohonan telah selesai diproses. Anda dapat mengunduh dokumen hasil atau mengambil berkas fisik di kantor kecamatan.',
             ]);
 
+            $this->recordHistory(
+                $submission,
+                auth()->user(),
+                'completed',
+                $oldStatus,
+                SubmissionStatus::Completed,
+                $completionNotes ?? 'Permohonan selesai dan dokumen hasil diterbitkan.'
+            );
+
             return $submission->fresh();
         });
     }
@@ -206,16 +326,48 @@ class SubmissionService
      */
     public function rejectSubmission(Submission $submission, string $reason): Submission
     {
+        $oldStatus = $submission->status;
         $submission->update([
             'status'          => SubmissionStatus::Rejected,
             'catatan_petugas' => $reason,
         ]);
+
+        $this->recordHistory(
+            $submission,
+            auth()->user(),
+            'rejected',
+            $oldStatus,
+            SubmissionStatus::Rejected,
+            $reason
+        );
 
         return $submission;
     }
 
     // ─────────────────────────────────────────────
     // Helper Internal
+    // ─────────────────────────────────────────────
+
+    /**
+     * Catat histori perubahan status permohonan ke tabel submission_histories (Audit Trail).
+     */
+    private function recordHistory(
+        Submission $submission,
+        ?User $actor,
+        string $action,
+        string|SubmissionStatus|null $oldStatus,
+        string|SubmissionStatus $newStatus,
+        ?string $catatan = null
+    ): void {
+        SubmissionHistory::create([
+            'submission_id' => $submission->id,
+            'user_id'       => $actor?->id,
+            'action'        => $action,
+            'old_status'    => $oldStatus instanceof SubmissionStatus ? $oldStatus->value : $oldStatus,
+            'new_status'    => $newStatus instanceof SubmissionStatus ? $newStatus->value : $newStatus,
+            'catatan'       => $catatan,
+        ]);
+    }
     // ─────────────────────────────────────────────
 
     private function uploadRequirementDocuments(Submission $submission, Service $service, array $files): void

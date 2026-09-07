@@ -46,6 +46,7 @@
             // Hitung active index
             $currentIndex = 1;
             if ($statusVal === 'draft') $currentIndex = 0;
+            elseif ($statusVal === 'submitted_desa') $currentIndex = 1;
             elseif ($statusVal === 'submitted') $currentIndex = 1;
             elseif ($statusVal === 'in_review') $currentIndex = 2;
             elseif ($statusVal === 'revision_required') $currentIndex = 2; // stage verifikasi dengan warning
@@ -86,6 +87,36 @@
             @endforeach
         </div>
     </div>
+
+    {{-- Banner Status Verifikasi Desa (Informasi Warga) --}}
+    @if ($submission->status->value === 'submitted_desa')
+        <div class="bg-amber-50 border-2 border-amber-300 rounded-3xl p-6 flex items-start gap-4 portal-shadow">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-2xl font-bold flex-shrink-0 shadow-md">
+                🏡
+            </div>
+            <div class="space-y-1 text-xs">
+                <h3 class="text-base font-extrabold text-amber-950">Menunggu Verifikasi Pemerintah Desa</h3>
+                <p class="text-amber-800 leading-relaxed">
+                    Pengajuan layanan ini memerlukan verifikasi awal oleh <strong>Kasi Pelayanan Desa {{ $submission->user->desa?->nama_desa ?? '-' }}</strong>. Setelah pihak desa menyetujui, berkas Anda akan otomatis diteruskan ke Kecamatan.
+                </p>
+            </div>
+        </div>
+    @elseif ($submission->verified_desa_at)
+        <div class="bg-emerald-50 border border-emerald-200 rounded-3xl p-5 flex items-start gap-3">
+            <span class="text-2xl">✓</span>
+            <div class="text-xs space-y-0.5">
+                <p class="font-bold text-emerald-950">
+                    Telah Diverifikasi Pemerintah Desa {{ $submission->user->desa?->nama_desa ?? '-' }}
+                </p>
+                <p class="text-emerald-800">
+                    Diverifikasi pada {{ $submission->verified_desa_at->isoFormat('D MMMM Y, HH:mm') }} WIB.
+                    @if ($submission->catatan_desa)
+                        <span class="block text-slate-600 mt-0.5">Catatan Desa: <em>"{{ $submission->catatan_desa }}"</em></span>
+                    @endif
+                </p>
+            </div>
+        </div>
+    @endif
 
     {{-- ═══════════════════════════════════════════════════════════════════════════
          2. ALERT KHUSUS: STATUS PERLU PERBAIKAN / REVISI DOKUMEN
@@ -279,6 +310,10 @@
 
                         <div class="flex items-center gap-2">
                             @if ($doc)
+                                <a href="{{ route('documents.show', $doc) }}" target="_blank" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold text-teal-800 bg-teal-50 hover:bg-teal-100 border border-teal-200 transition-colors">
+                                    <svg class="w-3.5 h-3.5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    <span>Lihat</span>
+                                </a>
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold border {{ $doc->status_validasi->badgeColor() }}">
                                     {{ $doc->status_validasi->label() }}
                                 </span>
@@ -292,6 +327,11 @@
                 @endforeach
             </div>
         </div>
+    </div>
+
+    {{-- Riwayat & Audit Trail Permohonan --}}
+    <div class="mt-8">
+        <x-submission-timeline :histories="$submission->histories" />
     </div>
 
 </div>

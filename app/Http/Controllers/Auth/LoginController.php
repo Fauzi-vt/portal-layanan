@@ -84,6 +84,7 @@ class LoginController extends Controller
         return match ($user->role) {
             UserRole::SuperAdmin      => redirect()->route('superadmin.dashboard'),
             UserRole::AdminKecamatan  => redirect()->route('kecamatan.dashboard'),
+            UserRole::AdminDesa       => redirect()->route('desa.dashboard'),
             default                   => redirect()->route('warga.dashboard'),
         };
     }

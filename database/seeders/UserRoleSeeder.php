@@ -49,7 +49,20 @@ class UserRoleSeeder extends Seeder
                 'alamat_detail' => 'Kantor Kecamatan Manonjaya, Tasikmalaya',
             ],
 
-            // 3. Role: Warga / Masyarakat (Kec. Manonjaya, Desa Manonjaya)
+            // 3. Role: Kasi Pelayanan Desa (Wilayah: Desa Manonjaya, Kec. Manonjaya)
+            [
+                'nik'           => '3206170202880002',
+                'name'          => 'Kasi Pelayanan Desa Manonjaya',
+                'email'         => 'kasi.manonjaya@portal.test',
+                'password'      => Hash::make('password'),
+                'phone'         => '081399887766',
+                'role'          => UserRole::AdminDesa->value,
+                'kecamatan_id'  => $manonjaya?->id,
+                'desa_id'       => $desaManonjaya?->id,
+                'alamat_detail' => 'Kantor Kepala Desa Manonjaya, Tasikmalaya',
+            ],
+
+            // 4. Role: Warga / Masyarakat (Kec. Manonjaya, Desa Manonjaya)
             [
                 'nik'           => '3206171505980001',
                 'name'          => 'Ahmad Fauzi (Warga)',
@@ -70,15 +83,20 @@ class UserRoleSeeder extends Seeder
             );
         }
 
+        // Aktifkan flag requires_desa_approval pada layanan yang butuh surat/pengantar dari desa
+        \App\Models\Service::whereIn('kode_layanan', ['KK_BARU', 'PINDAH', 'NIKAH', 'LAINNYA'])
+            ->update(['requires_desa_approval' => true]);
+
         $this->command->info('✅ User RBAC contoh berhasil di-seed:');
         $this->command->table(
-            ['Nama', 'Email', 'Role', 'NIK', 'Kecamatan'],
+            ['Nama', 'Email', 'Role', 'NIK', 'Kecamatan', 'Desa'],
             collect($users)->map(fn($u) => [
                 $u['name'],
                 $u['email'],
                 UserRole::from($u['role'])->label(),
                 $u['nik'] ?? '-',
                 $u['kecamatan_id'] ? 'Kec. Manonjaya' : 'Kabupaten Tasikmalaya',
+                $u['desa_id'] ? 'Desa Manonjaya' : '-',
             ])->toArray()
         );
     }

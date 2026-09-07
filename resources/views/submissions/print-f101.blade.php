@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulir F-1.01 Biodata Keluarga — {{ $submission->nomor_tiket }}</title>
+    <title>Formulir Pembuatan Kartu Keluarga Baru — {{ $submission->nomor_tiket }}</title>
     <style>
         @page {
             size: A4 landscape;
-            margin: 10mm 12mm 10mm 12mm;
+            margin: 8mm 10mm 8mm 10mm;
         }
 
         * {
@@ -18,9 +18,9 @@
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 8pt;
+            font-size: 8.5pt;
             color: #000;
-            line-height: 1.15;
+            line-height: 1.25;
             margin: 0;
             padding: 0;
             background: #fff;
@@ -28,20 +28,15 @@
 
         .page-sheet {
             width: 100%;
-            max-width: 277mm;
+            max-width: 280mm;
             margin: 0 auto;
             background: #fff;
             position: relative;
         }
 
-        .page-break {
-            page-break-after: always;
-            break-after: page;
-        }
-
-        /* ── Action bar (Screen Only) ── */
+        /* ── Action Bar Layar ── */
         .no-print {
-            background: #0a2558;
+            background: #0f172a;
             color: #fff;
             padding: 10px 20px;
             display: flex;
@@ -50,8 +45,9 @@
             position: sticky;
             top: 0;
             z-index: 9999;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.25);
             font-family: sans-serif;
+            margin-bottom: 12px;
         }
         .no-print button, .no-print a {
             background: #2563eb;
@@ -79,605 +75,354 @@
                 display: none !important;
             }
             body {
-                background: none;
+                background: #fff !important;
             }
             .page-sheet {
-                width: 100%;
-                max-width: 100%;
-                padding: 0;
-                margin: 0;
+                max-width: 100% !important;
+                margin: 0 !important;
+                box-shadow: none !important;
             }
         }
 
-        /* ── Grid & Table Styles ── */
-        .header-box {
-            position: absolute;
-            top: 0;
-            right: 0;
-            border: 1.5px solid #000;
-            padding: 3px 12px;
-            font-weight: bold;
-            font-size: 10pt;
-        }
-
-        .doc-title {
+        .title-header {
             text-align: center;
-            font-size: 12pt;
-            font-weight: bold;
-            margin-top: 2px;
-            margin-bottom: 4px;
+            font-size: 13pt;
+            font-weight: 900;
             letter-spacing: 0.5px;
-        }
-
-        .notice-bar {
-            background: #000;
-            color: #fff;
-            font-weight: bold;
-            font-size: 7.5pt;
-            padding: 2.5px 6px;
-            margin-bottom: 5px;
-        }
-
-        .checkbox-group {
-            display: flex;
-            gap: 20px;
-            font-size: 7.5pt;
-            margin-bottom: 5px;
-        }
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .box-check {
-            width: 11px;
-            height: 11px;
-            border: 1px solid #000;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 9px;
-            font-weight: bold;
-        }
-
-        .section-header {
-            font-weight: bold;
-            font-size: 8pt;
-            margin-top: 4px;
-            margin-bottom: 2px;
-            border-bottom: 1px solid #000;
-            padding-bottom: 1px;
-        }
-
-        .section-subnote {
-            font-style: italic;
-            font-size: 7pt;
-            margin-bottom: 2px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 8px;
-        }
-
-        .form-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 7.5pt;
-        }
-        .form-table td {
-            padding: 1.5px 2px;
-            vertical-align: middle;
-        }
-        .form-table .label {
-            width: 160px;
-            white-space: nowrap;
-        }
-        .form-table .colon {
-            width: 8px;
-            text-align: center;
-        }
-
-        .char-boxes {
-            display: inline-flex;
-            vertical-align: middle;
-        }
-        .char-box {
-            width: 14px;
-            height: 14px;
-            border: 1px solid #000;
-            margin-right: -1px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 7.5pt;
-            font-family: monospace;
-            font-weight: bold;
+            margin-bottom: 8px;
             text-transform: uppercase;
         }
 
-        .fill-line {
-            display: inline-block;
-            border-bottom: 1px solid #000;
-            min-height: 13px;
-            padding: 0 4px;
-            font-weight: bold;
-            font-size: 7.5pt;
-        }
-
-        /* ── Data Anggota Table ── */
-        .member-table {
+        .meta-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 6.5pt;
-            margin-top: 3px;
-            table-layout: fixed;
+            font-size: 8.5pt;
+            margin-bottom: 8px;
         }
-        .member-table th, .member-table td {
-            border: 1px solid #000;
-            padding: 2px 1.5px;
-            text-align: center;
-            vertical-align: middle;
-            word-wrap: break-word;
-            overflow: hidden;
-        }
-        .member-table th {
-            background-color: #f1f1f1;
-            font-weight: bold;
-            line-height: 1.1;
-        }
-        .member-table th .col-num {
-            font-weight: normal;
-            font-size: 5.5pt;
-            display: block;
-            margin-top: 1px;
-        }
-        .member-table td.text-left {
-            text-align: left;
-            padding-left: 3px;
-        }
-        .member-table tr {
-            height: 16px;
+        .meta-table td {
+            padding: 1.5px 2px;
+            vertical-align: top;
         }
 
-        /* ── Footer ── */
-        .page-footer {
-            margin-top: 4px;
-            display: flex;
-            justify-content: space-between;
+        table.kk-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 7.5pt;
+            margin-bottom: 6px;
+        }
+        table.kk-table th, table.kk-table td {
+            border: 1px solid #000;
+            padding: 2.5px 3px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        table.kk-table th {
+            text-align: center;
+            font-weight: bold;
+            background: #fff;
+        }
+        table.kk-table tr.sub-header td {
+            text-align: center;
             font-size: 7pt;
             font-weight: bold;
+            background: #e2e8f0;
+            padding: 1px 2px;
         }
 
-        .signatures-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 8px;
-            font-size: 7.5pt;
+        .signatures {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 8pt;
+            margin-top: 10px;
         }
-        .signature-col {
-            width: 45%;
-            text-align: center;
-        }
-        .signature-space {
-            height: 45px;
-        }
-
-        .statement-box {
-            font-size: 6.5pt;
-            margin-top: 6px;
-            line-height: 1.2;
-        }
-        .statement-title {
-            font-weight: bold;
+        .signatures td {
+            vertical-align: top;
+            padding: 2px 4px;
         }
     </style>
 </head>
 <body>
 
-    {{-- Top Action Bar (Screen Only) --}}
+    {{-- Screen Action Bar --}}
     <div class="no-print">
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <button type="button" class="btn-back" onclick="window.history.back()">
+        <div style="display:flex; align-items:center; gap:12px;">
+            <button class="btn-back" onclick="window.history.back()">
                 &larr; Kembali
             </button>
-            <span style="font-weight: bold; font-size: 14px;">Pratinjau Cetak Formulir F-1.01 (Biodata Keluarga)</span>
-            <span style="font-size: 12px; opacity: 0.8;">Tiket: {{ $submission->nomor_tiket }}</span>
+            <span style="font-size:13px; font-weight:bold;">
+                Pratinjau Cetak Formulir KK Baru: {{ $submission->nomor_tiket }}
+            </span>
         </div>
-        <div style="display: flex; gap: 8px;">
-            <button type="button" onclick="window.print()">
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/><path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/></svg>
-                Cetak / Simpan PDF
+        <div style="display:flex; gap:10px;">
+            <button onclick="window.print()">
+                🖨️ Cetak Formulir KK Baru (A4 Landscape)
             </button>
         </div>
     </div>
 
     @php
-        $jenisPilihan = $f101['jenis_pilihan'] ?? 'wni';
-        $namaKepala = strtoupper($f101['nama_kepala_keluarga'] ?? $submission->user->name);
-        $nikKepala = $f101['nik_kepala_keluarga'] ?? $submission->user->nik ?? '';
+        $namaKepalaKeluarga = strtoupper($f101['nama_kepala_keluarga'] ?? $f101['nama_pemohon'] ?? $submission->user->name);
         $alamat = strtoupper($f101['alamat'] ?? $submission->user->alamat_detail ?? '-');
-        $rt = str_pad($f101['rt'] ?? '1', 3, '0', STR_PAD_LEFT);
-        $rw = str_pad($f101['rw'] ?? '1', 3, '0', STR_PAD_LEFT);
+        $rt = str_pad($f101['rt'] ?? '001', 3, '0', STR_PAD_LEFT);
+        $rw = str_pad($f101['rw'] ?? '001', 3, '0', STR_PAD_LEFT);
         $kodePos = $f101['kode_pos'] ?? '46182';
-        $telepon = $f101['telepon'] ?? $submission->user->phone ?? '-';
-        $email = $f101['email'] ?? $submission->user->email ?? '-';
 
-        $provinsi = strtoupper($f101['nama_provinsi'] ?? '32 - JAWA BARAT');
-        $kabupaten = strtoupper($f101['nama_kabupaten'] ?? '06 - KAB. TASIKMALAYA');
-        $kecamatan = strtoupper($f101['nama_kecamatan'] ?? $submission->kecamatan->nama_kecamatan);
-        $desa = strtoupper($f101['nama_desa'] ?? $submission->user->desa?->nama_desa ?? '-');
-        $dusun = strtoupper($f101['nama_dusun'] ?? '-');
+        $desa = strtoupper($f101['nama_desa'] ?? $submission->desa?->nama_desa ?? $submission->user->desa?->nama_desa ?? 'MANONJAYA');
+        $kecamatan = strtoupper($f101['nama_kecamatan'] ?? $submission->kecamatan?->nama_kecamatan ?? 'MANONJAYA');
+        $kabupaten = 'TASIKMALAYA';
+        $provinsi = 'JAWA BARAT';
 
         $anggotaList = $f101['anggota'] ?? [];
-        $jumlahAnggota = count($anggotaList) > 0 ? count($anggotaList) : 1;
+        if (empty($anggotaList)) {
+            // fallback minimal kepala keluarga
+            $anggotaList = [
+                [
+                    'nama' => $namaKepalaKeluarga,
+                    'nik' => $f101['nik_pemohon'] ?? $submission->user->nik ?? '-',
+                    'jenis_kelamin' => 'LAKI-LAKI',
+                    'tempat_lahir' => 'TASIKMALAYA',
+                    'tanggal_lahir' => '-',
+                    'agama' => 'ISLAM',
+                    'pendidikan' => 'SLTA / SEDERAJAT',
+                    'pekerjaan' => 'WIRASWASTA',
+                    'gol_darah' => '-',
+                    'status_kawin' => 'KAWIN TERCATAT',
+                    'tgl_kawin' => '-',
+                    'shdk' => 'KEPALA KELUARGA',
+                    'kewarganegaraan' => 'WNI',
+                    'no_paspor' => '-',
+                    'no_kitap' => '-',
+                    'nama_ayah' => '-',
+                    'nama_ibu' => '-',
+                ]
+            ];
+        }
     @endphp
 
-    {{-- ═══════════════════════════════════════════════════════════════════════════
-         HALAMAN 1 (PAGE 1 OF 2)
-    ═══════════════════════════════════════════════════════════════════════════ --}}
-    <div class="page-sheet page-break">
-        <div class="header-box">F-1.01</div>
-
-        <div class="doc-title">FORMULIR BIODATA KELUARGA</div>
-
-        <div class="notice-bar">
-            PERHATIAN : Isilah Formulir ini dengan huruf cetak dan jelas serta mengikuti "TATA CARA PENGISIAN FORMULIR"
-        </div>
-
-        <div class="checkbox-group">
-            <span style="font-weight: bold;">Pilih salah satu:</span>
-            <div class="checkbox-item">
-                <span class="box-check">{{ $jenisPilihan === 'wni' ? 'X' : '' }}</span>
-                <span>Input Data Kepala Keluarga dan Anggota Keluarga WNI</span>
-            </div>
-            <div class="checkbox-item">
-                <span class="box-check">{{ $jenisPilihan === 'asing' ? 'X' : '' }}</span>
-                <span>Input Data Kepala Keluarga dan Anggota Keluarga Orang Asing</span>
-            </div>
-            <div class="checkbox-item">
-                <span class="box-check">{{ $jenisPilihan === 'wni_luar_negeri' ? 'X' : '' }}</span>
-                <span>Input Data Kepala Keluarga dan Anggota Keluarga WNI di luar Negeri</span>
-            </div>
-        </div>
-
-        {{-- Grid Data Kepala Keluarga & Data Wilayah --}}
-        <div class="form-grid">
-            {{-- Kiri: DATA KEPALA KELUARGA --}}
-            <div>
-                <div class="section-header">DATA KEPALA KELUARGA</div>
-                <table class="form-table">
-                    <tr>
-                        <td class="label">1. Nama Kepala Keluarga / <i>Name of Head</i></td>
-                        <td class="colon">:</td>
-                        <td><span class="fill-line" style="width: 95%;">{{ $namaKepala }}</span></td>
-                    </tr>
-                    <tr>
-                        <td class="label">2. Alamat / <i>Address</i></td>
-                        <td class="colon">:</td>
-                        <td><span class="fill-line" style="width: 95%;">{{ $alamat }}</span></td>
-                    </tr>
-                    <tr>
-                        <td class="label">3. Kode Pos / <i>Post Code</i></td>
-                        <td class="colon">:</td>
-                        <td>
-                            <div class="char-boxes">
-                                @foreach (str_split(str_pad(substr($kodePos, 0, 5), 5, ' ')) as $c)
-                                    <span class="char-box">{{ $c }}</span>
-                                @endforeach
-                            </div>
-                            &nbsp;&nbsp;4. RT :
-                            <div class="char-boxes">
-                                @foreach (str_split(str_pad(substr($rt, 0, 3), 3, '0', STR_PAD_LEFT)) as $c)
-                                    <span class="char-box">{{ $c }}</span>
-                                @endforeach
-                            </div>
-                            &nbsp;&nbsp;5. RW :
-                            <div class="char-boxes">
-                                @foreach (str_split(str_pad(substr($rw, 0, 3), 3, '0', STR_PAD_LEFT)) as $c)
-                                    <span class="char-box">{{ $c }}</span>
-                                @endforeach
-                            </div>
-                            &nbsp;&nbsp;6. Jumlah Anggota :
-                            <div class="char-boxes">
-                                @foreach (str_split(str_pad($jumlahAnggota, 2, '0', STR_PAD_LEFT)) as $c)
-                                    <span class="char-box">{{ $c }}</span>
-                                @endforeach
-                            </div> Orang
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label">7. Telepon / Handphone</td>
-                        <td class="colon">:</td>
-                        <td>
-                            <div class="char-boxes">
-                                @foreach (str_split(str_pad(substr(preg_replace('/[^0-9]/', '', $telepon), 0, 14), 14, ' ')) as $c)
-                                    <span class="char-box">{{ $c !== ' ' ? $c : '' }}</span>
-                                @endforeach
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label">8. Email</td>
-                        <td class="colon">:</td>
-                        <td><span class="fill-line" style="width: 95%;">{{ $email }}</span></td>
-                    </tr>
-                </table>
-            </div>
-
-            {{-- Kanan: DATA WILAYAH --}}
-            <div>
-                <div class="section-subnote" style="text-align: right;">Kode Wilayah diisi oleh Petugas Kependudukan dan Catatan Sipil</div>
-                <div class="section-header">DATA WILAYAH</div>
-                <table class="form-table">
-                    <tr>
-                        <td class="label">9. Kode-Nama Provinsi</td>
-                        <td class="colon">:</td>
-                        <td>
-                            <div class="char-boxes">
-                                <span class="char-box">3</span><span class="char-box">2</span>
-                            </div>
-                            &nbsp;<span class="fill-line" style="width: 140px;">JAWA BARAT</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label">10. Kode-Nama Kab/Kota</td>
-                        <td class="colon">:</td>
-                        <td>
-                            <div class="char-boxes">
-                                <span class="char-box">0</span><span class="char-box">6</span>
-                            </div>
-                            &nbsp;<span class="fill-line" style="width: 140px;">KAB. TASIKMALAYA</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label">11. Kode-Nama Kecamatan</td>
-                        <td class="colon">:</td>
-                        <td>
-                            <div class="char-boxes">
-                                <span class="char-box">1</span><span class="char-box">7</span>
-                            </div>
-                            &nbsp;<span class="fill-line" style="width: 140px;">{{ $kecamatan }}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label">12. Kode-Nama Kel/Desa</td>
-                        <td class="colon">:</td>
-                        <td>
-                            <div class="char-boxes">
-                                <span class="char-box">0</span><span class="char-box">1</span>
-                            </div>
-                            &nbsp;<span class="fill-line" style="width: 140px;">{{ $desa }}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label">13. Nama Dusun/Dukuh/Kp.</td>
-                        <td class="colon">:</td>
-                        <td><span class="fill-line" style="width: 180px;">{{ $dusun }}</span></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        {{-- Section: DATA ANGGOTA KELUARGA --}}
-        <div style="margin-top: 6px;">
-            <div class="section-header" style="display: flex; justify-content: space-between;">
-                <span>DATA ANGGOTA KELUARGA</span>
-                <span style="font-weight: normal; font-size: 6.5pt;">(Catatan: WNI mengisi Kolom 2 s.d 6, 10 s.d 31, 38 s.d 41)</span>
-            </div>
-
-            {{-- Table 1 (Kolom 1 - 7) --}}
-            <table class="member-table">
-                <thead>
-                    <tr>
-                        <th style="width: 25px;">No.<span class="col-num">1</span></th>
-                        <th style="width: 200px;">Nama Lengkap<br><i>Full Name</i><span class="col-num">2</span></th>
-                        <th style="width: 60px;">Gelar Depan<span class="col-num">3</span></th>
-                        <th style="width: 65px;">Gelar Belakang<span class="col-num">4</span></th>
-                        <th style="width: 120px;">Nomor Paspor<br><i>Passport Number</i><span class="col-num">5</span></th>
-                        <th style="width: 110px;">Tanggal Berakhir Passport<br><i>Date of Expiry</i><span class="col-num">6</span></th>
-                        <th>Nama Sponsor<br><i>Sponsor Name</i><span class="col-num">7</span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for ($i = 0; $i < 10; $i++)
-                        @php $ang = $anggotaList[$i] ?? null; @endphp
-                        <tr>
-                            <td>{{ $i + 1 }}</td>
-                            <td class="text-left font-bold" style="font-weight: {{ $ang ? 'bold' : 'normal' }};">
-                                {{ $ang ? strtoupper($ang['nama']) : '' }}
-                            </td>
-                            <td>{{ $ang['gelar_depan'] ?? '' }}</td>
-                            <td>{{ $ang['gelar_belakang'] ?? '' }}</td>
-                            <td>{{ $ang['paspor'] ?? '' }}</td>
-                            <td>{{ $ang['paspor_exp'] ?? '' }}</td>
-                            <td>{{ $ang['sponsor'] ?? '' }}</td>
-                        </tr>
-                    @endfor
-                </tbody>
-            </table>
-        </div>
-
-        <div class="page-footer">
-            <span>Portal Pelayanan Terpadu Kabupaten Tasikmalaya &bull; No. Tiket: {{ $submission->nomor_tiket }}</span>
-            <span>F-1.01 1 of 2</span>
-        </div>
-    </div>
-
-    {{-- ═══════════════════════════════════════════════════════════════════════════
-         HALAMAN 2 (PAGE 2 OF 2)
-    ═══════════════════════════════════════════════════════════════════════════ --}}
     <div class="page-sheet">
-        <div style="text-align: right; font-weight: bold; font-size: 8pt; margin-bottom: 2px;">
-            Lanjutan Formulir Biodata Keluarga F-1.01
+
+        {{-- JUDUL FORMULIR --}}
+        <div class="title-header">
+            FORMULIR PEMBUATAN KARTU KELUARGA BARU
         </div>
 
-        {{-- Table 2 (Kolom 8 - 15) --}}
-        <table class="member-table">
+        {{-- METADATA DUA KOLOM (KIRI & KANAN) PERSIS GAMBAR --}}
+        <table class="meta-table">
+            <tr>
+                {{-- Kolom Kiri --}}
+                <td style="width: 50%;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="width: 140px;">Nama Kepala Keluarga</td>
+                            <td style="width: 8px;">:</td>
+                            <td style="font-weight: bold;">{{ $namaKepalaKeluarga }}</td>
+                        </tr>
+                        <tr>
+                            <td>Alamat</td>
+                            <td>:</td>
+                            <td>{{ $alamat }}</td>
+                        </tr>
+                        <tr>
+                            <td>RT/RW</td>
+                            <td>:</td>
+                            <td>{{ $rt }} / {{ $rw }}</td>
+                        </tr>
+                        <tr>
+                            <td>Kode Pos</td>
+                            <td>:</td>
+                            <td>{{ $kodePos }}</td>
+                        </tr>
+                    </table>
+                </td>
+
+                {{-- Kolom Kanan --}}
+                <td style="width: 50%;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="width: 130px;">Desa/Kelurahan</td>
+                            <td style="width: 8px;">:</td>
+                            <td style="font-weight: bold;">{{ $desa }}</td>
+                        </tr>
+                        <tr>
+                            <td>Kecamatan</td>
+                            <td>:</td>
+                            <td style="font-weight: bold;">{{ $kecamatan }}</td>
+                        </tr>
+                        <tr>
+                            <td>Kabupaten/Kota</td>
+                            <td>:</td>
+                            <td style="font-weight: bold;">{{ $kabupaten }}</td>
+                        </tr>
+                        <tr>
+                            <td>Provinsi</td>
+                            <td>:</td>
+                            <td style="font-weight: bold;">{{ $provinsi }}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        {{-- TABEL 1 (KOLOM 1 - 9) --}}
+        <table class="kk-table">
             <thead>
                 <tr>
-                    <th style="width: 25px;">No.</th>
-                    <th style="width: 90px;">Tipe Sponsor<span class="col-num">8</span></th>
-                    <th style="width: 130px;">Alamat Sponsor<span class="col-num">9</span></th>
-                    <th style="width: 60px;">Jenis Kelamin<span class="col-num">10</span></th>
-                    <th style="width: 110px;">Tempat Lahir<span class="col-num">11</span></th>
-                    <th style="width: 100px;">Tgl, Bln, Thn Lahir<span class="col-num">12</span></th>
-                    <th style="width: 90px;">Kewarganegaraan<span class="col-num">13</span></th>
-                    <th style="width: 100px;">No. SK Penetapan WNI<span class="col-num">14</span></th>
-                    <th>Akta Lahir<span class="col-num">15</span></th>
+                    <th style="width: 25px;">No</th>
+                    <th style="width: 160px;">Nama Lengkap</th>
+                    <th style="width: 115px;">NIK</th>
+                    <th style="width: 75px;">Jenis Kelamin</th>
+                    <th style="width: 85px;">Tempat Lahir</th>
+                    <th style="width: 75px;">Tanggal Lahir</th>
+                    <th style="width: 70px;">Agama</th>
+                    <th style="width: 110px;">Pendidikan</th>
+                    <th style="width: 110px;">Jenis Pekerjaan</th>
+                    <th style="width: 55px;">Golongan Darah</th>
+                </tr>
+                <tr class="sub-header">
+                    <td></td>
+                    <td>(1)</td>
+                    <td>(2)</td>
+                    <td>(3)</td>
+                    <td>(4)</td>
+                    <td>(5)</td>
+                    <td>(6)</td>
+                    <td>(7)</td>
+                    <td>(8)</td>
+                    <td>(9)</td>
                 </tr>
             </thead>
             <tbody>
-                @for ($i = 0; $i < 10; $i++)
-                    @php $ang = $anggotaList[$i] ?? null; @endphp
+                @for ($i = 1; $i <= 10; $i++)
+                    @php
+                        $ang = $anggotaList[$i - 1] ?? null;
+                    @endphp
                     <tr>
-                        <td>{{ $i + 1 }}</td>
-                        <td>{{ $ang['tipe_sponsor'] ?? '' }}</td>
-                        <td>{{ $ang['alamat_sponsor'] ?? '' }}</td>
-                        <td>{{ $ang ? (($ang['jenis_kelamin'] ?? '') === 'L' ? 'LAKI-LAKI' : 'PEREMPUAN') : '' }}</td>
-                        <td class="text-left">{{ $ang ? strtoupper($ang['tempat_lahir'] ?? '') : '' }}</td>
-                        <td>{{ $ang['tanggal_lahir'] ?? '' }}</td>
-                        <td>{{ $ang ? 'WNI' : '' }}</td>
-                        <td>{{ $ang['sk_wni'] ?? '' }}</td>
-                        <td>{{ $ang ? (!empty($ang['no_akta_lahir']) ? 'ADA' : 'TIDAK ADA') : '' }}</td>
+                        <td style="text-align: center; font-weight: bold;">{{ $i }}</td>
+                        <td style="font-weight: {{ $ang ? 'bold' : 'normal' }}; text-transform: uppercase;">
+                            {{ $ang['nama'] ?? '-' }}
+                        </td>
+                        <td style="text-align: center; font-family: monospace; font-size: 8pt; font-weight: bold;">
+                            {{ $ang['nik'] ?? '-' }}
+                        </td>
+                        <td style="text-align: center; text-transform: uppercase;">
+                            {{ $ang['jenis_kelamin'] ?? '-' }}
+                        </td>
+                        <td style="text-transform: uppercase;">
+                            {{ $ang['tempat_lahir'] ?? '-' }}
+                        </td>
+                        <td style="text-align: center;">
+                            @if (!empty($ang['tanggal_lahir']) && $ang['tanggal_lahir'] !== '-')
+                                {{ date('d-m-Y', strtotime($ang['tanggal_lahir'])) }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td style="text-align: center; text-transform: uppercase;">
+                            {{ $ang['agama'] ?? '-' }}
+                        </td>
+                        <td style="text-transform: uppercase;">
+                            {{ $ang['pendidikan'] ?? '-' }}
+                        </td>
+                        <td style="text-transform: uppercase;">
+                            {{ $ang['pekerjaan'] ?? '-' }}
+                        </td>
+                        <td style="text-align: center; font-weight: bold;">
+                            {{ $ang['gol_darah'] ?? '-' }}
+                        </td>
                     </tr>
                 @endfor
             </tbody>
         </table>
 
-        {{-- Table 3 (Kolom 16 - 23) --}}
-        <table class="member-table" style="margin-top: 3px;">
+        {{-- TABEL 2 (KOLOM 10 - 17) --}}
+        <table class="kk-table" style="margin-top: 4px;">
             <thead>
                 <tr>
-                    <th style="width: 25px;">No.</th>
-                    <th style="width: 130px;">Nomor Akta Kelahiran<span class="col-num">16</span></th>
-                    <th style="width: 55px;">Gol. Darah<span class="col-num">17</span></th>
-                    <th style="width: 80px;">Agama<span class="col-num">18</span></th>
-                    <th style="width: 120px;">Organisasi Kepercayaan<span class="col-num">19</span></th>
-                    <th style="width: 85px;">Status Perkawinan<span class="col-num">20</span></th>
-                    <th style="width: 60px;">Akta Kawin<span class="col-num">21</span></th>
-                    <th style="width: 110px;">Nomor Akta Perkawinan<span class="col-num">22</span></th>
-                    <th>Tanggal Perkawinan<span class="col-num">23</span></th>
+                    <th rowspan="2" style="width: 25px;">No</th>
+                    <th rowspan="2" style="width: 105px;">Status Perkawinan</th>
+                    <th rowspan="2" style="width: 80px;">Tanggal Perkawinan</th>
+                    <th rowspan="2" style="width: 130px;">Status Hubungan Dalam Keluarga</th>
+                    <th rowspan="2" style="width: 75px;">Kewarganegaraan</th>
+                    <th colspan="2">Dokumen Imigrasi</th>
+                    <th colspan="2">Nama Orang Tua</th>
+                </tr>
+                <tr>
+                    <th style="width: 85px;">No. Paspor</th>
+                    <th style="width: 85px;">No. KITAP</th>
+                    <th style="width: 130px;">Ayah</th>
+                    <th style="width: 130px;">Ibu</th>
+                </tr>
+                <tr class="sub-header">
+                    <td></td>
+                    <td>(10)</td>
+                    <td>(11)</td>
+                    <td>(12)</td>
+                    <td>(13)</td>
+                    <td>(14)</td>
+                    <td>(15)</td>
+                    <td>(16)</td>
+                    <td>(17)</td>
                 </tr>
             </thead>
             <tbody>
-                @for ($i = 0; $i < 10; $i++)
-                    @php $ang = $anggotaList[$i] ?? null; @endphp
+                @for ($i = 1; $i <= 10; $i++)
+                    @php
+                        $ang = $anggotaList[$i - 1] ?? null;
+                    @endphp
                     <tr>
-                        <td>{{ $i + 1 }}</td>
-                        <td class="text-left">{{ $ang['no_akta_lahir'] ?? '' }}</td>
-                        <td>{{ $ang ? ($ang['gol_darah'] ?? '-') : '' }}</td>
-                        <td>{{ $ang ? strtoupper($ang['agama'] ?? '') : '' }}</td>
-                        <td></td>
-                        <td>{{ $ang ? strtoupper($ang['status_kawin'] ?? '') : '' }}</td>
-                        <td>{{ $ang ? (!empty($ang['no_buku_nikah']) ? 'ADA' : 'TIDAK') : '' }}</td>
-                        <td class="text-left">{{ $ang['no_buku_nikah'] ?? '' }}</td>
-                        <td>{{ $ang['tgl_nikah'] ?? '' }}</td>
+                        <td style="text-align: center; font-weight: bold;">{{ $i }}</td>
+                        <td style="text-transform: uppercase;">
+                            {{ $ang['status_kawin'] ?? '-' }}
+                        </td>
+                        <td style="text-align: center;">
+                            @if (!empty($ang['tgl_kawin']) && $ang['tgl_kawin'] !== '-')
+                                {{ date('d-m-Y', strtotime($ang['tgl_kawin'])) }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td style="text-transform: uppercase; font-weight: {{ $ang ? 'bold' : 'normal' }};">
+                            {{ $ang['shdk'] ?? '-' }}
+                        </td>
+                        <td style="text-align: center; font-weight: bold;">
+                            {{ $ang['kewarganegaraan'] ?? '-' }}
+                        </td>
+                        <td style="text-align: center; font-family: monospace;">
+                            {{ !empty($ang['no_paspor']) ? $ang['no_paspor'] : '-' }}
+                        </td>
+                        <td style="text-align: center; font-family: monospace;">
+                            {{ !empty($ang['no_kitap']) ? $ang['no_kitap'] : '-' }}
+                        </td>
+                        <td style="text-transform: uppercase;">
+                            {{ $ang['nama_ayah'] ?? '-' }}
+                        </td>
+                        <td style="text-transform: uppercase;">
+                            {{ $ang['nama_ibu'] ?? '-' }}
+                        </td>
                     </tr>
                 @endfor
             </tbody>
         </table>
 
-        {{-- Table 4 (Kolom 24 - 33) --}}
-        <table class="member-table" style="margin-top: 3px;">
-            <thead>
-                <tr>
-                    <th style="width: 25px;">No.</th>
-                    <th style="width: 50px;">Akta Cerai<span class="col-num">24</span></th>
-                    <th style="width: 100px;">Nomor Akta Cerai<span class="col-num">25</span></th>
-                    <th style="width: 75px;">Tgl Cerai<span class="col-num">26</span></th>
-                    <th style="width: 100px;">Status Hub. Keluarga<span class="col-num">27</span></th>
-                    <th style="width: 80px;">Kelainan Fisik<span class="col-num">28</span></th>
-                    <th style="width: 80px;">Penyandang Cacat<span class="col-num">29</span></th>
-                    <th style="width: 90px;">Pendidikan Terakhir<span class="col-num">30</span></th>
-                    <th style="width: 100px;">Jenis Pekerjaan<span class="col-num">31</span></th>
-                    <th style="width: 60px;">No ITAS<span class="col-num">32</span></th>
-                    <th>Tempat Terbit<span class="col-num">33</span></th>
-                </tr>
-            </thead>
-            <tbody>
-                @for ($i = 0; $i < 10; $i++)
-                    @php $ang = $anggotaList[$i] ?? null; @endphp
-                    <tr>
-                        <td>{{ $i + 1 }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="text-left font-bold">{{ $ang ? strtoupper($ang['shdk'] ?? '') : '' }}</td>
-                        <td>{{ $ang ? ($ang['disabilitas'] !== 'Tidak Ada' ? $ang['disabilitas'] : 'TIDAK ADA') : '' }}</td>
-                        <td>{{ $ang ? ($ang['disabilitas'] !== 'Tidak Ada' ? $ang['disabilitas'] : '-') : '' }}</td>
-                        <td>{{ $ang ? strtoupper($ang['pendidikan'] ?? '') : '' }}</td>
-                        <td class="text-left">{{ $ang ? strtoupper($ang['pekerjaan'] ?? '') : '' }}</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                @endfor
-            </tbody>
+        {{-- TANDA TANGAN --}}
+        <table class="signatures">
+            <tr>
+                <td style="width: 35%; text-align: center;">
+                    Mengetahui,<br>
+                    <strong>KEPALA DESA / LURAH {{ $desa }}</strong>
+                    <br><br><br><br><br>
+                    ( .............................................................. )
+                </td>
+                <td style="width: 30%;"></td>
+                <td style="width: 35%; text-align: center;">
+                    {{ $desa }}, {{ date('d F Y', strtotime($submission->created_at ?? now())) }}<br>
+                    <strong>KEPALA KELUARGA / PEMOHON</strong>
+                    <br><br><br><br><br>
+                    <strong><u>( {{ $namaKepalaKeluarga }} )</u></strong>
+                </td>
+            </tr>
         </table>
 
-        {{-- Table 5 (Kolom 34 - 41) --}}
-        <table class="member-table" style="margin-top: 3px;">
-            <thead>
-                <tr>
-                    <th style="width: 25px;">No.</th>
-                    <th style="width: 80px;">Tgl Terbit ITAS<span class="col-num">34</span></th>
-                    <th style="width: 80px;">Tgl Akhir ITAS<span class="col-num">35</span></th>
-                    <th style="width: 90px;">Tempat Datang<span class="col-num">36</span></th>
-                    <th style="width: 85px;">Tgl Kedatangan<span class="col-num">37</span></th>
-                    <th style="width: 110px;">NIK Ibu<span class="col-num">38</span></th>
-                    <th style="width: 130px;">Nama Ibu Kandung<span class="col-num">39</span></th>
-                    <th style="width: 110px;">NIK Ayah<span class="col-num">40</span></th>
-                    <th>Nama Ayah Kandung<span class="col-num">41</span></th>
-                </tr>
-            </thead>
-            <tbody>
-                @for ($i = 0; $i < 10; $i++)
-                    @php $ang = $anggotaList[$i] ?? null; @endphp
-                    <tr>
-                        <td>{{ $i + 1 }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="font-mono">{{ $ang['nik_ibu'] ?? '' }}</td>
-                        <td class="text-left">{{ $ang ? strtoupper($ang['nama_ibu'] ?? '') : '' }}</td>
-                        <td class="font-mono">{{ $ang['nik_ayah'] ?? '' }}</td>
-                        <td class="text-left">{{ $ang ? strtoupper($ang['nama_ayah'] ?? '') : '' }}</td>
-                    </tr>
-                @endfor
-            </tbody>
-        </table>
-
-        {{-- Pernyataan & Tanda Tangan --}}
-        <div class="statement-box">
-            <span class="statement-title">PERNYATAAN</span><br>
-            Demikian Formulir ini saya/ kami isi dengan sesungguhnya. Apabila keterangan tersebut tidak sesuai dengan keadaan sebenarnya,
-            saya bersedia dikenakan sanksi sesuai ketentuan peraturan perundang-undangan yang berlaku.
-        </div>
-
-        <div class="signatures-container">
-            <div class="signature-col">
-                Mengetahui,<br>
-                Kepala Dinas Kependudukan dan Pencatatan Sipil /<br>
-                Camat {{ $submission->kecamatan->nama_kecamatan }}
-                <div class="signature-space"></div>
-                ( ............................................................................ )<br>
-                NIP. ....................................................................
-            </div>
-
-            <div class="signature-col">
-                {{ $submission->kecamatan->nama_kecamatan }}, {{ now()->isoFormat('D MMMM Y') }}<br>
-                Kepala Keluarga / <i>Head of Family</i>
-                <div class="signature-space"></div>
-                <b>( {{ $namaKepala }} )</b>
-            </div>
-        </div>
-
-        <div class="page-footer">
-            <span>Portal Pelayanan Terpadu Kabupaten Tasikmalaya &bull; No. Tiket: {{ $submission->nomor_tiket }}</span>
-            <span>F-1.01 2 of 2</span>
-        </div>
     </div>
 
 </body>

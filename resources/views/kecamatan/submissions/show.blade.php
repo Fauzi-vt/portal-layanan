@@ -27,6 +27,32 @@
         </div>
     </div>
 
+    {{-- Banner Status Verifikasi Desa --}}
+    @if ($submission->verified_desa_at)
+        <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-start gap-3">
+            <span class="text-xl">🏡</span>
+            <div class="text-xs space-y-0.5">
+                <p class="font-bold text-amber-900">
+                    Telah Diverifikasi oleh Kasi Pelayanan Desa {{ $submission->user->desa?->nama_desa ?? '-' }}
+                </p>
+                <p class="text-amber-800">
+                    Waktu verifikasi: <strong>{{ $submission->verified_desa_at->isoFormat('D MMMM Y, HH:mm') }} WIB</strong>
+                    @if ($submission->catatan_desa)
+                        — <span class="italic font-medium">"{{ $submission->catatan_desa }}"</span>
+                    @endif
+                </p>
+            </div>
+        </div>
+    @elseif ($submission->service->requires_desa_approval)
+        <div class="p-4 rounded-2xl bg-slate-100 border border-slate-200 flex items-start gap-3">
+            <span class="text-xl">ℹ️</span>
+            <div class="text-xs space-y-0.5">
+                <p class="font-bold text-slate-800">Layanan ini Mewajibkan Verifikasi Desa</p>
+                <p class="text-slate-600">Layanan ini membutuhkan verifikasi awal administrasi dari Kasi Pelayanan Desa setempat.</p>
+            </div>
+        </div>
+    @endif
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
         {{-- ═══════════════════════════════════════════════════════════════════════
@@ -107,11 +133,14 @@
                                 </div>
 
                                 {{-- File Viewer Link --}}
-                                <div>
+                                <div class="flex items-center gap-2">
                                     @if ($doc && $doc->file_path)
-                                        <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-teal-800 bg-teal-100 hover:bg-teal-200 transition-colors shadow-sm">
+                                        <a href="{{ route('documents.show', $doc) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-teal-800 bg-teal-100 hover:bg-teal-200 transition-colors shadow-sm">
                                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                            <span>Lihat / Buka Berkas</span>
+                                            <span>Lihat Berkas</span>
+                                        </a>
+                                        <a href="{{ route('documents.download', $doc) }}" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors shadow-sm" title="Unduh Berkas">
+                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                         </a>
                                     @else
                                         <span class="text-xs font-bold text-rose-500 bg-rose-50 px-2.5 py-1 rounded-lg border border-rose-200">
@@ -284,6 +313,11 @@
 
         </div>
 
+    </div>
+
+    {{-- Riwayat & Audit Trail Permohonan --}}
+    <div class="mt-8">
+        <x-submission-timeline :histories="$submission->histories" />
     </div>
 
 </div>

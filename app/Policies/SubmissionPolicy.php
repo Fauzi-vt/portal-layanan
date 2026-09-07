@@ -35,14 +35,21 @@ class SubmissionPolicy
             return Response::allow();
         }
 
-        // 2. Admin Kecamatan hanya boleh melihat data dari kecamatan yang sama
+        // 2. Admin Desa hanya boleh melihat data dari desanya sendiri
+        if ($user->isAdminDesa()) {
+            return $user->desa_id === $submission->desa_id
+                ? Response::allow()
+                : Response::deny('Anda tidak memiliki otoritas untuk mengakses data permohonan dari desa lain.');
+        }
+
+        // 3. Admin Kecamatan hanya boleh melihat data dari kecamatan yang sama
         if ($user->isAdminKecamatan()) {
             return $user->kecamatan_id === $submission->kecamatan_id
                 ? Response::allow()
                 : Response::deny('Anda tidak memiliki otoritas untuk mengakses data permohonan dari kecamatan lain.');
         }
 
-        // 3. Warga hanya boleh melihat pengajuan miliknya sendiri
+        // 4. Warga hanya boleh melihat pengajuan miliknya sendiri
         if ($user->isWarga()) {
             return $user->id === $submission->user_id
                 ? Response::allow()
@@ -78,12 +85,18 @@ class SubmissionPolicy
     }
 
     /**
-     * Hak akses memverifikasi / merubah status pengajuan (Admin Kecamatan).
+     * Hak akses memverifikasi / merubah status pengajuan (Admin Kecamatan / Admin Desa).
      */
     public function review(User $user, Submission $submission): Response
     {
         if ($user->isSuperAdmin()) {
             return Response::allow();
+        }
+
+        if ($user->isAdminDesa()) {
+            return $user->desa_id === $submission->desa_id
+                ? Response::allow()
+                : Response::deny('Anda hanya dapat memverifikasi pengajuan di wilayah desa Anda.');
         }
 
         if ($user->isAdminKecamatan()) {
@@ -92,7 +105,25 @@ class SubmissionPolicy
                 : Response::deny('Anda hanya dapat memverifikasi pengajuan di wilayah kecamatan Anda.');
         }
 
-        return Response::deny('Hanya petugas verifikator kecamatan yang berhak melakukan verifikasi berkas.');
+        return Response::deny('Hanya petugas verifikator yang berhak melakukan verifikasi berkas.');
+    }
+
+    /**
+     * Hak akses khusus verifikasi awal berkas oleh Kasi Pelayanan Desa.
+     */
+    public function reviewDesa(User $user, Submission $submission): Response
+    {
+        if ($user->isSuperAdmin()) {
+            return Response::allow();
+        }
+
+        if ($user->isAdminDesa()) {
+            return $user->desa_id === $submission->desa_id
+                ? Response::allow()
+                : Response::deny('Anda hanya berhak memverifikasi berkas warga desa Anda.');
+        }
+
+        return Response::deny('Hanya Kasi Pelayanan Desa yang berhak memverifikasi tahap ini.');
     }
 
     /**

@@ -75,6 +75,7 @@ class SubmissionController extends Controller
             'documents.requirement',
             'user.desa',
             'kecamatan',
+            'histories.user',
         ]);
 
         return view('kecamatan.submissions.show', compact('submission'));

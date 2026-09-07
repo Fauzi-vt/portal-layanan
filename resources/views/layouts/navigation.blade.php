@@ -1,4 +1,4 @@
-<nav class="bg-white border-b border-slate-200 sticky top-0 z-40 portal-shadow" x-data="{ userMenuOpen: false }">
+<nav class="bg-white border-b border-slate-200 sticky top-0 z-40 portal-shadow" x-data="{ userMenuOpen: false, mobileMenuOpen: false }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             {{-- Brand Logo & Title --}}
@@ -17,6 +17,10 @@
                         @elseif (auth()->user()->isAdminKecamatan())
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
                                 🏛️ Admin Kec. {{ auth()->user()->kecamatan?->nama_kecamatan ?? '-' }}
+                            </span>
+                        @elseif (auth()->user()->isAdminDesa())
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+                                🏡 Kasi Pelayanan Desa {{ auth()->user()->desa?->nama_desa ?? '-' }}
                             </span>
                         @else
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-100 text-sky-800 border border-sky-200">
@@ -45,6 +49,17 @@
                             Riwayat & Tracking
                         </a>
 
+                    @elseif (auth()->user()->isAdminDesa())
+                        {{-- Admin Desa Links --}}
+                        <a href="{{ route('desa.dashboard') }}"
+                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('desa.dashboard') ? 'bg-amber-50 text-amber-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                            Dashboard
+                        </a>
+                        <a href="{{ route('desa.submissions.index') }}"
+                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('desa.submissions.*') ? 'bg-amber-50 text-amber-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                            Verifikasi Berkas Desa
+                        </a>
+
                     @elseif (auth()->user()->isAdminKecamatan())
                         {{-- Admin Kecamatan Links --}}
                         <a href="{{ route('kecamatan.dashboard') }}"
@@ -61,6 +76,10 @@
                         <a href="{{ route('superadmin.dashboard') }}"
                            class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('superadmin.dashboard') ? 'bg-purple-50 text-purple-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                             Monitoring Global (39 Kec)
+                        </a>
+                        <a href="{{ route('superadmin.services.index') }}"
+                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('superadmin.services.*') ? 'bg-purple-50 text-purple-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                            Kelola Layanan Publik
                         </a>
                     @endif
 
@@ -126,11 +145,15 @@
                 <a href="{{ route('warga.dashboard') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Dashboard</a>
                 <a href="{{ route('warga.submissions.create') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">+ Ajukan Permohonan</a>
                 <a href="{{ route('warga.submissions.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Riwayat & Tracking</a>
+            @elseif (auth()->user()->isAdminDesa())
+                <a href="{{ route('desa.dashboard') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Dashboard</a>
+                <a href="{{ route('desa.submissions.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Verifikasi Berkas Desa</a>
             @elseif (auth()->user()->isAdminKecamatan())
                 <a href="{{ route('kecamatan.dashboard') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Dashboard</a>
                 <a href="{{ route('kecamatan.submissions.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Meja Verifikasi Berkas</a>
             @elseif (auth()->user()->isSuperAdmin())
                 <a href="{{ route('superadmin.dashboard') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Monitoring Global</a>
+                <a href="{{ route('superadmin.services.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Kelola Layanan Publik</a>
             @endif
 
             <form method="POST" action="{{ route('logout') }}" class="pt-2 border-t border-slate-100">
