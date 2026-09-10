@@ -51,45 +51,214 @@
              3. LIST OF SERVICE ROWS (Horizontal Cards with Amber Chevron >)
         ═══════════════════════════════════════════════════════════════════════ --}}
         <div class="space-y-3.5 pt-1">
+            @php
+                $kkServices = $services->filter(fn($s) => in_array($s->kode_layanan, ['KK_BARU', 'KK_ADD', 'KK_DEL']));
+                $moveServices = $services->filter(fn($s) => in_array($s->kode_layanan, ['PINDAH_SATU_DESA', 'PINDAH_ANTAR_DESA', 'PINDAH_ANTAR_KEC']));
+                $kkRendered = false;
+                $moveRendered = false;
+            @endphp
+
             @foreach ($services as $srv)
-                <a href="{{ route('warga.submissions.create', ['service' => $srv->kode_layanan]) }}"
-                   x-show="searchQuery === '' || '{{ strtolower($srv->nama_layanan . ' ' . $srv->kode_layanan . ' ' . $srv->deskripsi) }}'.includes(searchQuery.toLowerCase())"
-                   class="bg-white rounded-xl border border-slate-200 shadow-xs hover:border-blue-400 hover:shadow-sm p-4 sm:p-5 flex items-center justify-between transition-all group cursor-pointer block">
-                    
-                    {{-- Left: Icon + Title --}}
-                    <div class="flex items-center gap-4">
-                        {{-- Icon Illustration Box --}}
-                        <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-2xl flex-shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
-                            @if ($srv->kode_layanan === 'KIA') 🪪
-                            @elseif ($srv->kode_layanan === 'EKTP') 📸
-                            @elseif ($srv->kode_layanan === 'KK_BARU') 👨‍👩‍👧‍👦
-                            @elseif ($srv->kode_layanan === 'KK_ADD') 👶
-                            @elseif ($srv->kode_layanan === 'KK_DEL') 📋
-                            @elseif ($srv->kode_layanan === 'PINDAH') 🚚
-                            @elseif ($srv->kode_layanan === 'DATANG') 🏠
-                            @elseif ($srv->kode_layanan === 'NIKAH') 💍
-                            @else 📄
-                            @endif
+                @if (in_array($srv->kode_layanan, ['KK_BARU', 'KK_ADD', 'KK_DEL']))
+                    @if (! $kkRendered)
+                        @php $kkRendered = true; @endphp
+
+                        {{-- ── UNIFIED PARENT MENU: LAYANAN KARTU KELUARGA ── --}}
+                        <div x-data="{ openKk: false }"
+                             x-init="$watch('searchQuery', val => { if (val.trim() !== '') openKk = true; })"
+                             x-show="searchQuery === '' || 'layanan kartu keluarga pembuatan kk baru perbaikan kk penambahan anggota keluarga pengurangan anggota keluarga'.includes(searchQuery.toLowerCase())"
+                             class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden transition-all">
+                            
+                            {{-- Main Parent Header --}}
+                            <button type="button"
+                                    @click="openKk = !openKk"
+                                    class="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-slate-50/80 transition-colors group cursor-pointer">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-[#0a2558] border border-blue-100 flex items-center justify-center text-xl font-bold flex-shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                                        <i data-lucide="users" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+                                                Layanan Kartu Keluarga
+                                            </h3>
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-100 text-blue-800">
+                                                3 Sub-Layanan
+                                            </span>
+                                        </div>
+                                        <p class="text-xs text-slate-500 mt-0.5">
+                                            Pengurusan Kartu Keluarga (KK Baru, Penambahan Anggota, Pengurangan Anggota)
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="pl-4 flex-shrink-0 flex items-center gap-2">
+                                    <span class="text-xs font-semibold text-slate-400 group-hover:text-blue-600 hidden sm:inline" x-text="openKk ? 'Tutup Pilihan' : 'Pilih Jenis KK'">Pilih Jenis KK</span>
+                                    <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center transition-transform duration-200"
+                                         :class="{ 'rotate-180 bg-blue-50 text-blue-700': openKk }">
+                                        <i data-lucide="chevron-down" class="w-5 h-5"></i>
+                                    </div>
+                                </div>
+                            </button>
+
+                            {{-- Sub-Menu List Container --}}
+                            <div x-show="openKk"
+                                 x-cloak
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 max-h-0"
+                                 x-transition:enter-end="opacity-100 max-h-[500px]"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 max-h-[500px]"
+                                 x-transition:leave-end="opacity-0 max-h-0"
+                                 class="border-t border-slate-100 bg-slate-50/50 p-3 sm:p-4 space-y-2.5">
+
+                                @foreach ($kkServices as $kkSrv)
+                                    <a href="{{ route('warga.submissions.create', ['service' => $kkSrv->kode_layanan]) }}"
+                                       x-show="searchQuery === '' || '{{ strtolower($kkSrv->nama_layanan . ' ' . $kkSrv->kode_layanan . ' ' . $kkSrv->deskripsi) }}'.includes(searchQuery.toLowerCase())"
+                                       class="bg-white rounded-lg border border-slate-200 shadow-2xs hover:border-blue-500 hover:shadow-xs p-3.5 sm:p-4 flex items-center justify-between transition-all group cursor-pointer block">
+                                        <div class="flex items-center gap-3.5">
+                                            <div class="w-9 h-9 rounded-lg bg-blue-50 text-[#0a2558] border border-blue-100 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                                                @if ($kkSrv->kode_layanan === 'KK_BARU') <i data-lucide="users" class="w-4 h-4"></i>
+                                                @elseif ($kkSrv->kode_layanan === 'KK_ADD') <i data-lucide="user-plus" class="w-4 h-4"></i>
+                                                @elseif ($kkSrv->kode_layanan === 'KK_DEL') <i data-lucide="user-minus" class="w-4 h-4"></i>
+                                                @endif
+                                            </div>
+                                            <div>
+                                                <h4 class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-blue-700 transition-colors">
+                                                    {{ $kkSrv->nama_layanan }}
+                                                </h4>
+                                                <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5 line-clamp-1">
+                                                    {{ $kkSrv->deskripsi }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="pl-3 flex-shrink-0">
+                                            <i data-lucide="arrow-right" class="w-4 h-4 text-amber-500 group-hover:translate-x-1 transition-transform"></i>
+                                        </div>
+                                    </a>
+                                @endforeach
+
+                            </div>
+                        </div>
+                    @endif
+                @elseif (in_array($srv->kode_layanan, ['PINDAH_SATU_DESA', 'PINDAH_ANTAR_DESA', 'PINDAH_ANTAR_KEC', 'PINDAH', 'DATANG']))
+                    @if (! $moveRendered)
+                        @php $moveRendered = true; @endphp
+
+                        {{-- ── UNIFIED PARENT MENU: LAYANAN PERPINDAHAN PENDUDUK ── --}}
+                        <div x-data="{ openPindah: false }"
+                             x-init="$watch('searchQuery', val => { if (val.trim() !== '') openPindah = true; })"
+                             x-show="searchQuery === '' || 'layanan perpindahan penduduk permohonan pindah datang wni satu desa antar desa kecamatan'.includes(searchQuery.toLowerCase())"
+                             class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden transition-all">
+                            
+                            {{-- Main Parent Header --}}
+                            <button type="button"
+                                    @click="openPindah = !openPindah"
+                                    class="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-slate-50/80 transition-colors group cursor-pointer">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-[#0a2558] border border-blue-100 flex items-center justify-center text-xl font-bold flex-shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                                        <i data-lucide="truck" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+                                                Layanan Perpindahan Penduduk
+                                            </h3>
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-100 text-blue-800">
+                                                3 Sub-Layanan
+                                            </span>
+                                        </div>
+                                        <p class="text-xs text-slate-500 mt-0.5">
+                                            Pengurusan Surat Permohonan Pindah Datang WNI (Satu Desa, Antar Desa, Antar Kecamatan)
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="pl-4 flex-shrink-0 flex items-center gap-2">
+                                    <span class="text-xs font-semibold text-slate-400 group-hover:text-blue-600 hidden sm:inline" x-text="openPindah ? 'Tutup Pilihan' : 'Pilih Jenis Layanan'">Pilih Jenis Layanan</span>
+                                    <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center transition-transform duration-200"
+                                         :class="{ 'rotate-180 bg-blue-50 text-blue-700': openPindah }">
+                                        <i data-lucide="chevron-down" class="w-5 h-5"></i>
+                                    </div>
+                                </div>
+                            </button>
+
+                            {{-- Sub-Menu List Container --}}
+                            <div x-show="openPindah"
+                                 x-cloak
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 max-h-0"
+                                 x-transition:enter-end="opacity-100 max-h-[500px]"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 max-h-[500px]"
+                                 x-transition:leave-end="opacity-0 max-h-0"
+                                 class="border-t border-slate-100 bg-slate-50/50 p-3 sm:p-4 space-y-2.5">
+
+                                @foreach ($moveServices as $moveSrv)
+                                    <a href="{{ route('warga.submissions.create', ['service' => $moveSrv->kode_layanan]) }}"
+                                       x-show="searchQuery === '' || '{{ strtolower($moveSrv->nama_layanan . ' ' . $moveSrv->kode_layanan . ' ' . $moveSrv->deskripsi) }}'.includes(searchQuery.toLowerCase())"
+                                       class="bg-white rounded-lg border border-slate-200 shadow-2xs hover:border-blue-500 hover:shadow-xs p-3.5 sm:p-4 flex items-center justify-between transition-all group cursor-pointer block">
+                                        <div class="flex items-center gap-3.5">
+                                            <div class="w-9 h-9 rounded-lg bg-blue-50 text-[#0a2558] border border-blue-100 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                                                @if ($moveSrv->kode_layanan === 'PINDAH_SATU_DESA') <i data-lucide="home" class="w-4 h-4"></i>
+                                                @elseif ($moveSrv->kode_layanan === 'PINDAH_ANTAR_DESA') <i data-lucide="building-2" class="w-4 h-4"></i>
+                                                @elseif ($moveSrv->kode_layanan === 'PINDAH_ANTAR_KEC') <i data-lucide="map" class="w-4 h-4"></i>
+                                                @else <i data-lucide="truck" class="w-4 h-4"></i>
+                                                @endif
+                                            </div>
+                                            <div>
+                                                <h4 class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-blue-700 transition-colors">
+                                                    {{ $moveSrv->nama_layanan }}
+                                                </h4>
+                                                <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5 line-clamp-1">
+                                                    {{ $moveSrv->deskripsi }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="pl-3 flex-shrink-0">
+                                            <i data-lucide="arrow-right" class="w-4 h-4 text-amber-500 group-hover:translate-x-1 transition-transform"></i>
+                                        </div>
+                                    </a>
+                                @endforeach
+
+                            </div>
+                        </div>
+                    @endif
+                @else
+                    {{-- Standard Individual Service Card --}}
+                    <a href="{{ route('warga.submissions.create', ['service' => $srv->kode_layanan]) }}"
+                       x-show="searchQuery === '' || '{{ strtolower($srv->nama_layanan . ' ' . $srv->kode_layanan . ' ' . $srv->deskripsi) }}'.includes(searchQuery.toLowerCase())"
+                       class="bg-white rounded-xl border border-slate-200 shadow-xs hover:border-blue-400 hover:shadow-sm p-4 sm:p-5 flex items-center justify-between transition-all group cursor-pointer block">
+                        
+                        {{-- Left: Icon + Title --}}
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-105 transition-transform shadow-2xs text-[#0a2558]">
+                                @if ($srv->kode_layanan === 'KIA') <i data-lucide="contact" class="w-6 h-6"></i>
+                                @elseif ($srv->kode_layanan === 'EKTP') <i data-lucide="camera" class="w-6 h-6"></i>
+                                @elseif ($srv->kode_layanan === 'NIKAH') <i data-lucide="heart" class="w-6 h-6"></i>
+                                @else <i data-lucide="file-text" class="w-6 h-6"></i>
+                                @endif
+                            </div>
+
+                            <div>
+                                <h3 class="text-sm sm:text-base font-semibold text-slate-800 group-hover:text-blue-700 transition-colors">
+                                    {{ $srv->nama_layanan }}
+                                </h3>
+                                <p class="text-xs text-slate-500 mt-0.5 line-clamp-1">
+                                    {{ $srv->deskripsi }}
+                                </p>
+                            </div>
                         </div>
 
-                        <div>
-                            <h3 class="text-sm sm:text-base font-semibold text-slate-800 group-hover:text-blue-700 transition-colors">
-                                {{ $srv->nama_layanan }}
-                            </h3>
-                            <p class="text-xs text-slate-500 mt-0.5 line-clamp-1">
-                                {{ $srv->deskripsi }}
-                            </p>
+                        {{-- Right: Amber Gold Chevron Arrow --}}
+                        <div class="pl-4 flex-shrink-0">
+                            <svg class="w-6 h-6 text-amber-500 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+                            </svg>
                         </div>
-                    </div>
 
-                    {{-- Right: Amber Gold Chevron Arrow (Exact match with screenshot) --}}
-                    <div class="pl-4 flex-shrink-0">
-                        <svg class="w-6 h-6 text-amber-500 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </div>
-
-                </a>
+                    </a>
+                @endif
             @endforeach
         </div>
 
@@ -105,16 +274,16 @@
             {{-- Selected Service Card --}}
             <div class="bg-white rounded-xl border border-slate-200 shadow-xs p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center text-2xl font-bold flex-shrink-0">
-                        @if ($service->kode_layanan === 'KIA') 🪪
-                        @elseif ($service->kode_layanan === 'EKTP') 📸
-                        @elseif ($service->kode_layanan === 'KK_BARU') 👨‍👩‍👧‍👦
-                        @elseif ($service->kode_layanan === 'KK_ADD') 👶
-                        @elseif ($service->kode_layanan === 'KK_DEL') 📋
-                        @elseif ($service->kode_layanan === 'PINDAH') 🚚
-                        @elseif ($service->kode_layanan === 'DATANG') 🏠
-                        @elseif ($service->kode_layanan === 'NIKAH') 💍
-                        @else 📄
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center text-xl font-bold flex-shrink-0 border border-blue-100">
+                        @if ($service->kode_layanan === 'KIA') <i data-lucide="contact" class="w-6 h-6"></i>
+                        @elseif ($service->kode_layanan === 'EKTP') <i data-lucide="camera" class="w-6 h-6"></i>
+                        @elseif ($service->kode_layanan === 'KK_BARU') <i data-lucide="users" class="w-6 h-6"></i>
+                        @elseif ($service->kode_layanan === 'KK_ADD') <i data-lucide="user-plus" class="w-6 h-6"></i>
+                        @elseif ($service->kode_layanan === 'KK_DEL') <i data-lucide="user-minus" class="w-6 h-6"></i>
+                        @elseif ($service->kode_layanan === 'PINDAH') <i data-lucide="truck" class="w-6 h-6"></i>
+                        @elseif ($service->kode_layanan === 'DATANG') <i data-lucide="home" class="w-6 h-6"></i>
+                        @elseif ($service->kode_layanan === 'NIKAH') <i data-lucide="heart" class="w-6 h-6"></i>
+                        @else <i data-lucide="file-text" class="w-6 h-6"></i>
                         @endif
                     </div>
                     <div>
@@ -199,8 +368,8 @@
                 @endif
             </div>
 
-            {{-- Form Section: Formulir Pembuatan Kartu Keluarga Baru (Jika Layanan KK Baru / Terkait KK) --}}
-            @if ($service->kode_layanan === 'KK_BARU' || $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01') || str_contains($r->nama_persyaratan, 'F-1.15') || str_contains($r->nama_persyaratan, 'Kartu Keluarga')))
+            {{-- Form Section: Formulir Pembuatan Kartu Keluarga Baru (Khusus Layanan KK Baru) --}}
+            @if (!str_starts_with($service->kode_layanan, 'PINDAH') && $service->kode_layanan !== 'DATANG' && ($service->kode_layanan === 'KK_BARU' || $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01') || str_contains($r->nama_persyaratan, 'F-1.15'))))
                 <div class="space-y-3">
                     <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
                         <span>2. Pengisian Formulir Pembuatan Kartu Keluarga Baru</span>
@@ -210,11 +379,26 @@
                 </div>
             @endif
 
+            {{-- Form Section: Formulir Pindah Datang WNI (Satu Desa, Antar Desa, Antar Kecamatan) --}}
+            @if ($service->kode_layanan === 'PINDAH_SATU_DESA')
+                <div class="space-y-3">
+                    @include('warga.submissions.partials.form-pindah-satu-desa')
+                </div>
+            @elseif ($service->kode_layanan === 'PINDAH_ANTAR_DESA')
+                <div class="space-y-3">
+                    @include('warga.submissions.partials.form-pindah-antar-desa')
+                </div>
+            @elseif ($service->kode_layanan === 'PINDAH_ANTAR_KEC' || $service->kode_layanan === 'PINDAH' || $service->kode_layanan === 'DATANG')
+                <div class="space-y-3">
+                    @include('warga.submissions.partials.form-pindah-antar-kecamatan')
+                </div>
+            @endif
+
             {{-- Form Section: Upload Persyaratan --}}
             <div class="bg-white rounded-xl border border-slate-200 shadow-xs p-6 space-y-5">
                 <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
                     <h3 class="text-sm font-bold text-slate-900">
-                        {{ ($service->kode_layanan === 'KK_BARU' || $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01') || str_contains($r->nama_persyaratan, 'F-1.15'))) ? '3. Dokumen Persyaratan & Berkas Pendukung' : '2. Dokumen Persyaratan' }}
+                        {{ ($service->kode_layanan === 'KK_BARU' || str_starts_with($service->kode_layanan, 'PINDAH') || $service->kode_layanan === 'DATANG' || $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01') || str_contains($r->nama_persyaratan, 'F-1.15'))) ? '3. Dokumen Persyaratan & Berkas Pendukung' : '2. Dokumen Persyaratan' }}
                     </h3>
                     <span class="text-xs text-slate-400">PDF, JPG, PNG (Maks 5 MB)</span>
                 </div>

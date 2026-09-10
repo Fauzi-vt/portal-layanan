@@ -286,12 +286,16 @@
 
                     <div class="grid grid-cols-2 gap-3 pt-4">
                         <div class="p-3 bg-slate-50 rounded-2xl text-center border border-slate-100">
-                            <span class="text-2xl block mb-1">🏛️</span>
+                            <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center mx-auto mb-1">
+                                <i data-lucide="building-2" class="w-4 h-4"></i>
+                            </div>
                             <span class="text-[11px] font-bold text-slate-800 block">39 Kecamatan</span>
                             <span class="text-[9px] text-slate-400">Terintegrasi</span>
                         </div>
                         <div class="p-3 bg-slate-50 rounded-2xl text-center border border-slate-100">
-                            <span class="text-2xl block mb-1">🛡️</span>
+                            <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center mx-auto mb-1">
+                                <i data-lucide="shield-check" class="w-4 h-4"></i>
+                            </div>
                             <span class="text-[11px] font-bold text-slate-800 block">Keamanan Data</span>
                             <span class="text-[9px] text-slate-400">Terenkripsi</span>
                         </div>
@@ -315,11 +319,15 @@
 
                     <ul class="space-y-2.5 text-xs font-medium text-slate-900">
                         <li class="flex items-start gap-2">
-                            <span class="w-4 h-4 rounded-full bg-white text-emerald-700 flex items-center justify-center font-bold text-[10px] flex-shrink-0 mt-0.5 shadow-xs">✓</span>
+                            <span class="w-4 h-4 rounded-full bg-white text-emerald-700 flex items-center justify-center font-bold text-[10px] flex-shrink-0 mt-0.5 shadow-xs">
+                                <i data-lucide="check" class="w-3 h-3 text-emerald-700"></i>
+                            </span>
                             <span>Diatur dalam <strong>Undang-Undang No. 14 Tahun 2008</strong> tentang Keterbukaan Informasi Publik.</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <span class="w-4 h-4 rounded-full bg-white text-emerald-700 flex items-center justify-center font-bold text-[10px] flex-shrink-0 mt-0.5 shadow-xs">✓</span>
+                            <span class="w-4 h-4 rounded-full bg-white text-emerald-700 flex items-center justify-center font-bold text-[10px] flex-shrink-0 mt-0.5 shadow-xs">
+                                <i data-lucide="check" class="w-3 h-3 text-emerald-700"></i>
+                            </span>
                             <span>PPID Diskominfo Kab. Tasikmalaya menyediakan dan melayani permohonan informasi publik secara cepat dan transparan.</span>
                         </li>
                     </ul>
@@ -334,7 +342,9 @@
 
                 {{-- Officer Photo / Avatar Representation --}}
                 <div class="flex-shrink-0 relative z-10 w-36 h-44 rounded-2xl bg-white/30 border border-white/50 flex flex-col items-center justify-center text-center p-3 shadow-sm backdrop-blur-xs">
-                    <span class="text-5xl block mb-2">👩‍💼</span>
+                    <div class="w-12 h-12 rounded-2xl bg-white/40 text-slate-950 flex items-center justify-center mb-2 shadow-xs">
+                        <i data-lucide="headset" class="w-7 h-7"></i>
+                    </div>
                     <span class="text-[11px] font-extrabold text-slate-950">Petugas PPID</span>
                     <span class="text-[10px] text-slate-800 font-medium">Kab. Tasikmalaya</span>
                 </div>
@@ -344,8 +354,8 @@
             <div id="pengaduan" class="md:col-span-3 bg-white rounded-3xl p-6 shadow-xl border border-slate-100 flex flex-col justify-between">
                 <div>
                     <div class="flex items-center gap-3">
-                        <div class="w-12 h-14 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center text-2xl flex-shrink-0">
-                            📢
+                        <div class="w-12 h-14 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 flex-shrink-0">
+                            <i data-lucide="megaphone" class="w-6 h-6"></i>
                         </div>
                         <div>
                             <h3 class="text-sm font-extrabold text-rose-950 leading-snug">
@@ -384,23 +394,91 @@
         </div>
 
         @php
-            $services = $services ?? collect();
+            if (!isset($services) || $services->isEmpty()) {
+                $services = collect([
+                    (object)[
+                        'kode_layanan' => 'KIA',
+                        'nama_layanan' => 'Pembuatan Kartu Identitas Anak (KIA)',
+                        'deskripsi' => 'Pengajuan penerbitan Kartu Identitas Anak untuk anak usia 0-17 tahun kurang satu hari yang belum menikah.',
+                        'jenis_proses' => \App\Enums\ServiceProcessType::FullDigital,
+                        'req_count' => 4,
+                    ],
+                    (object)[
+                        'kode_layanan' => 'EKTP',
+                        'nama_layanan' => 'Perekaman E-KTP (KTP Elektronik)',
+                        'deskripsi' => 'Pendaftaran online dan booking jadwal antrean perekaman data biometrik (sidik jari, iris mata, foto) di kantor kecamatan.',
+                        'jenis_proses' => \App\Enums\ServiceProcessType::Hybrid,
+                        'req_count' => 2,
+                    ],
+                    (object)[
+                        'kode_layanan' => 'KK_BARU',
+                        'nama_layanan' => 'Pembuatan Kartu Keluarga (KK) Baru',
+                        'deskripsi' => 'Pengajuan penerbitan Kartu Keluarga baru untuk pasangan yang baru menikah atau pembentukan keluarga baru.',
+                        'jenis_proses' => \App\Enums\ServiceProcessType::Hybrid,
+                        'req_count' => 4,
+                    ],
+                    (object)[
+                        'kode_layanan' => 'KK_ADD',
+                        'nama_layanan' => 'Perbaikan KK - Penambahan Anggota Keluarga',
+                        'deskripsi' => 'Pengajuan penambahan anggota keluarga pada KK yang sudah ada (kelahiran anak, kepindahan masuk, dll.).',
+                        'jenis_proses' => \App\Enums\ServiceProcessType::FullDigital,
+                        'req_count' => 3,
+                    ],
+                    (object)[
+                        'kode_layanan' => 'KK_DEL',
+                        'nama_layanan' => 'Perbaikan KK - Pengurangan Anggota Keluarga',
+                        'deskripsi' => 'Pengajuan pengurangan anggota keluarga pada Kartu Keluarga karena alasan meninggal dunia atau perceraian.',
+                        'jenis_proses' => \App\Enums\ServiceProcessType::FullDigital,
+                        'req_count' => 3,
+                    ],
+                    (object)[
+                        'kode_layanan' => 'PINDAH_SATU_DESA',
+                        'nama_layanan' => 'Permohonan Pindah Datang WNI (Satu Desa)',
+                        'deskripsi' => 'Pengisian formulir permohonan perpindahan alamat domisili dalam wilayah desa/kelurahan yang sama.',
+                        'jenis_proses' => \App\Enums\ServiceProcessType::FullDigital,
+                        'req_count' => 3,
+                    ],
+                    (object)[
+                        'kode_layanan' => 'PINDAH_ANTAR_DESA',
+                        'nama_layanan' => 'Permohonan Pindah Datang WNI (Antar Desa Satu Kecamatan)',
+                        'deskripsi' => 'Pengisian formulir permohonan perpindahan alamat domisili antar desa/kelurahan dalam wilayah kecamatan yang sama.',
+                        'jenis_proses' => \App\Enums\ServiceProcessType::Hybrid,
+                        'req_count' => 4,
+                    ],
+                    (object)[
+                        'kode_layanan' => 'PINDAH_ANTAR_KEC',
+                        'nama_layanan' => 'Permohonan Pindah Datang WNI (Antar Kecamatan Satu Kabupaten)',
+                        'deskripsi' => 'Pengisian formulir permohonan perpindahan alamat domisili antar kecamatan dalam wilayah Kabupaten Tasikmalaya.',
+                        'jenis_proses' => \App\Enums\ServiceProcessType::Hybrid,
+                        'req_count' => 4,
+                    ],
+                    (object)[
+                        'kode_layanan' => 'NIKAH',
+                        'nama_layanan' => 'Surat Dispensasi / Rekomendasi Nikah',
+                        'deskripsi' => 'Pengajuan Surat Rekomendasi/Dispensasi Pernikahan bagi warga yang akan melangsungkan akad di luar kecamatan atau waktu mendesak.',
+                        'jenis_proses' => \App\Enums\ServiceProcessType::Hybrid,
+                        'req_count' => 5,
+                    ],
+                ]);
+            }
         @endphp
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach ($services as $srv)
                 <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs hover:shadow-xl hover:border-blue-500 transition-all group flex flex-col justify-between">
                     <div>
-                        <div class="w-12 h-12 rounded-2xl bg-blue-50 text-[#0a2558] flex items-center justify-center text-2xl font-bold mb-4 group-hover:scale-105 transition-transform border border-blue-100">
-                            @if ($srv->kode_layanan === 'KIA') 🪪
-                            @elseif ($srv->kode_layanan === 'EKTP') 📸
-                            @elseif ($srv->kode_layanan === 'KK_BARU') 👨‍👩‍👧‍👦
-                            @elseif ($srv->kode_layanan === 'KK_ADD') 👶
-                            @elseif ($srv->kode_layanan === 'KK_DEL') 📋
-                            @elseif ($srv->kode_layanan === 'PINDAH') 🚚
-                            @elseif ($srv->kode_layanan === 'DATANG') 🏠
-                            @elseif ($srv->kode_layanan === 'NIKAH') 💍
-                            @else 📄
+                        <div class="w-12 h-12 rounded-2xl bg-blue-50 text-[#0a2558] flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-105 transition-transform border border-blue-100">
+                            @if ($srv->kode_layanan === 'KIA') <i data-lucide="contact" class="w-6 h-6"></i>
+                            @elseif ($srv->kode_layanan === 'EKTP') <i data-lucide="camera" class="w-6 h-6"></i>
+                            @elseif ($srv->kode_layanan === 'KK_BARU') <i data-lucide="users" class="w-6 h-6"></i>
+                            @elseif ($srv->kode_layanan === 'KK_ADD') <i data-lucide="user-plus" class="w-6 h-6"></i>
+                            @elseif ($srv->kode_layanan === 'KK_DEL') <i data-lucide="user-minus" class="w-6 h-6"></i>
+                            @elseif ($srv->kode_layanan === 'PINDAH_SATU_DESA') <i data-lucide="home" class="w-6 h-6"></i>
+                            @elseif ($srv->kode_layanan === 'PINDAH_ANTAR_DESA') <i data-lucide="building-2" class="w-6 h-6"></i>
+                            @elseif ($srv->kode_layanan === 'PINDAH_ANTAR_KEC' || $srv->kode_layanan === 'PINDAH') <i data-lucide="map" class="w-6 h-6"></i>
+                            @elseif ($srv->kode_layanan === 'DATANG') <i data-lucide="truck" class="w-6 h-6"></i>
+                            @elseif ($srv->kode_layanan === 'NIKAH') <i data-lucide="heart" class="w-6 h-6"></i>
+                            @else <i data-lucide="file-text" class="w-6 h-6"></i>
                             @endif
                         </div>
                         <span class="inline-block px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase border {{ $srv->jenis_proses->badgeColor() }}">
@@ -415,7 +493,9 @@
                     </div>
 
                     <div class="mt-6 pt-3.5 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-xs text-slate-400 font-medium">{{ $srv->requirements()->count() }} Syarat Berkas</span>
+                        <span class="text-xs text-slate-400 font-medium">
+                            {{ method_exists($srv, 'requirements') ? $srv->requirements()->count() : ($srv->req_count ?? 0) }} Syarat Berkas
+                        </span>
                         <a href="{{ route('login') }}" class="text-xs font-bold text-[#0a2558] group-hover:text-blue-700 flex items-center gap-1 group-hover:translate-x-1 transition-all">
                             <span>Ajukan</span>
                             <i data-lucide="arrow-right" class="w-3 h-3"></i>

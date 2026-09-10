@@ -198,36 +198,51 @@ class KecamatanDesaSeeder extends Seeder
                 ],
             ],
 
-            // 6. Surat Pindah Antar Kecamatan (Hybrid)
+            // 6. Permohonan Pindah Datang WNI (Satu Desa)
             [
-                'kode_layanan'           => 'PINDAH',
-                'nama_layanan'           => 'Surat Pindah Antar Kecamatan (SKPWNI)',
-                'deskripsi'              => 'Pengajuan Surat Keterangan Pindah Warga Negara Indonesia (SKPWNI) antar wilayah kecamatan dalam Kabupaten Tasikmalaya.',
+                'kode_layanan'           => 'PINDAH_SATU_DESA',
+                'nama_layanan'           => 'Permohonan Pindah Datang WNI (Satu Desa)',
+                'deskripsi'              => 'Pengajuan permohonan pindah datang WNI dalam satu wilayah desa/kelurahan yang sama.',
                 'jenis_proses'           => ServiceProcessType::Hybrid,
                 'template_formulir_path' => 'templates/f108_surat_pindah.pdf',
                 'ikon'                   => 'truck',
                 'urutan'                 => 6,
                 'requirements'           => [
-                    ['nama' => 'Formulir Permohonan Pindah Desa (F-1.08)', 'deskripsi' => 'Unduh formulir, tandatangani di kantor Desa asal, lalu unggah hasil scan bertanda tangan & stempel basah', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
-                    ['nama' => 'Kartu Keluarga Asli', 'deskripsi' => 'Scan Kartu Keluarga asal', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
-                    ['nama' => 'e-KTP Pemohon & Anggota yang Pindah', 'deskripsi' => 'Scan e-KTP seluruh anggota keluarga yang ikut pindah domisili', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
-                    ['nama' => 'Pas Foto Ukuran 3x4 (2 Lembar)', 'deskripsi' => 'Foto berwarna terbaru dengan latar belakang merah atau biru', 'wajib' => true, 'formats' => ['jpg', 'jpeg', 'png']],
+                    ['nama' => 'Kartu Keluarga (KK) Asli Pemohon', 'deskripsi' => 'Scan/Foto Kartu Keluarga asal yang mencantumkan nama pemohon', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
+                    ['nama' => 'e-KTP Pemohon & Anggota Pindah', 'deskripsi' => 'Scan e-KTP pemohon dan seluruh anggota keluarga yang ikut pindah alamat', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
+                    ['nama' => 'Surat Pengantar RT/RW / Kepala Dusun', 'deskripsi' => 'Scan surat pengantar mengenai perpindahan RT/RW atau dusun', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
                 ],
             ],
 
-            // 7. Surat Datang Antar Kecamatan (Hybrid)
+            // 7. Permohonan Pindah Datang WNI (Antar Desa Satu Kecamatan)
             [
-                'kode_layanan'           => 'DATANG',
-                'nama_layanan'           => 'Surat Datang Antar Kecamatan',
-                'deskripsi'              => 'Pengajuan Surat Keterangan Datang bagi warga yang pindah domisili masuk antar kecamatan dalam Kabupaten Tasikmalaya.',
+                'kode_layanan'           => 'PINDAH_ANTAR_DESA',
+                'nama_layanan'           => 'Permohonan Pindah Datang WNI (Antar Desa Satu Kecamatan)',
+                'deskripsi'              => 'Pengajuan permohonan pindah datang WNI antar desa/kelurahan dalam satu wilayah kecamatan yang sama.',
                 'jenis_proses'           => ServiceProcessType::Hybrid,
-                'template_formulir_path' => null,
-                'ikon'                   => 'inbox',
+                'template_formulir_path' => 'templates/f108_surat_pindah.pdf',
+                'ikon'                   => 'truck',
                 'urutan'                 => 7,
                 'requirements'           => [
-                    ['nama' => 'Surat Pindah dari Kecamatan Asal', 'deskripsi' => 'Unggah scan/foto Surat Keterangan Pindah (SKPWNI) dari kecamatan asal', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
-                    ['nama' => 'Kartu Keluarga Asli', 'deskripsi' => 'Scan/foto asli Kartu Keluarga (KK)', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
-                    ['nama' => 'E-KTP Pemohon', 'deskripsi' => 'Scan/foto Kartu Tanda Penduduk Elektronik (e-KTP) pemohon', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
+                    ['nama' => 'Kartu Keluarga (KK) Asli Pemohon', 'deskripsi' => 'Scan Kartu Keluarga asal pemohon', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
+                    ['nama' => 'Surat Keterangan Pindah Desa Asal', 'deskripsi' => 'Scan Surat Pengantar Pindah dari Kepala Desa / Lurah asal', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
+                    ['nama' => 'e-KTP Pemohon & Anggota yang Pindah', 'deskripsi' => 'Scan e-KTP anggota keluarga yang ikut pindah domisili', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
+                ],
+            ],
+
+            // 8. Permohonan Pindah Datang WNI (Antar Kecamatan Satu Kabupaten)
+            [
+                'kode_layanan'           => 'PINDAH_ANTAR_KEC',
+                'nama_layanan'           => 'Permohonan Pindah Datang WNI (Antar Kecamatan Satu Kabupaten)',
+                'deskripsi'              => 'Pengajuan permohonan pindah datang WNI antar wilayah kecamatan dalam Kabupaten Tasikmalaya.',
+                'jenis_proses'           => ServiceProcessType::Hybrid,
+                'template_formulir_path' => 'templates/f108_surat_pindah.pdf',
+                'ikon'                   => 'truck',
+                'urutan'                 => 8,
+                'requirements'           => [
+                    ['nama' => 'Surat Keterangan Pindah (SKPWNI) dari Kecamatan Asal', 'deskripsi' => 'Scan/foto resmi Surat Keterangan Pindah WNI (SKPWNI) dari kecamatan asal', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
+                    ['nama' => 'Kartu Keluarga (KK) Asli Pemohon', 'deskripsi' => 'Scan Kartu Keluarga asal', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
+                    ['nama' => 'e-KTP Pemohon & Anggota yang Pindah', 'deskripsi' => 'Scan e-KTP pemohon dan seluruh anggota keluarga', 'wajib' => true, 'formats' => ['pdf', 'jpg', 'jpeg', 'png']],
                 ],
             ],
 
