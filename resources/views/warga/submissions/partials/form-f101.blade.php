@@ -98,36 +98,50 @@
                 {{-- Kolom 1: RT / RW --}}
                 <div>
                     <label class="block font-bold text-slate-800 mb-1">
-                        RT / RW <span class="text-rose-600">*</span>
+                        RT / RW <span class="text-rose-600 font-bold" aria-hidden="true">*</span>
                     </label>
-                    <div class="flex items-center gap-2">
-                        <input type="text"
-                               name="form_data[f101][rt]"
-                               x-model="meta.rt"
-                               maxlength="3"
-                               placeholder="RT"
-                               class="w-full font-mono text-center text-xs font-bold rounded-xl border-slate-300 py-2.5 px-2 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-600">
-                        <span class="text-slate-400 font-bold">/</span>
-                        <input type="text"
-                               name="form_data[f101][rw]"
-                               x-model="meta.rw"
-                               maxlength="3"
-                               placeholder="RW"
-                               class="w-full font-mono text-center text-xs font-bold rounded-xl border-slate-300 py-2.5 px-2 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-600">
+                    <div class="flex items-center gap-1.5 p-1 bg-white rounded-xl border border-slate-300 shadow-2xs">
+                        <div class="flex-1 flex items-center gap-1 pl-1.5">
+                            <span class="text-[10px] font-bold text-slate-500 shrink-0">RT</span>
+                            <input type="text"
+                                   name="form_data[f101][rt]"
+                                   x-model="meta.rt"
+                                   @input="meta.rt = ($event.target.value || '').replace(/\D/g, '').slice(0, 3)"
+                                   @blur="meta.rt = meta.rt ? meta.rt.padStart(3, '0').slice(-3) : '001'"
+                                   inputmode="numeric"
+                                   maxlength="3"
+                                   placeholder="001"
+                                   class="w-full font-mono text-center text-xs font-bold py-1.5 px-1 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 focus:bg-white focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none">
+                        </div>
+                        <span class="text-slate-300 font-bold">/</span>
+                        <div class="flex-1 flex items-center gap-1 pr-1.5">
+                            <span class="text-[10px] font-bold text-slate-500 shrink-0">RW</span>
+                            <input type="text"
+                                   name="form_data[f101][rw]"
+                                   x-model="meta.rw"
+                                   @input="meta.rw = ($event.target.value || '').replace(/\D/g, '').slice(0, 3)"
+                                   @blur="meta.rw = meta.rw ? meta.rw.padStart(3, '0').slice(-3) : '001'"
+                                   inputmode="numeric"
+                                   maxlength="3"
+                                   placeholder="001"
+                                   class="w-full font-mono text-center text-xs font-bold py-1.5 px-1 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 focus:bg-white focus:ring-1 focus:ring-blue-600 focus:border-blue-600 focus:outline-none">
+                        </div>
                     </div>
                 </div>
 
                 {{-- Kolom 2: Kode Pos --}}
                 <div>
                     <label class="block font-bold text-slate-800 mb-1">
-                        Kode Pos <span class="text-rose-600">*</span>
+                        Kode Pos <span class="text-rose-600 font-bold" aria-hidden="true">*</span>
                     </label>
                     <input type="text"
                            name="form_data[f101][kode_pos]"
                            x-model="meta.kode_pos"
+                           @input="meta.kode_pos = ($event.target.value || '').replace(/\D/g, '').slice(0, 5)"
+                           inputmode="numeric"
                            maxlength="5"
-                           placeholder="46182"
-                           class="w-full font-mono text-center text-xs font-bold rounded-xl border-slate-300 py-2.5 px-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-600">
+                           placeholder="Contoh: 46182"
+                           class="w-full font-mono text-center text-xs font-bold rounded-xl border border-slate-300 py-2.5 px-3 bg-white text-slate-900 placeholder:font-sans placeholder:font-normal placeholder:text-slate-400 focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 focus:outline-none shadow-2xs">
                 </div>
 
                 {{-- Kolom 3: Kecamatan (Otomatis memicu Kabupaten, Provinsi, Negara) --}}

@@ -59,6 +59,10 @@
                            class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('desa.submissions.*') ? 'bg-amber-50 text-amber-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                             Verifikasi Berkas Desa
                         </a>
+                        <a href="{{ route('desa.wilayah.index') }}"
+                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('desa.wilayah.*') ? 'bg-amber-50 text-amber-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                            Data Wilayah Desa
+                        </a>
 
                     @elseif (auth()->user()->isAdminKecamatan())
                         {{-- Admin Kecamatan Links --}}
@@ -69,6 +73,10 @@
                         <a href="{{ route('kecamatan.submissions.index') }}"
                            class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('kecamatan.submissions.*') ? 'bg-emerald-50 text-emerald-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                             Meja Verifikasi Berkas
+                        </a>
+                        <a href="{{ route('kecamatan.wilayah.index') }}"
+                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('kecamatan.wilayah.*') ? 'bg-emerald-50 text-emerald-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                            Kewilayahan & Desa
                         </a>
 
                     @elseif (auth()->user()->isSuperAdmin())
@@ -81,6 +89,10 @@
                            class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('superadmin.services.*') ? 'bg-purple-50 text-purple-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                             Kelola Layanan Publik
                         </a>
+                        <a href="{{ route('superadmin.wilayah.index') }}"
+                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('superadmin.wilayah.*') ? 'bg-purple-50 text-purple-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                            Master Wilayah (39 Kec)
+                        </a>
                     @endif
 
                     {{-- User Dropdown Menu --}}
@@ -89,20 +101,20 @@
                             <span class="w-7 h-7 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-xs">
                                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                             </span>
-                            <span class="max-w-[140px] truncate text-slate-800 font-semibold">{{ auth()->user()->name }}</span>
-                            <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                            <span class="text-xs font-semibold text-slate-700 hidden lg:inline">{{ auth()->user()->name }}</span>
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                         </button>
 
-                        <div x-show="userMenuOpen" x-transition.origin.top.right class="absolute right-0 mt-2 w-56 rounded-xl bg-white shadow-xl ring-1 ring-black/5 py-2 text-sm text-slate-700 z-50 divide-y divide-slate-100" style="display: none;">
+                        <div x-show="userMenuOpen" x-transition.origin.top.right class="absolute right-0 mt-2 w-56 bg-white rounded-2xl border border-slate-200 shadow-xl py-2 z-50 divide-y divide-slate-100" style="display: none;">
                             <div class="px-4 py-2.5">
-                                <p class="text-xs text-slate-400 font-medium">Masuk sebagai</p>
-                                <p class="text-sm font-bold text-slate-900 truncate">{{ auth()->user()->name }}</p>
-                                <p class="text-xs text-teal-600 font-semibold mt-0.5">{{ auth()->user()->role_label }}</p>
+                                <p class="text-xs text-slate-500">Masuk sebagai:</p>
+                                <p class="text-xs font-bold text-slate-900 truncate">{{ auth()->user()->email }}</p>
+                                <p class="text-[10px] font-semibold text-teal-600 mt-0.5">{{ auth()->user()->role_label }}</p>
                             </div>
                             <div class="py-1">
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 flex items-center gap-2 font-medium">
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 flex items-center gap-2">
                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                                         Keluar (Logout)
                                     </button>
@@ -148,12 +160,15 @@
             @elseif (auth()->user()->isAdminDesa())
                 <a href="{{ route('desa.dashboard') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Dashboard</a>
                 <a href="{{ route('desa.submissions.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Verifikasi Berkas Desa</a>
+                <a href="{{ route('desa.wilayah.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Data Wilayah Desa</a>
             @elseif (auth()->user()->isAdminKecamatan())
                 <a href="{{ route('kecamatan.dashboard') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Dashboard</a>
                 <a href="{{ route('kecamatan.submissions.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Meja Verifikasi Berkas</a>
+                <a href="{{ route('kecamatan.wilayah.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Kewilayahan & Desa</a>
             @elseif (auth()->user()->isSuperAdmin())
                 <a href="{{ route('superadmin.dashboard') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Monitoring Global</a>
                 <a href="{{ route('superadmin.services.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Kelola Layanan Publik</a>
+                <a href="{{ route('superadmin.wilayah.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Master Wilayah (39 Kec)</a>
             @endif
 
             <form method="POST" action="{{ route('logout') }}" class="pt-2 border-t border-slate-100">

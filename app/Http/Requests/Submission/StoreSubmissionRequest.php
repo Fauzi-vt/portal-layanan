@@ -32,9 +32,12 @@ class StoreSubmissionRequest extends FormRequest
 
                     // Jika langsung submit dan requirement wajib
                     if ($this->boolean('submit_now') && $req->is_required) {
-                        // Jika sudah mengisi formulir online F-1.01 / F-1.15, upload file formulir menjadi opsional
+                        // Jika sudah mengisi formulir online F-1.01 / F-1.15 / KK, upload file formulir menjadi opsional
                         $isF1Doc = str_contains($req->nama_persyaratan, 'F-1.01') || str_contains($req->nama_persyaratan, 'F-1.15') || str_contains($req->nama_persyaratan, 'Formulir');
-                        $hasOnlineForm = $this->filled('form_data.f101.nama_pemohon') || $this->filled('form_data.f101.nama_kepala_keluarga');
+                        $hasOnlineForm = $this->filled('form_data.f101.nama_pemohon')
+                            || $this->filled('form_data.f101.nama_kepala_keluarga')
+                            || $this->filled('form_data.kk_add.nama_kepala_keluarga')
+                            || $this->filled('form_data.kk_del.nama_kepala_keluarga');
 
                         if ($isF1Doc && $hasOnlineForm) {
                             $docRules[] = 'nullable';

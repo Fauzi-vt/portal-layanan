@@ -71,7 +71,7 @@
                             
                             {{-- Main Parent Header --}}
                             <button type="button"
-                                    @click="openKk = !openKk"
+                                    @click="openKk = !openKk; $nextTick(() => window.lucide?.createIcons())"
                                     class="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-slate-50/80 transition-colors group cursor-pointer">
                                 <div class="flex items-center gap-4">
                                     <div class="w-12 h-12 rounded-xl bg-blue-50 text-[#0a2558] border border-blue-100 flex items-center justify-center text-xl font-bold flex-shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
@@ -153,7 +153,7 @@
                             
                             {{-- Main Parent Header --}}
                             <button type="button"
-                                    @click="openPindah = !openPindah"
+                                    @click="openPindah = !openPindah; $nextTick(() => window.lucide?.createIcons())"
                                     class="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-slate-50/80 transition-colors group cursor-pointer">
                                 <div class="flex items-center gap-4">
                                     <div class="w-12 h-12 rounded-xl bg-blue-50 text-[#0a2558] border border-blue-100 flex items-center justify-center text-xl font-bold flex-shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
@@ -329,10 +329,15 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label for="kecamatan_id" class="block text-xs font-semibold text-slate-700 mb-1">
-                            Kecamatan Tujuan Verifikasi <span class="text-rose-500">*</span>
+                        <label for="kecamatan_id" class="block text-xs font-semibold text-slate-800 mb-1.5 flex items-center justify-between">
+                            <span>Kecamatan Tujuan Verifikasi <span class="text-rose-600 font-bold" aria-hidden="true">*</span></span>
+                            <span class="text-[11px] text-slate-400">39 Kecamatan</span>
                         </label>
-                        <select name="kecamatan_id" id="kecamatan_id" required class="w-full text-xs font-medium rounded-lg border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 py-2.5">
+                        <select name="kecamatan_id"
+                                id="kecamatan_id"
+                                required
+                                aria-required="true"
+                                class="w-full text-xs font-semibold rounded-xl border border-slate-300 bg-white text-slate-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none py-2.5 px-3 shadow-2xs transition-colors">
                             @foreach ($kecamatans as $kec)
                                 <option value="{{ $kec->id }}" {{ old('kecamatan_id', $user->kecamatan_id) == $kec->id ? 'selected' : '' }}>
                                     Kecamatan {{ $kec->nama_kecamatan }} ({{ $kec->kode_kecamatan }})
@@ -342,37 +347,51 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Identitas Pemohon Terdaftar</label>
-                        <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs space-y-0.5">
-                            <p class="font-bold text-slate-800">{{ $user->name }} (NIK: {{ $user->nik ?? '-' }})</p>
-                            <p class="text-slate-500">Email: {{ $user->email }} | HP: {{ $user->phone ?? '-' }}</p>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="block text-xs font-semibold text-slate-800">Identitas Pemohon Terdaftar</span>
+                            <span class="inline-flex items-center gap-1 text-[10px] font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                                <i data-lucide="lock" class="w-3 h-3"></i>
+                                Terisi otomatis dari profil akun
+                            </span>
+                        </div>
+                        <div class="p-3 bg-[#F3F4F6] border border-slate-200 rounded-xl text-xs space-y-1 cursor-not-allowed select-none shadow-2xs">
+                            <p class="font-bold text-slate-900">{{ $user->name }} <span class="font-mono text-slate-600 font-medium">(NIK: {{ $user->nik ?? '-' }})</span></p>
+                            <p class="text-[11px] text-slate-600">Email: {{ $user->email }} | WhatsApp: {{ $user->phone ?? '-' }}</p>
                         </div>
                     </div>
                 </div>
 
-                {{-- Khusus Pengurangan KK --}}
-                @if ($service->kode_layanan === 'KK_DEL')
-                    <div class="pt-3 border-t border-slate-100">
-                        <label class="block text-xs font-semibold text-slate-700 mb-2">Alasan Pengurangan Anggota Keluarga <span class="text-rose-500">*</span></label>
-                        <div class="grid grid-cols-2 gap-3 text-xs">
-                            <label class="p-3 rounded-lg border border-slate-200 bg-slate-50 flex items-center gap-2 cursor-pointer hover:border-blue-500">
-                                <input type="radio" name="form_data[alasan]" value="meninggal" checked class="text-blue-600">
-                                <span class="font-medium text-slate-800">Meninggal Dunia</span>
-                            </label>
-                            <label class="p-3 rounded-lg border border-slate-200 bg-slate-50 flex items-center gap-2 cursor-pointer hover:border-blue-500">
-                                <input type="radio" name="form_data[alasan]" value="cerai" class="text-blue-600">
-                                <span class="font-medium text-slate-800">Perceraian</span>
-                            </label>
-                        </div>
-                    </div>
-                @endif
             </div>
 
-            {{-- Form Section: Formulir Pembuatan Kartu Keluarga Baru (Khusus Layanan KK Baru) --}}
-            @if (!str_starts_with($service->kode_layanan, 'PINDAH') && $service->kode_layanan !== 'DATANG' && ($service->kode_layanan === 'KK_BARU' || $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01') || str_contains($r->nama_persyaratan, 'F-1.15'))))
+            {{-- Form Section: Formulir Kartu Keluarga (KK Baru, Penambahan KK, Pengurangan KK) --}}
+            @if ($service->kode_layanan === 'KK_BARU')
                 <div class="space-y-3">
                     <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
                         <span>2. Pengisian Formulir Pembuatan Kartu Keluarga Baru</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">Format Resmi Dukcapil</span>
+                    </h3>
+                    @include('warga.submissions.partials.form-f101')
+                </div>
+            @elseif ($service->kode_layanan === 'KK_ADD')
+                <div class="space-y-3">
+                    <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                        <span>2. Pengisian Formulir Penambahan Anggota Keluarga</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Format Resmi Dukcapil</span>
+                    </h3>
+                    @include('warga.submissions.partials.form-kk-add')
+                </div>
+            @elseif ($service->kode_layanan === 'KK_DEL')
+                <div class="space-y-3">
+                    <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                        <span>2. Pengisian Formulir Pengurangan Anggota Keluarga</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800">Format Resmi Dukcapil</span>
+                    </h3>
+                    @include('warga.submissions.partials.form-kk-del')
+                </div>
+            @elseif (!str_starts_with($service->kode_layanan, 'PINDAH') && $service->kode_layanan !== 'DATANG' && $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01') || str_contains($r->nama_persyaratan, 'F-1.15')))
+                <div class="space-y-3">
+                    <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                        <span>2. Pengisian Formulir Kartu Keluarga</span>
                         <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">Format Resmi Dukcapil</span>
                     </h3>
                     @include('warga.submissions.partials.form-f101')
@@ -398,7 +417,7 @@
             <div class="bg-white rounded-xl border border-slate-200 shadow-xs p-6 space-y-5">
                 <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
                     <h3 class="text-sm font-bold text-slate-900">
-                        {{ ($service->kode_layanan === 'KK_BARU' || str_starts_with($service->kode_layanan, 'PINDAH') || $service->kode_layanan === 'DATANG' || $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01') || str_contains($r->nama_persyaratan, 'F-1.15'))) ? '3. Dokumen Persyaratan & Berkas Pendukung' : '2. Dokumen Persyaratan' }}
+                        {{ (in_array($service->kode_layanan, ['KK_BARU', 'KK_ADD', 'KK_DEL']) || str_starts_with($service->kode_layanan, 'PINDAH') || $service->kode_layanan === 'DATANG' || $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01') || str_contains($r->nama_persyaratan, 'F-1.15'))) ? '3. Dokumen Persyaratan & Berkas Pendukung' : '2. Dokumen Persyaratan' }}
                     </h3>
                     <span class="text-xs text-slate-400">PDF, JPG, PNG (Maks 5 MB)</span>
                 </div>
@@ -406,7 +425,7 @@
                 <div class="space-y-4">
                     @foreach ($service->requirements as $req)
                         @php
-                            $isF101Doc = str_contains($req->nama_persyaratan, 'F-1.01') || str_contains($req->nama_persyaratan, 'F-1.15');
+                            $isF101Doc = str_contains($req->nama_persyaratan, 'F-1.01') || str_contains($req->nama_persyaratan, 'F-1.15') || str_contains($req->nama_persyaratan, 'Formulir');
                         @endphp
                         <div class="p-4 rounded-xl border {{ $isF101Doc ? 'border-blue-200 bg-blue-50/40' : 'border-slate-200 bg-slate-50/60' }} space-y-2.5">
                             <div class="flex items-center justify-between">
@@ -438,9 +457,11 @@
                             @endif
 
                             <input type="file"
+                                   id="doc_{{ $req->id }}"
                                    name="documents[{{ $req->id }}]"
                                    accept=".pdf,.jpg,.jpeg,.png"
-                                   class="block w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer border border-slate-200 rounded-lg bg-white">
+                                   {{ ($req->is_required && !$isF101Doc) ? 'required' : '' }}
+                                   class="block w-full text-xs text-slate-700 file:mr-3 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer border border-slate-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 shadow-2xs transition-colors">
                         </div>
                     @endforeach
                 </div>

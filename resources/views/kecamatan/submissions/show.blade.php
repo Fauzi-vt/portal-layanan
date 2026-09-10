@@ -90,12 +90,23 @@
                     </div>
                 </div>
 
-                {{-- Khusus Formulir Digital F-1.01 --}}
+                {{-- Khusus Formulir Digital Kartu Keluarga & Lainnya --}}
                 @if ($submission->form_data && isset($submission->form_data['f101']))
                     <div class="pt-2">
                         <x-f101-detail :f101="$submission->form_data['f101']" :submission="$submission" />
                     </div>
-                @elseif ($submission->form_data)
+                @endif
+                @if ($submission->form_data && isset($submission->form_data['kk_add']))
+                    <div class="pt-2">
+                        <x-kk-add-detail :kkAdd="$submission->form_data['kk_add']" :submission="$submission" />
+                    </div>
+                @endif
+                @if ($submission->form_data && isset($submission->form_data['kk_del']))
+                    <div class="pt-2">
+                        <x-kk-del-detail :kkDel="$submission->form_data['kk_del']" :submission="$submission" />
+                    </div>
+                @endif
+                @if ($submission->form_data && !isset($submission->form_data['f101']) && !isset($submission->form_data['kk_add']) && !isset($submission->form_data['kk_del']) && !isset($submission->form_data['pindah_satu_desa']) && !isset($submission->form_data['pindah_antar_desa']) && !isset($submission->form_data['pindah_antar_kecamatan']))
                     <div class="p-4 bg-teal-50/60 border border-teal-200 rounded-2xl text-xs space-y-1">
                         <span class="font-bold text-teal-900 block text-[11px]">Data Formulir Tambahan:</span>
                         <p class="text-teal-800">{{ json_encode($submission->form_data, JSON_UNESCAPED_UNICODE) }}</p>

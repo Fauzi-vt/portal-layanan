@@ -19,7 +19,37 @@ class Kecamatan extends Model
         'email',
         'telepon',
         'jam_operasional',
+        'jumlah_desa',
+        'jumlah_rw',
+        'jumlah_rt',
     ];
+
+    /**
+     * Hitung total desa aktual atau fallback ke jumlah_desa
+     */
+    public function getTotalDesaAttribute(): int
+    {
+        $count = $this->desas()->count();
+        return $count > 0 ? $count : ($this->jumlah_desa ?? 0);
+    }
+
+    /**
+     * Hitung total RW dari sum desa atau fallback ke jumlah_rw
+     */
+    public function getTotalRwAttribute(): int
+    {
+        $sum = $this->desas()->sum('jumlah_rw');
+        return $sum > 0 ? $sum : ($this->jumlah_rw ?? 0);
+    }
+
+    /**
+     * Hitung total RT dari sum desa atau fallback ke jumlah_rt
+     */
+    public function getTotalRtAttribute(): int
+    {
+        $sum = $this->desas()->sum('jumlah_rt');
+        return $sum > 0 ? $sum : ($this->jumlah_rt ?? 0);
+    }
 
     /**
      * Relasi ke Desa/Kelurahan dalam wilayah kecamatan ini.

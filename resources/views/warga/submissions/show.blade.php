@@ -240,10 +240,16 @@
     @endif
 
     {{-- ═══════════════════════════════════════════════════════════════════════════
-         4.5. FORMULIR BIODATA KELUARGA (F-1.01)
+         4.5. FORMULIR KARTU KELUARGA (F-1.01 / KK ADD / KK DEL)
     ═══════════════════════════════════════════════════════════════════════════ --}}
     @if ($submission->form_data && isset($submission->form_data['f101']))
         <x-f101-detail :f101="$submission->form_data['f101']" :submission="$submission" />
+    @endif
+    @if ($submission->form_data && isset($submission->form_data['kk_add']))
+        <x-kk-add-detail :kkAdd="$submission->form_data['kk_add']" :submission="$submission" />
+    @endif
+    @if ($submission->form_data && isset($submission->form_data['kk_del']))
+        <x-kk-del-detail :kkDel="$submission->form_data['kk_del']" :submission="$submission" />
     @endif
 
     {{-- ═══════════════════════════════════════════════════════════════════════════

@@ -120,6 +120,7 @@
             {{-- Desktop Menu Links --}}
             <div class="hidden lg:flex items-center space-x-7 text-xs sm:text-sm font-semibold text-slate-700">
                 <a href="#layanan" class="hover:text-[#0a2558] transition-colors">Layanan Publik</a>
+                <a href="#kewilayahan" class="hover:text-[#0a2558] transition-colors">Data Kecamatan</a>
                 <a href="#ppid" class="hover:text-[#0a2558] transition-colors">PPID & Informasi</a>
                 <a href="#capaian" class="hover:text-[#0a2558] transition-colors">Profil & Capaian</a>
                 <a href="#pengaduan" class="hover:text-[#0a2558] transition-colors">Pengaduan</a>
@@ -156,6 +157,7 @@
              x-transition:enter-end="opacity-100 translate-y-0"
              class="lg:hidden mt-2 bg-white rounded-3xl p-5 shadow-2xl border border-slate-100 text-sm space-y-3 font-semibold">
             <a href="#layanan" @click="mobileNav = false" class="block py-2.5 px-4 rounded-xl hover:bg-slate-50 text-slate-800">Layanan Publik</a>
+            <a href="#kewilayahan" @click="mobileNav = false" class="block py-2.5 px-4 rounded-xl hover:bg-slate-50 text-slate-800">Data Kecamatan</a>
             <a href="#ppid" @click="mobileNav = false" class="block py-2.5 px-4 rounded-xl hover:bg-slate-50 text-slate-800">PPID & Informasi</a>
             <a href="#capaian" @click="mobileNav = false" class="block py-2.5 px-4 rounded-xl hover:bg-slate-50 text-slate-800">Profil & Capaian</a>
             <a href="#pengaduan" @click="mobileNav = false" class="block py-2.5 px-4 rounded-xl hover:bg-slate-50 text-slate-800">Layanan Pengaduan</a>
@@ -380,134 +382,720 @@
     {{-- ═══════════════════════════════════════════════════════════════════════════
          4. 8 MASTER LAYANAN PUBLIK TERPADU
     ═══════════════════════════════════════════════════════════════════════════ --}}
-    <section id="layanan" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div class="text-center max-w-2xl mx-auto mb-12">
+    <section id="layanan" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20" x-data="{ activeCategory: 'all' }">
+        <div class="text-center max-w-3xl mx-auto mb-12">
             <span class="px-3.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-[#0a2558] border border-blue-200">
                 Pemerintah Kabupaten Tasikmalaya
             </span>
             <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-3">
-                8 Layanan Utama Masyarakat
+                Kategori Layanan Utama Kependudukan
             </h2>
             <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
-                Layanan administrasi kependudukan digital & verifikasi hybrid yang mencakup seluruh <strong>39 wilayah kecamatan</strong> se-Kabupaten Tasikmalaya.
+                Penyederhanaan 8+ layanan administrasi kependudukan ke dalam <strong>4 kategori terpadu</strong> yang melayani seluruh 39 wilayah kecamatan se-Kabupaten Tasikmalaya.
             </p>
+
+            {{-- Category Filter Tabs --}}
+            <div class="flex flex-wrap items-center justify-center gap-2 mt-7">
+                <button type="button"
+                        @click="activeCategory = 'all'; $nextTick(() => window.lucide?.createIcons())"
+                        class="px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer shadow-2xs"
+                        :class="activeCategory === 'all' ? 'bg-[#0a2558] text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'">
+                    Semua Kategori (4)
+                </button>
+                <button type="button"
+                        @click="activeCategory = 'identitas'; $nextTick(() => window.lucide?.createIcons())"
+                        class="px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer shadow-2xs"
+                        :class="activeCategory === 'identitas' ? 'bg-[#0a2558] text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'">
+                    🪪 Identitas (KTP & KIA)
+                </button>
+                <button type="button"
+                        @click="activeCategory = 'kk'; $nextTick(() => window.lucide?.createIcons())"
+                        class="px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer shadow-2xs"
+                        :class="activeCategory === 'kk' ? 'bg-[#0a2558] text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'">
+                    👨‍👩‍👧‍👦 Kartu Keluarga (KK)
+                </button>
+                <button type="button"
+                        @click="activeCategory = 'pindah'; $nextTick(() => window.lucide?.createIcons())"
+                        class="px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer shadow-2xs"
+                        :class="activeCategory === 'pindah' ? 'bg-[#0a2558] text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'">
+                    🚚 Perpindahan Penduduk
+                </button>
+                <button type="button"
+                        @click="activeCategory = 'surat'; $nextTick(() => window.lucide?.createIcons())"
+                        class="px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer shadow-2xs"
+                        :class="activeCategory === 'surat' ? 'bg-[#0a2558] text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'">
+                    📜 Dispensasi & Keterangan
+                </button>
+            </div>
         </div>
 
         @php
-            if (!isset($services) || $services->isEmpty()) {
-                $services = collect([
-                    (object)[
-                        'kode_layanan' => 'KIA',
-                        'nama_layanan' => 'Pembuatan Kartu Identitas Anak (KIA)',
-                        'deskripsi' => 'Pengajuan penerbitan Kartu Identitas Anak untuk anak usia 0-17 tahun kurang satu hari yang belum menikah.',
-                        'jenis_proses' => \App\Enums\ServiceProcessType::FullDigital,
-                        'req_count' => 4,
-                    ],
-                    (object)[
-                        'kode_layanan' => 'EKTP',
-                        'nama_layanan' => 'Perekaman E-KTP (KTP Elektronik)',
-                        'deskripsi' => 'Pendaftaran online dan booking jadwal antrean perekaman data biometrik (sidik jari, iris mata, foto) di kantor kecamatan.',
-                        'jenis_proses' => \App\Enums\ServiceProcessType::Hybrid,
-                        'req_count' => 2,
-                    ],
-                    (object)[
-                        'kode_layanan' => 'KK_BARU',
-                        'nama_layanan' => 'Pembuatan Kartu Keluarga (KK) Baru',
-                        'deskripsi' => 'Pengajuan penerbitan Kartu Keluarga baru untuk pasangan yang baru menikah atau pembentukan keluarga baru.',
-                        'jenis_proses' => \App\Enums\ServiceProcessType::Hybrid,
-                        'req_count' => 4,
-                    ],
-                    (object)[
-                        'kode_layanan' => 'KK_ADD',
-                        'nama_layanan' => 'Perbaikan KK - Penambahan Anggota Keluarga',
-                        'deskripsi' => 'Pengajuan penambahan anggota keluarga pada KK yang sudah ada (kelahiran anak, kepindahan masuk, dll.).',
-                        'jenis_proses' => \App\Enums\ServiceProcessType::FullDigital,
-                        'req_count' => 3,
-                    ],
-                    (object)[
-                        'kode_layanan' => 'KK_DEL',
-                        'nama_layanan' => 'Perbaikan KK - Pengurangan Anggota Keluarga',
-                        'deskripsi' => 'Pengajuan pengurangan anggota keluarga pada Kartu Keluarga karena alasan meninggal dunia atau perceraian.',
-                        'jenis_proses' => \App\Enums\ServiceProcessType::FullDigital,
-                        'req_count' => 3,
-                    ],
-                    (object)[
-                        'kode_layanan' => 'PINDAH_SATU_DESA',
-                        'nama_layanan' => 'Permohonan Pindah Datang WNI (Satu Desa)',
-                        'deskripsi' => 'Pengisian formulir permohonan perpindahan alamat domisili dalam wilayah desa/kelurahan yang sama.',
-                        'jenis_proses' => \App\Enums\ServiceProcessType::FullDigital,
-                        'req_count' => 3,
-                    ],
-                    (object)[
-                        'kode_layanan' => 'PINDAH_ANTAR_DESA',
-                        'nama_layanan' => 'Permohonan Pindah Datang WNI (Antar Desa Satu Kecamatan)',
-                        'deskripsi' => 'Pengisian formulir permohonan perpindahan alamat domisili antar desa/kelurahan dalam wilayah kecamatan yang sama.',
-                        'jenis_proses' => \App\Enums\ServiceProcessType::Hybrid,
-                        'req_count' => 4,
-                    ],
-                    (object)[
-                        'kode_layanan' => 'PINDAH_ANTAR_KEC',
-                        'nama_layanan' => 'Permohonan Pindah Datang WNI (Antar Kecamatan Satu Kabupaten)',
-                        'deskripsi' => 'Pengisian formulir permohonan perpindahan alamat domisili antar kecamatan dalam wilayah Kabupaten Tasikmalaya.',
-                        'jenis_proses' => \App\Enums\ServiceProcessType::Hybrid,
-                        'req_count' => 4,
-                    ],
-                    (object)[
-                        'kode_layanan' => 'NIKAH',
-                        'nama_layanan' => 'Surat Dispensasi / Rekomendasi Nikah',
-                        'deskripsi' => 'Pengajuan Surat Rekomendasi/Dispensasi Pernikahan bagi warga yang akan melangsungkan akad di luar kecamatan atau waktu mendesak.',
-                        'jenis_proses' => \App\Enums\ServiceProcessType::Hybrid,
-                        'req_count' => 5,
-                    ],
-                ]);
-            }
+            $categories = [
+                [
+                    'id' => 'identitas',
+                    'nama' => 'Identitas Kependudukan',
+                    'subjudul' => 'KTP Elektronik & Kartu Identitas Anak',
+                    'deskripsi' => 'Pengurusan dokumen identitas diri resmi bagi seluruh warga dewasa dan pencatatan kartu identitas anak.',
+                    'badge' => '2 Layanan Utama',
+                    'badge_color' => 'bg-blue-100 text-blue-800 border-blue-200',
+                    'icon_bg' => 'bg-blue-600 text-white shadow-blue-500/20',
+                    'header_bg' => 'from-blue-50/70 via-white to-white',
+                    'accent_border' => 'hover:border-blue-500',
+                    'icon' => 'contact',
+                    'items' => [
+                        [
+                            'kode' => 'EKTP',
+                            'nama' => 'Perekaman E-KTP (KTP Elektronik)',
+                            'deskripsi' => 'Pendaftaran online & booking antrean rekam biometrik di kecamatan.',
+                            'jenis' => 'Hybrid',
+                            'badge_jenis' => 'bg-amber-50 text-amber-700 border-amber-200',
+                            'berkas' => 2,
+                            'icon' => 'camera',
+                        ],
+                        [
+                            'kode' => 'KIA',
+                            'nama' => 'Pembuatan Kartu Identitas Anak (KIA)',
+                            'deskripsi' => 'Penerbitan kartu identitas resmi bagi anak usia 0 hingga 17 tahun kurang satu hari.',
+                            'jenis' => 'Digital Penuh',
+                            'badge_jenis' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                            'berkas' => 4,
+                            'icon' => 'contact',
+                        ],
+                    ]
+                ],
+                [
+                    'id' => 'kk',
+                    'nama' => 'Layanan Kartu Keluarga (KK)',
+                    'subjudul' => 'Penerbitan Baru & Pemutakhiran Data',
+                    'deskripsi' => 'Pengurusan Kartu Keluarga lengkap untuk pasangan baru menikah, penambahan anggota, dan pengurangan.',
+                    'badge' => '3 Sub-Layanan',
+                    'badge_color' => 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                    'icon_bg' => 'bg-emerald-600 text-white shadow-emerald-500/20',
+                    'header_bg' => 'from-emerald-50/70 via-white to-white',
+                    'accent_border' => 'hover:border-emerald-500',
+                    'icon' => 'users',
+                    'items' => [
+                        [
+                            'kode' => 'KK_BARU',
+                            'nama' => 'Pembuatan Kartu Keluarga (KK) Baru',
+                            'deskripsi' => 'Penerbitan KK bagi pasangan baru menikah / pembentukan keluarga mandiri (F-1.01).',
+                            'jenis' => 'Hybrid',
+                            'badge_jenis' => 'bg-amber-50 text-amber-700 border-amber-200',
+                            'berkas' => 4,
+                            'icon' => 'users',
+                        ],
+                        [
+                            'kode' => 'KK_ADD',
+                            'nama' => 'Penambahan Anggota Keluarga',
+                            'deskripsi' => 'Pembaruan data KK karena kelahiran anak atau kepindahan anggota masuk.',
+                            'jenis' => 'Digital Penuh',
+                            'badge_jenis' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                            'berkas' => 3,
+                            'icon' => 'user-plus',
+                        ],
+                        [
+                            'kode' => 'KK_DEL',
+                            'nama' => 'Pengurangan Anggota Keluarga',
+                            'deskripsi' => 'Pembaruan susunan KK karena anggota meninggal dunia atau perceraian resmi.',
+                            'jenis' => 'Digital Penuh',
+                            'badge_jenis' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                            'berkas' => 3,
+                            'icon' => 'user-minus',
+                        ],
+                    ]
+                ],
+                [
+                    'id' => 'pindah',
+                    'nama' => 'Layanan Perpindahan Penduduk',
+                    'subjudul' => 'Surat Permohonan Pindah Datang WNI',
+                    'deskripsi' => 'Pelayanan perpindahan domisili terpadu satu desa, antar desa satu kecamatan, hingga antar kecamatan.',
+                    'badge' => '3 Sub-Layanan',
+                    'badge_color' => 'bg-amber-100 text-amber-800 border-amber-200',
+                    'icon_bg' => 'bg-amber-500 text-white shadow-amber-500/20',
+                    'header_bg' => 'from-amber-50/70 via-white to-white',
+                    'accent_border' => 'hover:border-amber-500',
+                    'icon' => 'truck',
+                    'items' => [
+                        [
+                            'kode' => 'PINDAH_SATU_DESA',
+                            'nama' => 'Pindah Datang WNI (Satu Desa)',
+                            'deskripsi' => 'Perpindahan alamat domisili dalam wilayah satu desa/kelurahan yang sama (F.1-23).',
+                            'jenis' => 'Digital Penuh',
+                            'badge_jenis' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                            'berkas' => 3,
+                            'icon' => 'home',
+                        ],
+                        [
+                            'kode' => 'PINDAH_ANTAR_DESA',
+                            'nama' => 'Pindah Datang WNI (Antar Desa Satu Kecamatan)',
+                            'deskripsi' => 'Perpindahan domisili antar desa/kelurahan dalam wilayah satu kecamatan (F.1-25).',
+                            'jenis' => 'Hybrid',
+                            'badge_jenis' => 'bg-amber-50 text-amber-700 border-amber-200',
+                            'berkas' => 3,
+                            'icon' => 'building-2',
+                        ],
+                        [
+                            'kode' => 'PINDAH_ANTAR_KEC',
+                            'nama' => 'Pindah Datang WNI (Antar Kecamatan)',
+                            'deskripsi' => 'Pengurusan SKPWNI antar wilayah kecamatan dalam Kabupaten Tasikmalaya (F.1-29).',
+                            'jenis' => 'Hybrid',
+                            'badge_jenis' => 'bg-amber-50 text-amber-700 border-amber-200',
+                            'berkas' => 3,
+                            'icon' => 'map',
+                        ],
+                    ]
+                ],
+                [
+                    'id' => 'surat',
+                    'nama' => 'Dispensasi & Surat Keterangan',
+                    'subjudul' => 'Rekomendasi Pernikahan & Administrasi',
+                    'deskripsi' => 'Pengajuan surat dispensasi nikah KUA dan berbagai surat keterangan kependudukan umum kecamatan.',
+                    'badge' => '2 Layanan Utama',
+                    'badge_color' => 'bg-indigo-100 text-indigo-800 border-indigo-200',
+                    'icon_bg' => 'bg-indigo-600 text-white shadow-indigo-500/20',
+                    'header_bg' => 'from-indigo-50/70 via-white to-white',
+                    'accent_border' => 'hover:border-indigo-500',
+                    'icon' => 'heart',
+                    'items' => [
+                        [
+                            'kode' => 'NIKAH',
+                            'nama' => 'Surat Dispensasi / Rekomendasi Nikah',
+                            'deskripsi' => 'Rekomendasi resmi bagi warga yang melangsungkan akad di luar kecamatan / mendesak.',
+                            'jenis' => 'Hybrid',
+                            'badge_jenis' => 'bg-amber-50 text-amber-700 border-amber-200',
+                            'berkas' => 5,
+                            'icon' => 'heart',
+                        ],
+                        [
+                            'kode' => 'LAINNYA',
+                            'nama' => 'Surat Keterangan Umum Kecamatan',
+                            'deskripsi' => 'Penerbitan surat keterangan umum kecamatan (beda nama, belum nikah, dll.) secara online.',
+                            'jenis' => 'Digital Penuh',
+                            'badge_jenis' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                            'berkas' => 4,
+                            'icon' => 'file-text',
+                        ],
+                    ]
+                ],
+            ];
         @endphp
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            @foreach ($services as $srv)
-                <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-xs hover:shadow-xl hover:border-blue-500 transition-all group flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 rounded-2xl bg-blue-50 text-[#0a2558] flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-105 transition-transform border border-blue-100">
-                            @if ($srv->kode_layanan === 'KIA') <i data-lucide="contact" class="w-6 h-6"></i>
-                            @elseif ($srv->kode_layanan === 'EKTP') <i data-lucide="camera" class="w-6 h-6"></i>
-                            @elseif ($srv->kode_layanan === 'KK_BARU') <i data-lucide="users" class="w-6 h-6"></i>
-                            @elseif ($srv->kode_layanan === 'KK_ADD') <i data-lucide="user-plus" class="w-6 h-6"></i>
-                            @elseif ($srv->kode_layanan === 'KK_DEL') <i data-lucide="user-minus" class="w-6 h-6"></i>
-                            @elseif ($srv->kode_layanan === 'PINDAH_SATU_DESA') <i data-lucide="home" class="w-6 h-6"></i>
-                            @elseif ($srv->kode_layanan === 'PINDAH_ANTAR_DESA') <i data-lucide="building-2" class="w-6 h-6"></i>
-                            @elseif ($srv->kode_layanan === 'PINDAH_ANTAR_KEC' || $srv->kode_layanan === 'PINDAH') <i data-lucide="map" class="w-6 h-6"></i>
-                            @elseif ($srv->kode_layanan === 'DATANG') <i data-lucide="truck" class="w-6 h-6"></i>
-                            @elseif ($srv->kode_layanan === 'NIKAH') <i data-lucide="heart" class="w-6 h-6"></i>
-                            @else <i data-lucide="file-text" class="w-6 h-6"></i>
-                            @endif
+        {{-- 4 CATEGORIZED CARDS GRID --}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-7">
+            @foreach ($categories as $cat)
+                <div x-show="activeCategory === 'all' || activeCategory === '{{ $cat['id'] }}'"
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 scale-95"
+                     x-transition:enter-end="opacity-100 scale-100"
+                     class="bg-white rounded-3xl border border-slate-200 shadow-xs {{ $cat['accent_border'] }} hover:shadow-lg transition-all flex flex-col justify-between overflow-hidden">
+                    
+                    {{-- Card Header --}}
+                    <div class="p-6 sm:p-7 bg-gradient-to-b {{ $cat['header_bg'] }} border-b border-slate-100">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-12 h-12 rounded-2xl {{ $cat['icon_bg'] }} flex items-center justify-center text-xl font-bold flex-shrink-0 shadow-md">
+                                    <i data-lucide="{{ $cat['icon'] }}" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h3 class="text-base sm:text-lg font-black text-slate-900">
+                                            {{ $cat['nama'] }}
+                                        </h3>
+                                    </div>
+                                    <p class="text-xs font-semibold text-slate-500 mt-0.5">
+                                        {{ $cat['subjudul'] }}
+                                    </p>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase border shrink-0 {{ $cat['badge_color'] }}">
+                                {{ $cat['badge'] }}
+                            </span>
                         </div>
-                        <span class="inline-block px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase border {{ $srv->jenis_proses->badgeColor() }}">
-                            {{ $srv->jenis_proses === \App\Enums\ServiceProcessType::FullDigital ? 'Digital Penuh' : 'Proses Hybrid' }}
-                        </span>
-                        <h3 class="text-base font-bold text-slate-900 group-hover:text-blue-700 transition-colors mt-2.5">
-                            {{ $srv->nama_layanan }}
-                        </h3>
-                        <p class="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">
-                            {{ $srv->deskripsi }}
+                        <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+                            {{ $cat['deskripsi'] }}
                         </p>
                     </div>
 
-                    <div class="mt-6 pt-3.5 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-xs text-slate-400 font-medium">
-                            {{ method_exists($srv, 'requirements') ? $srv->requirements()->count() : ($srv->req_count ?? 0) }} Syarat Berkas
+                    {{-- Sub-services List inside Category --}}
+                    <div class="p-5 sm:p-6 space-y-3 flex-1 bg-white">
+                        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                            Daftar Layanan Tersedia:
+                        </p>
+
+                        @foreach ($cat['items'] as $item)
+                            @php
+                                $targetUrl = auth()->check()
+                                    ? route('warga.submissions.create', ['service' => $item['kode']])
+                                    : route('login');
+                            @endphp
+                            <a href="{{ $targetUrl }}"
+                               class="group p-3.5 rounded-2xl border border-slate-100 bg-slate-50/60 hover:bg-blue-50/40 hover:border-blue-300 transition-all flex items-center justify-between gap-3 block">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <div class="w-9 h-9 rounded-xl bg-white border border-slate-200 text-[#0a2558] flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                                        <i data-lucide="{{ $item['icon'] }}" class="w-4 h-4"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <h4 class="text-xs font-bold text-slate-800 group-hover:text-blue-700 transition-colors">
+                                                {{ $item['nama'] }}
+                                            </h4>
+                                            <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase border {{ $item['badge_jenis'] }}">
+                                                {{ $item['jenis'] }}
+                                            </span>
+                                        </div>
+                                        <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
+                                            {{ $item['deskripsi'] }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-2 pl-2 flex-shrink-0">
+                                    <span class="text-[10px] font-semibold text-slate-400 hidden sm:inline">
+                                        {{ $item['berkas'] }} Berkas
+                                    </span>
+                                    <div class="w-7 h-7 rounded-lg bg-white border border-slate-200 group-hover:bg-blue-600 group-hover:border-blue-600 group-hover:text-white text-slate-400 flex items-center justify-center transition-all shadow-2xs">
+                                        <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+
+                    {{-- Category Footer CTA --}}
+                    <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-[11px] font-medium text-slate-500">
+                            Proses Cepat & Terverifikasi
                         </span>
-                        <a href="{{ route('login') }}" class="text-xs font-bold text-[#0a2558] group-hover:text-blue-700 flex items-center gap-1 group-hover:translate-x-1 transition-all">
-                            <span>Ajukan</span>
-                            <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                        @php
+                            $defaultServiceCode = $cat['items'][0]['kode'];
+                            $catAjukanUrl = auth()->check()
+                                ? route('warga.submissions.create', ['service' => $defaultServiceCode])
+                                : route('login');
+                        @endphp
+                        <a href="{{ $catAjukanUrl }}"
+                           class="inline-flex items-center gap-1.5 text-xs font-bold text-[#0a2558] hover:text-blue-700 group transition-colors">
+                            <span>Mulai Pengajuan</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                         </a>
                     </div>
+
                 </div>
             @endforeach
         </div>
     </section>
 
     {{-- ═══════════════════════════════════════════════════════════════════════════
-         5. FOOTER — DISKOMINFO KABUPATEN TASIKMALAYA
+         5. TABEL DATA KEWILAYAHAN KECAMATAN KABUPATEN TASIKMALAYA
+         (Model Presisi Sesuai Referensi Laci RW Kewilayahan)
+    ═══════════════════════════════════════════════════════════════════════════ --}}
+    @php
+        $kecamatanTableData = $kecamatans->map(function ($kec) {
+            $actualDesas = $kec->desas ?? collect();
+            $desaCount = $kec->total_desa;
+            $rwCount = $kec->total_rw;
+            $rtCount = $kec->total_rt;
+
+            return [
+                'id' => $kec->id,
+                'kode' => $kec->kode_kecamatan ?: ('KEC-' . str_pad($kec->id, 3, '0', STR_PAD_LEFT)),
+                'nama' => $kec->nama_kecamatan,
+                'desa_count' => $desaCount,
+                'rw_count' => $rwCount,
+                'rt_count' => $rtCount,
+                'alamat' => $kec->alamat_kantor ?: ('Jl. Raya ' . $kec->nama_kecamatan . ' No. 01, Kab. Tasikmalaya, Jawa Barat 46182'),
+                'telepon' => $kec->telepon ?: ('(0265) 54' . str_pad($kec->id, 4, '0', STR_PAD_LEFT)),
+                'email' => $kec->email ?: ('kecamatan.' . \Illuminate\Support\Str::slug($kec->nama_kecamatan) . '@tasikmalayakab.go.id'),
+                'jam' => $kec->jam_operasional ?: 'Senin - Jumat (08.00 - 15.30 WIB)',
+                'desas' => $actualDesas->map(fn($d) => [
+                    'kode' => $d->kode_desa,
+                    'nama' => $d->nama_desa,
+                    'rw' => $d->jumlah_rw ?? 0,
+                    'rt' => $d->jumlah_rt ?? 0,
+                ])->values()->all(),
+            ];
+        })->values()->all();
+    @endphp
+
+    <section id="kewilayahan"
+             class="pt-12 pb-20 bg-[#8cb7ee] relative overflow-hidden"
+             x-data="{
+                 searchQuery: '',
+                 perPage: 10,
+                 currentPage: 1,
+                 sortCol: 'nama',
+                 sortAsc: true,
+                 showModal: false,
+                 selectedKec: null,
+                 rawData: {{ Js::from($kecamatanTableData) }},
+
+                 sortBy(col) {
+                     if (this.sortCol === col) {
+                         this.sortAsc = !this.sortAsc;
+                     } else {
+                         this.sortCol = col;
+                         this.sortAsc = true;
+                     }
+                     this.currentPage = 1;
+                 },
+
+                 get filteredData() {
+                     let q = this.searchQuery.toLowerCase().trim();
+                     let data = this.rawData.filter(item => {
+                         return !q ||
+                             item.nama.toLowerCase().includes(q) ||
+                             item.kode.toLowerCase().includes(q) ||
+                             item.desa_count.toString().includes(q) ||
+                             item.rw_count.toString().includes(q) ||
+                             item.rt_count.toString().includes(q);
+                     });
+
+                     data.sort((a, b) => {
+                         let valA = a[this.sortCol];
+                         let valB = b[this.sortCol];
+                         if (typeof valA === 'string') {
+                             return this.sortAsc
+                                 ? valA.localeCompare(valB)
+                                 : valB.localeCompare(valA);
+                         }
+                         return this.sortAsc ? (valA - valB) : (valB - valA);
+                     });
+
+                     return data;
+                 },
+
+                 get paginatedData() {
+                     if (this.perPage >= 999) return this.filteredData;
+                     let start = (this.currentPage - 1) * this.perPage;
+                     return this.filteredData.slice(start, start + parseInt(this.perPage));
+                 },
+
+                 get totalPages() {
+                     if (this.perPage >= 999) return 1;
+                     return Math.ceil(this.filteredData.length / this.perPage) || 1;
+                 },
+
+                 openDetail(item) {
+                     this.selectedKec = item;
+                     this.showModal = true;
+                     this.$nextTick(() => {
+                         if (window.lucide) window.lucide.createIcons();
+                     });
+                 }
+             }">
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            {{-- 1. Dark Navy Title Banner Pill (Identik dengan Screenshot) --}}
+            <div class="flex justify-center mb-6">
+                <div class="bg-[#0e3a6c] text-white font-bold text-lg sm:text-2xl px-8 sm:px-14 py-3 rounded-lg shadow-md border border-white/10 tracking-wide text-center">
+                    Tabel Data Kecamatan Kabupaten Tasikmalaya
+                </div>
+            </div>
+
+            {{-- 2. White Card Container --}}
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200/80 p-5 sm:p-8">
+
+                {{-- Controls Row: Filter (Left) & Show (Right) --}}
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6">
+                    {{-- Filter Input --}}
+                    <div class="flex items-center gap-2">
+                        <label for="kecamatanFilter" class="text-sm font-semibold text-slate-700">Filter:</label>
+                        <div class="relative w-full sm:w-64">
+                            <input id="kecamatanFilter"
+                                   type="text"
+                                   x-model="searchQuery"
+                                   @input="currentPage = 1"
+                                   placeholder="Type to filter..."
+                                   class="w-full pl-3 pr-9 py-1.5 text-sm bg-white border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 text-slate-800 placeholder-slate-400">
+                            <div class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Show Per Page Select --}}
+                    <div class="flex items-center justify-end gap-2">
+                        <label for="showPerPage" class="text-sm font-semibold text-slate-700">Show:</label>
+                        <div class="relative">
+                            <select id="showPerPage"
+                                    x-model="perPage"
+                                    @change="currentPage = 1"
+                                    class="appearance-none bg-white border border-slate-300 rounded px-3 py-1.5 pr-8 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 cursor-pointer">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="999">Semua</option>
+                            </select>
+                            <svg class="w-4 h-4 text-slate-500 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Table Responsive Wrapper --}}
+                <div class="overflow-x-auto rounded border border-slate-200">
+                    <table class="w-full text-sm text-left border-collapse">
+                        {{-- Blue Header Sesuai Screenshot --}}
+                        <thead>
+                            <tr class="bg-[#0088e8] text-white font-bold select-none text-xs sm:text-sm">
+                                <th scope="col" @click="sortBy('nama')" class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-[#007cd3] transition-colors">
+                                    <div class="flex items-center gap-1.5">
+                                        <span>Kecamatan</span>
+                                        <span class="text-sky-200 text-xs" :class="{ 'text-white font-extrabold': sortCol === 'nama' }">↕</span>
+                                    </div>
+                                </th>
+                                <th scope="col" @click="sortBy('desa_count')" class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-[#007cd3] transition-colors">
+                                    <div class="flex items-center gap-1.5">
+                                        <span>Kelurahan</span>
+                                        <span class="text-sky-200 text-xs" :class="{ 'text-white font-extrabold': sortCol === 'desa_count' }">↕</span>
+                                    </div>
+                                </th>
+                                <th scope="col" @click="sortBy('rw_count')" class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-[#007cd3] transition-colors">
+                                    <div class="flex items-center gap-1.5">
+                                        <span>RW</span>
+                                        <span class="text-sky-200 text-xs" :class="{ 'text-white font-extrabold': sortCol === 'rw_count' }">↕</span>
+                                    </div>
+                                </th>
+                                <th scope="col" @click="sortBy('rt_count')" class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-[#007cd3] transition-colors">
+                                    <div class="flex items-center gap-1.5">
+                                        <span>RT</span>
+                                        <span class="text-sky-200 text-xs" :class="{ 'text-white font-extrabold': sortCol === 'rt_count' }">↕</span>
+                                    </div>
+                                </th>
+                                <th scope="col" class="py-3 px-4 sm:px-6 text-center">
+                                    Detail
+                                </th>
+                            </tr>
+                        </thead>
+
+                        {{-- Body Rows --}}
+                        <tbody class="divide-y divide-slate-200 bg-white">
+                            <template x-for="(item, idx) in paginatedData" :key="item.id">
+                                <tr class="hover:bg-sky-50/40 transition-colors text-slate-700">
+                                    <td class="py-3.5 px-4 sm:px-6 font-medium text-slate-900">
+                                        <span x-text="item.nama"></span>
+                                    </td>
+                                    <td class="py-3.5 px-4 sm:px-6 text-slate-600" x-text="item.desa_count"></td>
+                                    <td class="py-3.5 px-4 sm:px-6 text-slate-600" x-text="item.rw_count"></td>
+                                    <td class="py-3.5 px-4 sm:px-6 text-slate-600" x-text="item.rt_count"></td>
+                                    <td class="py-3.5 px-4 sm:px-6 text-center">
+                                        <button type="button"
+                                                @click="openDetail(item)"
+                                                class="inline-block bg-[#102a43] hover:bg-[#0a2558] text-white text-xs font-semibold px-4 py-1.5 rounded shadow-2xs transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-600/30">
+                                            Detail
+                                        </button>
+                                    </td>
+                                </tr>
+                            </template>
+
+                            {{-- Empty State --}}
+                            <tr x-show="filteredData.length === 0">
+                                <td colspan="5" class="py-10 text-center text-slate-400">
+                                    <p class="font-medium text-sm">Tidak ada data kecamatan yang sesuai dengan filter pencarian.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                {{-- Pagination & Summary Footer --}}
+                <div class="mt-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-slate-600">
+                    <div>
+                        Menampilkan
+                        <span class="font-bold text-slate-900" x-text="filteredData.length === 0 ? 0 : ((currentPage - 1) * perPage + 1)"></span>
+                        sampai
+                        <span class="font-bold text-slate-900" x-text="Math.min(currentPage * perPage, filteredData.length)"></span>
+                        dari
+                        <span class="font-bold text-slate-900" x-text="filteredData.length"></span>
+                        data kecamatan
+                    </div>
+
+                    <div class="flex items-center gap-1" x-show="totalPages > 1">
+                        <button type="button"
+                                @click="currentPage = Math.max(1, currentPage - 1)"
+                                :disabled="currentPage === 1"
+                                class="px-3 py-1.5 rounded border border-slate-200 text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed font-medium transition-colors">
+                            Sebelumnya
+                        </button>
+
+                        <template x-for="p in totalPages" :key="p">
+                            <button type="button"
+                                    @click="currentPage = p"
+                                    x-text="p"
+                                    class="px-3 py-1.5 rounded border font-medium transition-colors"
+                                    :class="currentPage === p ? 'bg-[#0088e8] border-[#0088e8] text-white font-bold' : 'border-slate-200 text-slate-700 hover:bg-slate-100'">
+                            </button>
+                        </template>
+
+                        <button type="button"
+                                @click="currentPage = Math.min(totalPages, currentPage + 1)"
+                                :disabled="currentPage === totalPages"
+                                class="px-3 py-1.5 rounded border border-slate-200 text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed font-medium transition-colors">
+                            Selanjutnya
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        {{-- 3. Detail Modal Window --}}
+        <div x-show="showModal"
+             x-cloak
+             class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
+             role="dialog"
+             aria-modal="true">
+
+            {{-- Backdrop --}}
+            <div x-show="showModal"
+                 x-transition:enter="ease-out duration-200"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="ease-in duration-150"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 @click="showModal = false"
+                 class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs">
+            </div>
+
+            {{-- Modal Content Card --}}
+            <div x-show="showModal"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 class="relative bg-white rounded-3xl shadow-2xl border border-slate-100 max-w-2xl w-full overflow-hidden z-10 my-8">
+
+                {{-- Modal Header --}}
+                <div class="px-6 py-5 bg-gradient-to-r from-[#0a2558] to-[#164e87] text-white flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white font-bold">
+                            <i data-lucide="map-pin" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <span class="text-[11px] uppercase tracking-wider font-semibold text-blue-200" x-text="'Kode Wilayah: ' + (selectedKec?.kode || '-')"></span>
+                            <h3 class="text-xl font-bold" x-text="'Kecamatan ' + (selectedKec?.nama || '')"></h3>
+                        </div>
+                    </div>
+                    <button type="button" @click="showModal = false" class="text-white/70 hover:text-white p-2 rounded-xl hover:bg-white/10 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                {{-- Modal Body --}}
+                <div class="p-6 space-y-5 text-sm text-slate-600">
+
+                    {{-- 3 Quick Stats Pill --}}
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-blue-50/80 border border-blue-100 rounded-2xl p-3.5 text-center">
+                            <span class="block text-2xl font-black text-[#0a2558]" x-text="selectedKec?.desa_count"></span>
+                            <span class="text-xs font-semibold text-blue-700">Desa / Kelurahan</span>
+                        </div>
+                        <div class="bg-amber-50/80 border border-amber-100 rounded-2xl p-3.5 text-center">
+                            <span class="block text-2xl font-black text-amber-900" x-text="selectedKec?.rw_count"></span>
+                            <span class="text-xs font-semibold text-amber-700">Rukun Warga (RW)</span>
+                        </div>
+                        <div class="bg-emerald-50/80 border border-emerald-100 rounded-2xl p-3.5 text-center">
+                            <span class="block text-2xl font-black text-emerald-900" x-text="selectedKec?.rt_count"></span>
+                            <span class="text-xs font-semibold text-emerald-700">Rukun Tetangga (RT)</span>
+                        </div>
+                    </div>
+
+                    {{-- Info Kantor --}}
+                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 space-y-2.5">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                            <i data-lucide="building-2" class="w-4 h-4 text-blue-600"></i>
+                            <span>Informasi Kantor Kecamatan</span>
+                        </h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                            <div>
+                                <span class="text-slate-400 block">Alamat Kantor:</span>
+                                <span class="text-slate-800 font-medium" x-text="selectedKec?.alamat"></span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block">Jam Operasional:</span>
+                                <span class="text-emerald-700 font-medium" x-text="selectedKec?.jam"></span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block">Nomor Telepon:</span>
+                                <span class="text-slate-800 font-medium" x-text="selectedKec?.telepon"></span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block">Email Resmi:</span>
+                                <span class="text-blue-600 font-medium" x-text="selectedKec?.email"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Daftar Desa/Kelurahan --}}
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800">
+                                Wilayah Kerja Desa / Kelurahan
+                            </h4>
+                            <span class="text-xs font-medium text-slate-500" x-text="selectedKec?.desas?.length ? (selectedKec.desas.length + ' Desa Terdata') : (selectedKec?.desa_count + ' Wilayah Desa')"></span>
+                        </div>
+
+                        <div class="max-h-48 overflow-y-auto pr-1">
+                            <template x-if="selectedKec?.desas && selectedKec.desas.length > 0">
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                    <template x-for="desa in selectedKec.desas" :key="desa.kode">
+                                        <div class="px-3 py-2 bg-white border border-slate-200 rounded-xl flex items-center gap-2 shadow-2xs">
+                                            <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                                            <div class="truncate">
+                                                <p class="text-xs font-semibold text-slate-800 truncate" x-text="desa.nama"></p>
+                                                <p class="text-[10px] text-slate-400 truncate" x-text="desa.kode"></p>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+
+                            <template x-if="!selectedKec?.desas || selectedKec.desas.length === 0">
+                                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 flex items-center gap-2.5">
+                                    <i data-lucide="info" class="w-4 h-4 text-blue-500 flex-shrink-0"></i>
+                                    <span>Kecamatan ini mengoordinasikan <strong class="text-slate-800" x-text="selectedKec?.desa_count"></strong> desa/kelurahan aktif yang terhubung dalam sistem pelayanan administrasi terpadu Diskominfo Kab. Tasikmalaya.</span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                </div>
+
+                {{-- Modal Footer --}}
+                <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3">
+                    <button type="button"
+                            @click="showModal = false"
+                            class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-800 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-colors">
+                        Tutup
+                    </button>
+                    @auth
+                        <a href="{{ route('warga.submissions.index') }}"
+                           class="px-5 py-2 text-xs font-bold text-white bg-[#0a2558] hover:bg-[#0d3070] rounded-xl shadow-md transition-all">
+                            Ajukan Permohonan di Kecamatan Ini
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}"
+                           class="px-5 py-2 text-xs font-bold text-white bg-[#0a2558] hover:bg-[#0d3070] rounded-xl shadow-md transition-all">
+                            Masuk & Ajukan Layanan
+                        </a>
+                    @endauth
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    {{-- ═══════════════════════════════════════════════════════════════════════════
+         6. FOOTER — DISKOMINFO KABUPATEN TASIKMALAYA
     ═══════════════════════════════════════════════════════════════════════════ --}}
     <footer class="bg-slate-950 text-slate-400 text-xs py-10 sm:py-12 border-t border-slate-800 w-full overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

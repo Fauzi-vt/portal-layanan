@@ -23,7 +23,11 @@ Route::get('/', function () {
         ? \App\Models\Service::where('is_active', true)->orderBy('urutan')->get()
         : collect();
 
-    return view('welcome', compact('services'));
+    $kecamatans = \Illuminate\Support\Facades\Schema::hasTable('kecamatans')
+        ? \App\Models\Kecamatan::with('desas')->orderBy('nama_kecamatan')->get()
+        : collect();
+
+    return view('welcome', compact('services', 'kecamatans'));
 });
 
 use App\Http\Controllers\Auth\RegisterController;
@@ -102,6 +106,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/verifikasi/{submission}', [DesaSubmissionController::class, 'show'])->name('submissions.show');
             Route::get('/verifikasi/{submission}/cetak-f101', [DesaSubmissionController::class, 'printF101'])->name('submissions.print-f101');
             Route::post('/verifikasi/{submission}/verifikasi', [DesaSubmissionController::class, 'verify'])->name('submissions.verify');
+
+            // Pengelolaan Data Kewilayahan Desa (RW, RT, Profil)
+            Route::get('/wilayah', [\App\Http\Controllers\Desa\WilayahController::class, 'index'])->name('wilayah.index');
+            Route::put('/wilayah', [\App\Http\Controllers\Desa\WilayahController::class, 'update'])->name('wilayah.update');
         });
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -122,10 +130,17 @@ Route::middleware('auth')->group(function () {
             Route::post('/verifikasi/{submission}/jadwal-biometrik', [KecamatanSubmissionController::class, 'scheduleBiometric'])->name('submissions.schedule-biometric');
             Route::post('/verifikasi/{submission}/selesaikan', [KecamatanSubmissionController::class, 'complete'])->name('submissions.complete');
             Route::post('/verifikasi/{submission}/tolak', [KecamatanSubmissionController::class, 'reject'])->name('submissions.reject');
+
+            // Pengelolaan Data Kewilayahan Kecamatan & Desa Binaan
+            Route::get('/wilayah', [\App\Http\Controllers\Kecamatan\WilayahController::class, 'index'])->name('wilayah.index');
+            Route::put('/wilayah/profil', [\App\Http\Controllers\Kecamatan\WilayahController::class, 'updateProfil'])->name('wilayah.profil.update');
+            Route::post('/wilayah/desa', [\App\Http\Controllers\Kecamatan\WilayahController::class, 'storeDesa'])->name('wilayah.desa.store');
+            Route::put('/wilayah/desa/{desa}', [\App\Http\Controllers\Kecamatan\WilayahController::class, 'updateDesa'])->name('wilayah.desa.update');
+            Route::delete('/wilayah/desa/{desa}', [\App\Http\Controllers\Kecamatan\WilayahController::class, 'destroyDesa'])->name('wilayah.desa.destroy');
         });
 
     // ─────────────────────────────────────────────────────────────────────────
-    // 3. WORKSPACE: SUPER ADMIN (DISKOMINFO / KABUPATEN TASIKMALAYA)
+    // 4. WORKSPACE: SUPER ADMIN (DISKOMINFO / KABUPATEN TASIKMALAYA)
     // ─────────────────────────────────────────────────────────────────────────
     Route::middleware('role:super_admin')
         ->prefix('superadmin')
@@ -144,5 +159,14 @@ Route::middleware('auth')->group(function () {
             Route::post('/layanan/{service}/persyaratan', [SuperAdminServiceController::class, 'storeRequirement'])->name('services.requirements.store');
             Route::put('/layanan/{service}/persyaratan/{requirement}', [SuperAdminServiceController::class, 'updateRequirement'])->name('services.requirements.update');
             Route::delete('/layanan/{service}/persyaratan/{requirement}', [SuperAdminServiceController::class, 'destroyRequirement'])->name('services.requirements.destroy');
+
+            // Manajemen Master Kewilayahan (39 Kecamatan & Seluruh Desa se-Kabupaten)
+            Route::get('/wilayah', [\App\Http\Controllers\SuperAdmin\WilayahController::class, 'index'])->name('wilayah.index');
+            Route::post('/wilayah/kecamatan', [\App\Http\Controllers\SuperAdmin\WilayahController::class, 'storeKecamatan'])->name('wilayah.kecamatan.store');
+            Route::put('/wilayah/kecamatan/{kecamatan}', [\App\Http\Controllers\SuperAdmin\WilayahController::class, 'updateKecamatan'])->name('wilayah.kecamatan.update');
+            Route::delete('/wilayah/kecamatan/{kecamatan}', [\App\Http\Controllers\SuperAdmin\WilayahController::class, 'destroyKecamatan'])->name('wilayah.kecamatan.destroy');
+            Route::post('/wilayah/desa', [\App\Http\Controllers\SuperAdmin\WilayahController::class, 'storeDesa'])->name('wilayah.desa.store');
+            Route::put('/wilayah/desa/{desa}', [\App\Http\Controllers\SuperAdmin\WilayahController::class, 'updateDesa'])->name('wilayah.desa.update');
+            Route::delete('/wilayah/desa/{desa}', [\App\Http\Controllers\SuperAdmin\WilayahController::class, 'destroyDesa'])->name('wilayah.desa.destroy');
         });
 });

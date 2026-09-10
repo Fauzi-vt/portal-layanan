@@ -17,6 +17,8 @@ class Desa extends Model
         'kecamatan_id',
         'kode_desa',
         'nama_desa',
+        'jumlah_rw',
+        'jumlah_rt',
     ];
 
     /**
