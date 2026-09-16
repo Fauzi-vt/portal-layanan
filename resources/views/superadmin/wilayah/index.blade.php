@@ -1,9 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.superadmin')
 
-@section('title', 'Kelola Master Kewilayahan (39 Kecamatan & Desa) — Diskominfo Kab. Tasikmalaya')
+@section('title', 'Master Wilayah (39 Kec & Desa) — Super Admin Diskominfo')
+
+@section('breadcrumb')
+    <span>Master Wilayah (39 Kec)</span>
+@endsection
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8"
+<div class="space-y-6"
      x-data="{
          activeTab: '{{ $tab }}',
          modalKecamatanOpen: false,
@@ -50,6 +54,7 @@
                  jumlah_rt: ''
              };
              this.modalKecamatanOpen = true;
+             this.$nextTick(() => this.$refs.kecKodeInput?.focus());
          },
 
          openEditKecamatan(kec) {
@@ -68,6 +73,7 @@
                  jumlah_rt: kec.jumlah_rt || ''
              };
              this.modalKecamatanOpen = true;
+             this.$nextTick(() => this.$refs.kecKodeInput?.focus());
          },
 
          openCreateDesa(defaultKecId = null) {
@@ -82,6 +88,7 @@
                  jumlah_rt: ''
              };
              this.modalDesaOpen = true;
+             this.$nextTick(() => this.$refs.desaKecSelect?.focus());
          },
 
          openEditDesa(desa) {
@@ -96,33 +103,38 @@
                  jumlah_rt: desa.jumlah_rt || ''
              };
              this.modalDesaOpen = true;
+             this.$nextTick(() => this.$refs.desaKecSelect?.focus());
          }
      }">
 
     {{-- ═══════════════════════════════════════════════════════════════════════════
-         1. BANNER HEADER
+         1. EXECUTIVE HEADER
     ═══════════════════════════════════════════════════════════════════════════ --}}
-    <div class="bg-gradient-to-r from-purple-950 via-slate-900 to-indigo-950 rounded-3xl p-6 sm:p-8 text-white portal-shadow relative overflow-hidden">
-        <div class="absolute right-0 top-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div class="space-y-2">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                    <span>👑 Super Administrator Diskominfo</span>
-                </div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
-                    Master Data Kewilayahan Terintegrasi
-                </h1>
-                <p class="text-xs sm:text-sm text-slate-300 max-w-2xl">
-                    Kelola data 39 Kecamatan, Desa/Kelurahan, estimasi jumlah RW & RT yang sinkron langsung ke tabel publik di landing page dan portal permohonan warga.
-                </p>
+    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="space-y-1">
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-purple-100 text-purple-800 border border-purple-200">
+                    Master Wilayah
+                </span>
+                <span class="text-slate-400 text-xs">•</span>
+                <span class="text-xs text-slate-500 font-medium">Kabupaten Tasikmalaya</span>
             </div>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+                Master Data Kewilayahan (39 Kecamatan & Desa)
+            </h1>
+            <p class="text-xs text-slate-500 max-w-2xl leading-relaxed">
+                Kelola data 39 Kecamatan, seluruh Desa/Kelurahan, estimasi jumlah RW & RT yang tersinkronisasi langsung dengan landing page dan formulir permohonan warga.
+            </p>
+        </div>
 
-            <div class="flex items-center gap-3">
-                <a href="{{ route('superadmin.dashboard') }}" class="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-colors border border-white/20">
-                    &larr; Dashboard Super Admin
-                </a>
-            </div>
+        <div class="flex items-center gap-2.5 shrink-0">
+            <a href="{{ route('superadmin.dashboard') }}"
+               class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Dashboard Global</span>
+            </a>
         </div>
     </div>
 
@@ -182,7 +194,7 @@
                 <button type="button"
                         @click="activeTab = 'kecamatan'"
                         class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2"
-                        :class="activeTab === 'kecamatan' ? 'bg-[#0a2558] text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'">
+                        :class="activeTab === 'kecamatan' ? 'bg-purple-700 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'">
                     <span>🏛️ Data Kecamatan</span>
                     <span class="px-2 py-0.5 rounded-full text-[10px]" :class="activeTab === 'kecamatan' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'">
                         {{ $stats['total_kecamatan'] }}
@@ -191,7 +203,7 @@
                 <button type="button"
                         @click="activeTab = 'desa'"
                         class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2"
-                        :class="activeTab === 'desa' ? 'bg-[#0a2558] text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'">
+                        :class="activeTab === 'desa' ? 'bg-purple-700 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'">
                     <span>🏡 Data Desa / Kelurahan</span>
                     <span class="px-2 py-0.5 rounded-full text-[10px]" :class="activeTab === 'desa' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'">
                         {{ $stats['total_desa'] }}
@@ -292,7 +304,7 @@
                                         </a>
                                         <form method="POST"
                                               action="{{ route('superadmin.wilayah.kecamatan.destroy', $kec) }}"
-                                              onsubmit="return confirm('Apakah Anda yakin ingin menghapus Kecamatan {{ $kec->nama_kecamatan }}?');"
+                                              onsubmit="event.preventDefault(); Swal.fire({ title: 'Hapus Kecamatan?', text: 'Apakah Anda yakin ingin menghapus Kecamatan {{ $kec->nama_kecamatan }}? Data ini tidak dapat dikembalikan.', icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#3085d6', confirmButtonText: 'Ya, Hapus!', cancelButtonText: 'Batal' }).then((result) => { if (result.isConfirmed) { this.submit(); } })"
                                               class="inline">
                                             @csrf
                                             @method('DELETE')
@@ -404,7 +416,7 @@
                                         </button>
                                         <form method="POST"
                                               action="{{ route('superadmin.wilayah.desa.destroy', $d) }}"
-                                              onsubmit="return confirm('Apakah Anda yakin ingin menghapus Desa {{ $d->nama_desa }}?');"
+                                              onsubmit="event.preventDefault(); Swal.fire({ title: 'Hapus Desa/Kelurahan?', text: 'Apakah Anda yakin ingin menghapus Desa {{ $d->nama_desa }}?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#3085d6', confirmButtonText: 'Ya, Hapus!', cancelButtonText: 'Batal' }).then((result) => { if (result.isConfirmed) { this.submit(); } })"
                                               class="inline">
                                             @csrf
                                             @method('DELETE')
@@ -439,16 +451,18 @@
     ═══════════════════════════════════════════════════════════════════════════ --}}
     <div x-show="modalKecamatanOpen"
          x-cloak
+         @keydown.escape.window="modalKecamatanOpen = false"
          class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
          role="dialog"
-         aria-modal="true">
+         aria-modal="true"
+         aria-labelledby="modal-kecamatan-title">
 
         <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs" @click="modalKecamatanOpen = false"></div>
 
         <div class="relative bg-white rounded-3xl shadow-2xl border border-slate-100 max-w-lg w-full p-6 z-10 my-8">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                <h3 class="text-base font-bold text-slate-900" x-text="isEditingKecamatan ? 'Edit Data Kecamatan' : 'Tambah Kecamatan Baru'"></h3>
-                <button type="button" @click="modalKecamatanOpen = false" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">✕</button>
+                <h3 id="modal-kecamatan-title" class="text-base font-bold text-slate-900" x-text="isEditingKecamatan ? 'Edit Data Kecamatan' : 'Tambah Kecamatan Baru'"></h3>
+                <button type="button" @click="modalKecamatanOpen = false" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg" aria-label="Tutup Modal">✕</button>
             </div>
 
             <form :action="formKecamatanAction" method="POST" class="mt-4 space-y-4">
@@ -460,7 +474,7 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Kode Kecamatan *</label>
-                        <input type="text" name="kode_kecamatan" x-model="kecamatanForm.kode_kecamatan" required placeholder="KEC-040"
+                        <input type="text" name="kode_kecamatan" x-model="kecamatanForm.kode_kecamatan" required placeholder="KEC-040" x-ref="kecKodeInput"
                                class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500">
                     </div>
                     <div>
@@ -526,16 +540,18 @@
     ═══════════════════════════════════════════════════════════════════════════ --}}
     <div x-show="modalDesaOpen"
          x-cloak
+         @keydown.escape.window="modalDesaOpen = false"
          class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
          role="dialog"
-         aria-modal="true">
+         aria-modal="true"
+         aria-labelledby="modal-desa-title">
 
         <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs" @click="modalDesaOpen = false"></div>
 
         <div class="relative bg-white rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full p-6 z-10 my-8">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                <h3 class="text-base font-bold text-slate-900" x-text="isEditingDesa ? 'Edit Data Desa / Kelurahan' : 'Tambah Desa / Kelurahan Baru'"></h3>
-                <button type="button" @click="modalDesaOpen = false" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">✕</button>
+                <h3 id="modal-desa-title" class="text-base font-bold text-slate-900" x-text="isEditingDesa ? 'Edit Data Desa / Kelurahan' : 'Tambah Desa / Kelurahan Baru'"></h3>
+                <button type="button" @click="modalDesaOpen = false" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg" aria-label="Tutup Modal">✕</button>
             </div>
 
             <form :action="formDesaAction" method="POST" class="mt-4 space-y-4">
@@ -546,7 +562,7 @@
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Kecamatan Induk *</label>
-                    <select name="kecamatan_id" x-model="desaForm.kecamatan_id" required
+                    <select name="kecamatan_id" x-model="desaForm.kecamatan_id" required x-ref="desaKecSelect"
                             class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
                         @foreach ($allKecamatans as $k)
                             <option value="{{ $k->id }}">{{ $k->nama_kecamatan }} ({{ $k->kode_kecamatan }})</option>
