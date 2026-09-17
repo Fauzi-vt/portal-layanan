@@ -113,7 +113,7 @@
     <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="space-y-1">
             <div class="flex items-center gap-2">
-                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-purple-100 text-purple-800 border border-purple-200">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-blue-100 text-[#0a2558] border border-blue-200">
                     Master Wilayah
                 </span>
                 <span class="text-slate-400 text-xs">•</span>
@@ -145,9 +145,9 @@
         <div class="bg-white rounded-2xl p-5 border border-slate-200 portal-shadow flex items-center justify-between">
             <div>
                 <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Total Kecamatan</p>
-                <p class="text-2xl sm:text-3xl font-extrabold text-purple-700 mt-1">{{ $stats['total_kecamatan'] }}</p>
+                <p class="text-2xl sm:text-3xl font-extrabold text-[#0a2558] mt-1">{{ $stats['total_kecamatan'] }}</p>
             </div>
-            <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-lg">
+            <div class="w-11 h-11 rounded-xl bg-blue-50 text-[#0a2558] flex items-center justify-center font-bold text-lg">
                 🏛️
             </div>
         </div>
@@ -194,7 +194,7 @@
                 <button type="button"
                         @click="activeTab = 'kecamatan'"
                         class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2"
-                        :class="activeTab === 'kecamatan' ? 'bg-purple-700 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'">
+                        :class="activeTab === 'kecamatan' ? 'bg-[#0a2558] text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'">
                     <span>🏛️ Data Kecamatan</span>
                     <span class="px-2 py-0.5 rounded-full text-[10px]" :class="activeTab === 'kecamatan' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'">
                         {{ $stats['total_kecamatan'] }}
@@ -203,7 +203,7 @@
                 <button type="button"
                         @click="activeTab = 'desa'"
                         class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2"
-                        :class="activeTab === 'desa' ? 'bg-purple-700 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'">
+                        :class="activeTab === 'desa' ? 'bg-[#0a2558] text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'">
                     <span>🏡 Data Desa / Kelurahan</span>
                     <span class="px-2 py-0.5 rounded-full text-[10px]" :class="activeTab === 'desa' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'">
                         {{ $stats['total_desa'] }}
@@ -216,7 +216,7 @@
                 <button type="button"
                         x-show="activeTab === 'kecamatan'"
                         @click="openCreateKecamatan()"
-                        class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 transition-colors shadow-sm flex items-center gap-2">
+                        class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#0a2558] hover:bg-[#1a3a70] transition-colors shadow-sm flex items-center gap-2">
                     <span>+ Tambah Kecamatan Baru</span>
                 </button>
                 <button type="button"
@@ -239,7 +239,7 @@
                            name="q"
                            value="{{ $tab === 'kecamatan' ? $search : '' }}"
                            placeholder="Cari nama atau kode kecamatan..."
-                           class="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500">
+                           class="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#0a2558]">
                     <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
@@ -270,8 +270,8 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100 bg-white">
                         @forelse ($kecamatans as $kec)
-                            <tr class="hover:bg-purple-50/40 transition-colors">
-                                <td class="py-3.5 px-4 font-mono font-bold text-purple-800">
+                            <tr class="hover:bg-blue-50/40 transition-colors">
+                                <td class="py-3.5 px-4 font-mono font-bold text-[#0a2558]">
                                     {{ $kec->kode_kecamatan }}
                                 </td>
                                 <td class="py-3.5 px-4">
@@ -295,7 +295,7 @@
                                     <div class="flex items-center justify-center gap-1.5">
                                         <button type="button"
                                                 @click="openEditKecamatan({{ json_encode($kec) }})"
-                                                class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-50 hover:bg-purple-100 text-purple-700 transition-colors">
+                                                class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-50 hover:bg-blue-100 text-[#0a2558] transition-colors">
                                             Edit
                                         </button>
                                         <a href="{{ route('superadmin.wilayah.index', ['tab' => 'desa', 'kecamatan_id' => $kec->id]) }}"
@@ -475,61 +475,61 @@
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Kode Kecamatan *</label>
                         <input type="text" name="kode_kecamatan" x-model="kecamatanForm.kode_kecamatan" required placeholder="KEC-040" x-ref="kecKodeInput"
-                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500">
+                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-[#0a2558]">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Kecamatan *</label>
                         <input type="text" name="nama_kecamatan" x-model="kecamatanForm.nama_kecamatan" required placeholder="Contoh: Singaparna"
-                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500">
+                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-[#0a2558]">
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Alamat Kantor Kecamatan</label>
                     <textarea name="alamat_kantor" x-model="kecamatanForm.alamat_kantor" rows="2" placeholder="Jl. Raya Singaparna No. ..."
-                              class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500"></textarea>
+                              class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-[#0a2558]"></textarea>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">No. Telepon Kantor</label>
                         <input type="text" name="telepon" x-model="kecamatanForm.telepon" placeholder="(0265) 541234"
-                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500">
+                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-[#0a2558]">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Email Resmi</label>
                         <input type="email" name="email" x-model="kecamatanForm.email" placeholder="kecamatan@tasikmalayakab.go.id"
-                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500">
+                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-[#0a2558]">
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Jam Operasional Pelayanan</label>
                     <input type="text" name="jam_operasional" x-model="kecamatanForm.jam_operasional" placeholder="Senin - Jumat (08.00 - 15.30 WIB)"
-                           class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500">
+                           class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-[#0a2558]">
                 </div>
 
                 <div class="grid grid-cols-3 gap-3 pt-2 border-t border-slate-100">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Jumlah Desa</label>
                         <input type="number" name="jumlah_desa" x-model="kecamatanForm.jumlah_desa" placeholder="10"
-                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500">
+                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-[#0a2558]">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Jumlah RW</label>
                         <input type="number" name="jumlah_rw" x-model="kecamatanForm.jumlah_rw" placeholder="54"
-                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500">
+                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-[#0a2558]">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Jumlah RT</label>
                         <input type="number" name="jumlah_rt" x-model="kecamatanForm.jumlah_rt" placeholder="320"
-                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500">
+                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-[#0a2558]">
                     </div>
                 </div>
 
                 <div class="pt-4 flex items-center justify-end gap-2 border-t border-slate-100">
                     <button type="button" @click="modalKecamatanOpen = false" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl">Batal</button>
-                    <button type="submit" class="px-5 py-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-xl shadow-sm">Simpan Data</button>
+                    <button type="submit" class="px-5 py-2 text-xs font-bold text-white bg-[#0a2558] hover:bg-[#1a3a70] rounded-xl shadow-sm">Simpan Data</button>
                 </div>
             </form>
         </div>

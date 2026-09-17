@@ -3,7 +3,7 @@
 @section('title', 'Konfigurasi: ' . $service->nama_layanan . ' — Super Admin Diskominfo')
 
 @section('breadcrumb')
-    <a href="{{ route('superadmin.services.index') }}" class="hover:text-purple-700">Kelola Layanan Publik</a>
+    <a href="{{ route('superadmin.services.index') }}" class="hover:text-[#0a2558]">Kelola Layanan Publik</a>
     <span class="mx-1.5 text-slate-300">/</span>
     <span class="text-slate-900 font-semibold">{{ $service->nama_layanan }}</span>
 @endsection
@@ -17,11 +17,11 @@
     <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="space-y-1">
             <div class="flex items-center gap-2">
-                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-purple-100 text-purple-800 border border-purple-200">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-blue-100 text-[#0a2558] border border-blue-200">
                     Konfigurasi Master
                 </span>
                 <span class="text-slate-400 text-xs">•</span>
-                <span class="font-mono text-xs font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
+                <span class="font-mono text-xs font-bold text-[#0a2558] bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
                     {{ $service->kode_layanan }}
                 </span>
             </div>
@@ -66,7 +66,7 @@
                            name="nama_layanan"
                            value="{{ old('nama_layanan', $service->nama_layanan) }}"
                            required
-                           class="w-full text-xs rounded-xl border-slate-200 bg-slate-50 p-2.5 focus:bg-white focus:border-purple-500 focus:ring-purple-500 font-semibold text-slate-800">
+                           class="w-full text-xs rounded-xl border-slate-200 bg-slate-50 p-2.5 focus:bg-white focus:border-[#0a2558] focus:ring-blue-500 font-semibold text-slate-800">
                     @error('nama_layanan') <p class="text-rose-600 text-[11px] mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -75,7 +75,7 @@
                     <textarea name="deskripsi"
                               rows="3"
                               required
-                              class="w-full text-xs rounded-xl border-slate-200 bg-slate-50 p-2.5 focus:bg-white focus:border-purple-500 focus:ring-purple-500 text-slate-800">{{ old('deskripsi', $service->deskripsi) }}</textarea>
+                              class="w-full text-xs rounded-xl border-slate-200 bg-slate-50 p-2.5 focus:bg-white focus:border-[#0a2558] focus:ring-blue-500 text-slate-800">{{ old('deskripsi', $service->deskripsi) }}</textarea>
                     @error('deskripsi') <p class="text-rose-600 text-[11px] mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -83,7 +83,7 @@
                     <label class="block font-bold text-slate-700 mb-1">Jenis Alur Proses: <span class="text-rose-500">*</span></label>
                     <select name="jenis_proses"
                             required
-                            class="w-full text-xs rounded-xl border-slate-200 bg-slate-50 p-2.5 focus:bg-white focus:border-purple-500 focus:ring-purple-500 font-medium text-slate-800">
+                            class="w-full text-xs rounded-xl border-slate-200 bg-slate-50 p-2.5 focus:bg-white focus:border-[#0a2558] focus:ring-blue-500 font-medium text-slate-800">
                         <option value="full_digital" {{ old('jenis_proses', $service->jenis_proses->value) === 'full_digital' ? 'selected' : '' }}>
                             Full Digital (Selesai Online & Terbit E-Dokumen)
                         </option>
@@ -101,7 +101,7 @@
                            value="{{ old('urutan', $service->urutan) }}"
                            required
                            min="0"
-                           class="w-full text-xs rounded-xl border-slate-200 bg-slate-50 p-2.5 focus:bg-white focus:border-purple-500 focus:ring-purple-500 font-mono text-slate-800">
+                           class="w-full text-xs rounded-xl border-slate-200 bg-slate-50 p-2.5 focus:bg-white focus:border-[#0a2558] focus:ring-blue-500 font-mono text-slate-800">
                     @error('urutan') <p class="text-rose-600 text-[11px] mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -111,7 +111,7 @@
                                name="requires_desa_approval"
                                value="1"
                                {{ old('requires_desa_approval', $service->requires_desa_approval) ? 'checked' : '' }}
-                               class="mt-0.5 rounded text-purple-600 focus:ring-purple-500">
+                               class="mt-0.5 rounded text-[#0a2558] focus:ring-blue-500">
                         <div>
                             <span class="font-bold text-slate-800 block text-xs">Wajib Verifikasi Awal Desa</span>
                             <span class="text-[11px] text-slate-500 leading-tight">Pengajuan harus diperiksa Kasi Pelayanan Desa sebelum diteruskan ke Kecamatan.</span>
@@ -123,7 +123,7 @@
                                name="is_active"
                                value="1"
                                {{ old('is_active', $service->is_active) ? 'checked' : '' }}
-                               class="mt-0.5 rounded text-purple-600 focus:ring-purple-500">
+                               class="mt-0.5 rounded text-[#0a2558] focus:ring-blue-500">
                         <div>
                             <span class="font-bold text-slate-800 block text-xs">Layanan Aktif untuk Publik</span>
                             <span class="text-[11px] text-slate-500 leading-tight">Warga dapat melihat dan mengajukan permohonan layanan ini di portal.</span>
@@ -133,7 +133,7 @@
 
                 <div class="pt-3 border-t border-slate-100 flex justify-end">
                     <button type="submit"
-                            class="w-full px-4 py-2.5 rounded-xl font-bold text-xs text-white bg-purple-700 hover:bg-purple-800 transition-colors shadow-xs">
+                            class="w-full px-4 py-2.5 rounded-xl font-bold text-xs text-white bg-[#0a2558] hover:bg-[#1a3a70] transition-colors shadow-xs">
                         Simpan Perubahan Layanan
                     </button>
                 </div>
@@ -150,14 +150,14 @@
                         <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Daftar Dokumen Persyaratan</h3>
                         <p class="text-[11px] text-slate-500 mt-0.5">Checklist dokumen yang wajib/opsional dilampirkan oleh pemohon</p>
                     </div>
-                    <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-purple-50 text-purple-700 border border-purple-200">
+                    <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-[#0a2558] border border-blue-200">
                         {{ $service->requirements->count() }} Dokumen
                     </span>
                 </div>
 
                 <div class="space-y-3">
                     @forelse ($service->requirements as $req)
-                        <div class="p-4 rounded-xl border border-slate-200 hover:border-purple-200 bg-slate-50/60 transition-all space-y-3">
+                        <div class="p-4 rounded-xl border border-slate-200 hover:border-blue-200 bg-slate-50/60 transition-all space-y-3">
 
                             {{-- View Mode --}}
                             <div class="flex items-start justify-between gap-4" x-show="editingReqId !== {{ $req->id }}">
@@ -197,7 +197,7 @@
                                 <div class="flex items-center gap-1.5 shrink-0">
                                     <button type="button"
                                             @click="editingReqId = {{ $req->id }}; $nextTick(() => $refs['reqName{{ $req->id }}'].focus())"
-                                            class="px-2.5 py-1 rounded-lg text-xs font-semibold text-purple-700 hover:bg-purple-100 border border-purple-200 bg-white transition-colors">
+                                            class="px-2.5 py-1 rounded-lg text-xs font-semibold text-[#0a2558] hover:bg-blue-100 border border-blue-200 bg-white transition-colors">
                                         Edit
                                     </button>
 
@@ -222,9 +222,9 @@
                             </div>
 
                             {{-- Edit Inline Form Mode --}}
-                            <div x-show="editingReqId === {{ $req->id }}" x-cloak class="p-4 rounded-xl bg-white border border-purple-200 space-y-3">
+                            <div x-show="editingReqId === {{ $req->id }}" x-cloak class="p-4 rounded-xl bg-white border border-blue-200 space-y-3">
                                 <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                                    <span class="text-xs font-bold text-purple-900">Ubah Persyaratan: {{ $req->nama_persyaratan }}</span>
+                                    <span class="text-xs font-bold text-[#0a2558]">Ubah Persyaratan: {{ $req->nama_persyaratan }}</span>
                                     <button type="button" @click="editingReqId = null" class="text-xs text-slate-400 hover:text-slate-600">✕ Batal</button>
                                 </div>
 
@@ -235,30 +235,30 @@
                                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                         <div class="sm:col-span-2">
                                             <label class="block font-bold text-slate-700 mb-1">Nama Persyaratan: <span class="text-rose-500">*</span></label>
-                                            <input type="text" name="nama_persyaratan" value="{{ $req->nama_persyaratan }}" required x-ref="reqName{{ $req->id }}" class="w-full text-xs rounded-xl border-slate-200 p-2 focus:ring-purple-500">
+                                            <input type="text" name="nama_persyaratan" value="{{ $req->nama_persyaratan }}" required x-ref="reqName{{ $req->id }}" class="w-full text-xs rounded-xl border-slate-200 p-2 focus:ring-blue-500">
                                         </div>
                                         <div>
                                             <label class="block font-bold text-slate-700 mb-1">Urutan: <span class="text-rose-500">*</span></label>
-                                            <input type="number" name="urutan" value="{{ $req->urutan }}" required min="0" class="w-full text-xs rounded-xl border-slate-200 p-2 focus:ring-purple-500 font-mono">
+                                            <input type="number" name="urutan" value="{{ $req->urutan }}" required min="0" class="w-full text-xs rounded-xl border-slate-200 p-2 focus:ring-blue-500 font-mono">
                                         </div>
                                     </div>
 
                                     <div>
                                         <label class="block font-bold text-slate-700 mb-1">Panduan / Keterangan Dokumen:</label>
-                                        <input type="text" name="deskripsi" value="{{ $req->deskripsi }}" class="w-full text-xs rounded-xl border-slate-200 p-2 focus:ring-purple-500">
+                                        <input type="text" name="deskripsi" value="{{ $req->deskripsi }}" class="w-full text-xs rounded-xl border-slate-200 p-2 focus:ring-blue-500">
                                     </div>
 
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
                                         <div>
                                             <label class="block font-bold text-slate-700 mb-1">Maks Ukuran File (KB): <span class="text-rose-500">*</span></label>
-                                            <input type="number" name="max_size_kb" value="{{ $req->max_size_kb }}" min="100" max="20480" required class="w-full text-xs rounded-xl border-slate-200 p-2 focus:ring-purple-500 font-mono">
+                                            <input type="number" name="max_size_kb" value="{{ $req->max_size_kb }}" min="100" max="20480" required class="w-full text-xs rounded-xl border-slate-200 p-2 focus:ring-blue-500 font-mono">
                                         </div>
                                         <div>
                                             <label class="block font-bold text-slate-700 mb-1">Format Diizinkan: <span class="text-rose-500">*</span></label>
                                             <div class="flex items-center gap-3">
                                                 @foreach (['pdf', 'jpg', 'jpeg', 'png'] as $fmt)
                                                     <label class="inline-flex items-center gap-1 text-[11px]">
-                                                        <input type="checkbox" name="accepted_formats[]" value="{{ $fmt }}" {{ in_array($fmt, $req->accepted_formats ?? []) ? 'checked' : '' }} class="rounded text-purple-600 focus:ring-purple-500">
+                                                        <input type="checkbox" name="accepted_formats[]" value="{{ $fmt }}" {{ in_array($fmt, $req->accepted_formats ?? []) ? 'checked' : '' }} class="rounded text-[#0a2558] focus:ring-blue-500">
                                                         <span class="font-mono text-slate-700">{{ $fmt }}</span>
                                                     </label>
                                                 @endforeach
@@ -268,12 +268,12 @@
 
                                     <div class="flex items-center justify-between pt-2 border-t border-slate-100">
                                         <label class="inline-flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" name="is_required" value="1" {{ $req->is_required ? 'checked' : '' }} class="rounded text-purple-600 focus:ring-purple-500">
+                                            <input type="checkbox" name="is_required" value="1" {{ $req->is_required ? 'checked' : '' }} class="rounded text-[#0a2558] focus:ring-blue-500">
                                             <span class="text-xs font-semibold text-slate-700">Wajib Diunggah oleh Pemohon</span>
                                         </label>
                                         <div class="flex gap-2">
                                             <button type="button" @click="editingReqId = null" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100 border border-slate-200">Batal</button>
-                                            <button type="submit" class="px-4 py-1.5 rounded-lg text-xs font-bold text-white bg-purple-700 hover:bg-purple-800 transition-colors">Simpan</button>
+                                            <button type="submit" class="px-4 py-1.5 rounded-lg text-xs font-bold text-white bg-[#0a2558] hover:bg-[#1a3a70] transition-colors">Simpan</button>
                                         </div>
                                     </div>
                                 </form>
@@ -289,10 +289,10 @@
             </div>
 
             {{-- 2. FORM TAMBAH PERSYARATAN BARU --}}
-            <div class="bg-purple-50/50 rounded-2xl p-6 border border-purple-200 shadow-xs space-y-4">
-                <div class="border-b border-purple-200/60 pb-3">
-                    <h4 class="font-bold text-purple-950 text-xs uppercase tracking-wider">+ Tambah Persyaratan Dokumen Baru</h4>
-                    <p class="text-[11px] text-purple-700 mt-0.5">Tambahkan dokumen baru yang harus dilampirkan pemohon</p>
+            <div class="bg-blue-50/50 rounded-2xl p-6 border border-blue-200 shadow-xs space-y-4">
+                <div class="border-b border-blue-200/60 pb-3">
+                    <h4 class="font-bold text-[#0a2558] text-xs uppercase tracking-wider">+ Tambah Persyaratan Dokumen Baru</h4>
+                    <p class="text-[11px] text-blue-700 mt-0.5">Tambahkan dokumen baru yang harus dilampirkan pemohon</p>
                 </div>
 
                 <form action="{{ route('superadmin.services.requirements.store', $service) }}" method="POST" class="space-y-4 text-xs">
@@ -305,7 +305,7 @@
                                    name="nama_persyaratan"
                                    placeholder="Contoh: Kartu Keluarga (KK) Asli"
                                    required
-                                   class="w-full text-xs rounded-xl border-slate-200 bg-white p-2.5 focus:border-purple-500 focus:ring-purple-500 text-slate-800">
+                                   class="w-full text-xs rounded-xl border-slate-200 bg-white p-2.5 focus:border-[#0a2558] focus:ring-blue-500 text-slate-800">
                         </div>
                         <div>
                             <label class="block font-bold text-slate-700 mb-1">Urutan: <span class="text-rose-500">*</span></label>
@@ -314,7 +314,7 @@
                                    value="{{ ($service->requirements->max('urutan') ?? 0) + 1 }}"
                                    required
                                    min="0"
-                                   class="w-full text-xs rounded-xl border-slate-200 bg-white p-2.5 focus:border-purple-500 focus:ring-purple-500 font-mono text-slate-800">
+                                   class="w-full text-xs rounded-xl border-slate-200 bg-white p-2.5 focus:border-[#0a2558] focus:ring-blue-500 font-mono text-slate-800">
                         </div>
                     </div>
 
@@ -323,7 +323,7 @@
                         <input type="text"
                                name="deskripsi"
                                placeholder="Contoh: Scan/Foto asli berwarna, pastikan seluruh teks terbaca jelas dan tidak terpotong..."
-                               class="w-full text-xs rounded-xl border-slate-200 bg-white p-2.5 focus:border-purple-500 focus:ring-purple-500 text-slate-800">
+                               class="w-full text-xs rounded-xl border-slate-200 bg-white p-2.5 focus:border-[#0a2558] focus:ring-blue-500 text-slate-800">
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
@@ -335,7 +335,7 @@
                                    min="100"
                                    max="20480"
                                    required
-                                   class="w-full text-xs rounded-xl border-slate-200 bg-white p-2.5 focus:border-purple-500 focus:ring-purple-500 font-mono text-slate-800">
+                                   class="w-full text-xs rounded-xl border-slate-200 bg-white p-2.5 focus:border-[#0a2558] focus:ring-blue-500 font-mono text-slate-800">
                             <span class="text-[10px] text-slate-400 mt-0.5 block">5120 KB = 5 Megabytes</span>
                         </div>
 
@@ -343,33 +343,33 @@
                             <label class="block font-bold text-slate-700 mb-1">Format Berkas yang Diterima: <span class="text-rose-500">*</span></label>
                             <div class="flex items-center gap-3 pt-1">
                                 <label class="inline-flex items-center gap-1.5 text-xs cursor-pointer">
-                                    <input type="checkbox" name="accepted_formats[]" value="pdf" checked class="rounded text-purple-600 focus:ring-purple-500">
+                                    <input type="checkbox" name="accepted_formats[]" value="pdf" checked class="rounded text-[#0a2558] focus:ring-blue-500">
                                     <span class="font-mono font-semibold text-slate-700">.pdf</span>
                                 </label>
                                 <label class="inline-flex items-center gap-1.5 text-xs cursor-pointer">
-                                    <input type="checkbox" name="accepted_formats[]" value="jpg" checked class="rounded text-purple-600 focus:ring-purple-500">
+                                    <input type="checkbox" name="accepted_formats[]" value="jpg" checked class="rounded text-[#0a2558] focus:ring-blue-500">
                                     <span class="font-mono font-semibold text-slate-700">.jpg</span>
                                 </label>
                                 <label class="inline-flex items-center gap-1.5 text-xs cursor-pointer">
-                                    <input type="checkbox" name="accepted_formats[]" value="jpeg" checked class="rounded text-purple-600 focus:ring-purple-500">
+                                    <input type="checkbox" name="accepted_formats[]" value="jpeg" checked class="rounded text-[#0a2558] focus:ring-blue-500">
                                     <span class="font-mono font-semibold text-slate-700">.jpeg</span>
                                 </label>
                                 <label class="inline-flex items-center gap-1.5 text-xs cursor-pointer">
-                                    <input type="checkbox" name="accepted_formats[]" value="png" checked class="rounded text-purple-600 focus:ring-purple-500">
+                                    <input type="checkbox" name="accepted_formats[]" value="png" checked class="rounded text-[#0a2558] focus:ring-blue-500">
                                     <span class="font-mono font-semibold text-slate-700">.png</span>
                                 </label>
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between pt-2 border-t border-purple-200/50">
+                    <div class="flex items-center justify-between pt-2 border-t border-blue-200/50">
                         <label class="inline-flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" name="is_required" value="1" checked class="rounded text-purple-600 focus:ring-purple-500">
+                            <input type="checkbox" name="is_required" value="1" checked class="rounded text-[#0a2558] focus:ring-blue-500">
                             <span class="text-xs font-bold text-slate-800">Wajib Diunggah (Mandatory)</span>
                         </label>
 
                         <button type="submit"
-                                class="px-5 py-2.5 rounded-xl font-bold text-xs text-white bg-purple-700 hover:bg-purple-800 shadow-xs transition-all">
+                                class="px-5 py-2.5 rounded-xl font-bold text-xs text-white bg-[#0a2558] hover:bg-[#1a3a70] shadow-xs transition-all">
                             + Tambah Dokumen Persyaratan
                         </button>
                     </div>

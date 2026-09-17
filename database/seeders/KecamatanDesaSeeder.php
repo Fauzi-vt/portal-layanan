@@ -22,92 +22,43 @@ class KecamatanDesaSeeder extends Seeder
     }
 
     /**
-     * Seed 39 Kecamatan di Kabupaten Tasikmalaya beserta sampel Desa di Manonjaya.
+     * Seed 39 Kecamatan di Kabupaten Tasikmalaya beserta seluruh 351 Desa/Kelurahan resmi.
      */
     private function seedKecamatansAndDesas(): void
     {
-        // Daftar 39 Kecamatan resmi di Kabupaten Tasikmalaya
-        $kecamatansData = [
-            ['kode' => 'KEC-001', 'nama' => 'Kadipaten', 'telepon' => '0265-420001', 'email' => 'kec.kadipaten@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-002', 'nama' => 'Pagerageung', 'telepon' => '0265-420002', 'email' => 'kec.pagerageung@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-003', 'nama' => 'Ciawi', 'telepon' => '0265-420003', 'email' => 'kec.ciawi@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-004', 'nama' => 'Sukaresik', 'telepon' => '0265-420004', 'email' => 'kec.sukaresik@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-005', 'nama' => 'Jamanis', 'telepon' => '0265-420005', 'email' => 'kec.jamanis@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-006', 'nama' => 'Sukahening', 'telepon' => '0265-420006', 'email' => 'kec.sukahening@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-007', 'nama' => 'Rajapolah', 'telepon' => '0265-420007', 'email' => 'kec.rajapolah@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-008', 'nama' => 'Cisayong', 'telepon' => '0265-420008', 'email' => 'kec.cisayong@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-009', 'nama' => 'Sariwangi', 'telepon' => '0265-420009', 'email' => 'kec.sariwangi@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-010', 'nama' => 'Leuwisari', 'telepon' => '0265-420010', 'email' => 'kec.leuwisari@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-011', 'nama' => 'Padakembang', 'telepon' => '0265-420011', 'email' => 'kec.padakembang@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-012', 'nama' => 'Sukaratul', 'telepon' => '0265-420012', 'email' => 'kec.sukaratu@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-013', 'nama' => 'Singaparna', 'telepon' => '0265-420013', 'email' => 'kec.singaparna@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-014', 'nama' => 'Salawu', 'telepon' => '0265-420014', 'email' => 'kec.salawu@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-015', 'nama' => 'Mangunreja', 'telepon' => '0265-420015', 'email' => 'kec.mangunreja@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-016', 'nama' => 'Sukarame', 'telepon' => '0265-420016', 'email' => 'kec.sukarame@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-017', 'nama' => 'Manonjaya', 'telepon' => '0265-380123', 'email' => 'kec.manonjaya@tasikmalayakab.go.id', 'alamat' => 'Jl. Kaum No. 12, Manonjaya, Tasikmalaya', 'jam' => 'Senin - Jumat, 08.00 - 16.00 WIB'],
-            ['kode' => 'KEC-018', 'nama' => 'Cineam', 'telepon' => '0265-420018', 'email' => 'kec.cineam@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-019', 'nama' => 'Taraju', 'telepon' => '0265-420019', 'email' => 'kec.taraju@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-020', 'nama' => 'Puspahiang', 'telepon' => '0265-420020', 'email' => 'kec.puspahiang@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-021', 'nama' => 'Tanjungjaya', 'telepon' => '0265-420021', 'email' => 'kec.tanjungjaya@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-022', 'nama' => 'Sukaraja', 'telepon' => '0265-420022', 'email' => 'kec.sukaraja@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-023', 'nama' => 'Gunungtanjung', 'telepon' => '0265-420023', 'email' => 'kec.gunungtanjung@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-024', 'nama' => 'Karangjaya', 'telepon' => '0265-420024', 'email' => 'kec.karangjaya@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-025', 'nama' => 'Bojongasih', 'telepon' => '0265-420025', 'email' => 'kec.bojongasih@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-026', 'nama' => 'Parungponteng', 'telepon' => '0265-420026', 'email' => 'kec.parungponteng@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-027', 'nama' => 'Bantarkalong', 'telepon' => '0265-420027', 'email' => 'kec.bantarkalong@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-028', 'nama' => 'Culamega', 'telepon' => '0265-420028', 'email' => 'kec.culamega@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-029', 'nama' => 'Bojonggambir', 'telepon' => '0265-420029', 'email' => 'kec.bojonggambir@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-030', 'nama' => 'Sodonghilir', 'telepon' => '0265-420030', 'email' => 'kec.sodonghilir@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-031', 'nama' => 'Cikatomas', 'telepon' => '0265-420031', 'email' => 'kec.cikatomas@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-032', 'nama' => 'Cibalong', 'telepon' => '0265-420032', 'email' => 'kec.cibalong@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-033', 'nama' => 'Cipatujah', 'telepon' => '0265-420033', 'email' => 'kec.cipatujah@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-034', 'nama' => 'Karangnunggal', 'telepon' => '0265-420034', 'email' => 'kec.karangnunggal@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-035', 'nama' => 'Cikalong', 'telepon' => '0265-420035', 'email' => 'kec.cikalong@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-036', 'nama' => 'Pancatengah', 'telepon' => '0265-420036', 'email' => 'kec.pancatengah@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-037', 'nama' => 'Jatiwaras', 'telepon' => '0265-420037', 'email' => 'kec.jatiwaras@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-038', 'nama' => 'Cigalontang', 'telepon' => '0265-420038', 'email' => 'kec.cigalontang@tasikmalayakab.go.id'],
-            ['kode' => 'KEC-039', 'nama' => 'Cipatujah Selatan', 'telepon' => '0265-420039', 'email' => 'kec.cipatujahselatan@tasikmalayakab.go.id'],
-        ];
+        $jsonPath = database_path('data/wilayah_tasikmalaya.json');
+        if (file_exists($jsonPath)) {
+            $wilayahData = json_decode(file_get_contents($jsonPath), true);
+            foreach ($wilayahData as $kData) {
+                $kecamatan = Kecamatan::updateOrCreate(
+                    ['kode_kecamatan' => $kData['kode_kecamatan']],
+                    [
+                        'nama_kecamatan'  => $kData['nama_kecamatan'],
+                        'alamat_kantor'   => $kData['alamat_kantor'] ?? "Jl. Raya {$kData['nama_kecamatan']} No. 1, Kab. Tasikmalaya",
+                        'email'           => $kData['email'],
+                        'telepon'         => $kData['telepon'],
+                        'jam_operasional' => $kData['jam_operasional'] ?? 'Senin - Jumat, 08.00 - 15.30 WIB',
+                    ]
+                );
 
-        foreach ($kecamatansData as $data) {
-            $kecamatan = Kecamatan::updateOrCreate(
-                ['kode_kecamatan' => $data['kode']],
-                [
-                    'nama_kecamatan'  => $data['nama'],
-                    'alamat_kantor'   => $data['alamat'] ?? "Jl. Raya {$data['nama']} No. 1, Kab. Tasikmalaya",
-                    'email'           => $data['email'],
-                    'telepon'         => $data['telepon'],
-                    'jam_operasional' => $data['jam'] ?? 'Senin - Jumat, 08.00 - 15.30 WIB',
-                ]
-            );
-
-            // Seed sampel desa untuk Kecamatan Manonjaya (12 Desa)
-            if ($data['kode'] === 'KEC-017') {
-                $desasManonjaya = [
-                    ['kode' => '3206170001', 'nama' => 'Manonjaya'],
-                    ['kode' => '3206170002', 'nama' => 'Kalimanggis'],
-                    ['kode' => '3206170003', 'nama' => 'Pasirbatang'],
-                    ['kode' => '3206170004', 'nama' => 'Kamulyan'],
-                    ['kode' => '3206170005', 'nama' => 'Margaluyu'],
-                    ['kode' => '3206170006', 'nama' => 'Cibeber'],
-                    ['kode' => '3206170007', 'nama' => 'Sukaratu'],
-                    ['kode' => '3206170008', 'nama' => 'Cihaur'],
-                    ['kode' => '3206170009', 'nama' => 'Pasirhuni'],
-                    ['kode' => '3206170010', 'nama' => 'Gunungtanjung'],
-                    ['kode' => '3206170011', 'nama' => 'Bantar'],
-                    ['kode' => '3206170012', 'nama' => 'Margahayu'],
-                ];
-
-                foreach ($desasManonjaya as $desaData) {
+                foreach ($kData['desas'] as $dData) {
                     Desa::updateOrCreate(
-                        ['kode_desa' => $desaData['kode']],
+                        ['kode_desa' => $dData['kode_desa']],
                         [
                             'kecamatan_id' => $kecamatan->id,
-                            'nama_desa'    => $desaData['nama'],
+                            'nama_desa'    => $dData['nama_desa'],
+                            'jumlah_rw'    => $dData['jumlah_rw'] ?? 6,
+                            'jumlah_rt'    => $dData['jumlah_rt'] ?? 30,
                         ]
                     );
                 }
+
+                $kecamatan->jumlah_desa = $kecamatan->desas()->count();
+                $kecamatan->jumlah_rw = $kecamatan->desas()->sum('jumlah_rw');
+                $kecamatan->jumlah_rt = $kecamatan->desas()->sum('jumlah_rt');
+                $kecamatan->save();
             }
+            return;
         }
     }
 

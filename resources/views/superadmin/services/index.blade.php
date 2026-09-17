@@ -15,7 +15,7 @@
     <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="space-y-1">
             <div class="flex items-center gap-2">
-                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-purple-100 text-purple-800 border border-purple-200">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-blue-100 text-[#0a2558] border border-blue-200">
                     Master Katalog Layanan
                 </span>
                 <span class="text-slate-400 text-xs">•</span>
@@ -49,7 +49,7 @@
                 <p class="text-[11px] text-slate-500 font-bold uppercase tracking-wider">Total Layanan</p>
                 <p class="text-2xl font-extrabold text-slate-900 mt-1">{{ $services->count() }}</p>
             </div>
-            <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold text-sm border border-purple-100">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-[#0a2558] flex items-center justify-center font-bold text-sm border border-blue-100">
                 📄
             </div>
         </div>
@@ -97,20 +97,20 @@
                            name="search"
                            value="{{ $search }}"
                            placeholder="Cari kode atau nama layanan..."
-                           class="w-full text-xs rounded-xl border-slate-200 bg-slate-50 focus:bg-white focus:border-purple-500 focus:ring-purple-500 pl-8 pr-3 py-2 text-slate-800">
+                           class="w-full text-xs rounded-xl border-slate-200 bg-slate-50 focus:bg-white focus:border-[#0a2558] focus:ring-blue-500 pl-8 pr-3 py-2 text-slate-800">
                     <svg class="w-4 h-4 text-slate-400 absolute left-2.5 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </div>
 
                 {{-- Filter Status --}}
-                <select name="status" class="w-full sm:w-44 text-xs rounded-xl border-slate-200 bg-slate-50 focus:bg-white focus:border-purple-500 focus:ring-purple-500 py-2 text-slate-700">
+                <select name="status" class="w-full sm:w-44 text-xs rounded-xl border-slate-200 bg-slate-50 focus:bg-white focus:border-[#0a2558] focus:ring-blue-500 py-2 text-slate-700">
                     <option value="">Semua Status</option>
                     <option value="1" {{ $status === '1' ? 'selected' : '' }}>Hanya Aktif</option>
                     <option value="0" {{ $status === '0' ? 'selected' : '' }}>Hanya Nonaktif</option>
                 </select>
 
-                <button type="submit" class="w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-bold text-white bg-purple-700 hover:bg-purple-800 transition-colors">
+                <button type="submit" class="w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#0a2558] hover:bg-[#1a3a70] transition-colors">
                     Filter
                 </button>
 
@@ -162,7 +162,7 @@
                             {{-- Info Layanan --}}
                             <td class="py-4 px-5">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold text-sm shrink-0 border border-purple-100">
+                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#0a2558] flex items-center justify-center font-bold text-sm shrink-0 border border-blue-100">
                                         {{ $service->ikon ? '🏛️' : '📄' }}
                                     </div>
                                     <div class="min-w-0">
@@ -225,7 +225,7 @@
                             {{-- Aksi --}}
                             <td class="py-4 px-5 text-right whitespace-nowrap">
                                 <a href="{{ route('superadmin.services.edit', $service) }}"
-                                   class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl font-bold text-xs text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 transition-colors">
+                                   class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl font-bold text-xs text-[#0a2558] bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-colors">
                                     <span>⚙️ Kelola</span>
                                 </a>
                             </td>

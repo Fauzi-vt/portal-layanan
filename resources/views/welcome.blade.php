@@ -109,16 +109,18 @@
     {{-- ═══════════════════════════════════════════════════════════════════════════
          1. FLOATING PILL NAVBAR
     ═══════════════════════════════════════════════════════════════════════════ --}}
-    <div class="fixed top-4 inset-x-0 z-50 px-4 sm:px-6 max-w-6xl mx-auto">
-        <nav class="floating-pill-nav rounded-full px-5 sm:px-7 py-3 flex items-center justify-between border border-slate-100/90">
+    <div class="fixed top-4 inset-x-0 z-50 px-4 sm:px-6 max-w-6xl xl:max-w-7xl mx-auto">
+        <nav class="floating-pill-nav rounded-full px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between border border-slate-100/90 shadow-md">
             
             {{-- Logo Diskominfo Kab. Tasikmalaya --}}
-            <a href="{{ url('/') }}" class="flex items-center gap-2.5">
-                <img src="{{ asset('images/logo2.png') }}" alt="Diskominfo Kabupaten Tasikmalaya" class="h-9 sm:h-10 w-auto object-contain">
+            <a href="{{ url('/') }}" class="flex items-center shrink-0">
+                <img src="{{ asset('images/logo2.png') }}"
+                     alt="Diskominfo Kabupaten Tasikmalaya"
+                     class="h-11 sm:h-12 md:h-13 lg:h-[52px] w-auto max-h-[56px] object-contain transition-transform hover:scale-[1.01]">
             </a>
 
             {{-- Desktop Menu Links --}}
-            <div class="hidden lg:flex items-center space-x-7 text-xs sm:text-sm font-semibold text-slate-700">
+            <div class="hidden lg:flex items-center gap-5 xl:gap-7 text-xs sm:text-sm font-semibold text-slate-700">
                 <a href="#layanan" class="hover:text-[#0a2558] transition-colors">Layanan Publik</a>
                 <a href="#kewilayahan" class="hover:text-[#0a2558] transition-colors">Data Kecamatan</a>
                 <a href="#ppid" class="hover:text-[#0a2558] transition-colors">PPID & Informasi</a>
@@ -127,14 +129,14 @@
             </div>
 
             {{-- Right CTA Button --}}
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
                 @auth
-                    <a href="{{ route('dashboard') }}" class="px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold text-white bg-[#0a2558] hover:bg-[#0d3070] transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+                    <a href="{{ route('dashboard') }}" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold text-white bg-[#0a2558] hover:bg-[#0d3070] transition-all shadow-md hover:shadow-lg flex items-center gap-2">
                         <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
                         <span>Dashboard Saya</span>
                     </a>
                 @else
-                    <a href="{{ route('login') }}" class="px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold text-white bg-[#0a2558] hover:bg-[#0d3070] transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+                    <a href="{{ route('login') }}" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold text-white bg-[#0a2558] hover:bg-[#0d3070] transition-all shadow-md hover:shadow-lg flex items-center gap-2">
                         <i data-lucide="log-in" class="w-4 h-4"></i>
                         <span>Masuk Portal</span>
                     </a>

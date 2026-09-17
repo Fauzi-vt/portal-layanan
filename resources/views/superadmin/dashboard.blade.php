@@ -50,7 +50,7 @@
     <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="space-y-1">
             <div class="flex items-center gap-2">
-                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-purple-100 text-purple-800 border border-purple-200">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-blue-100 text-[#0a2558] border border-blue-200">
                     Diskominfo
                 </span>
                 <span class="text-slate-400 text-xs">•</span>
@@ -76,7 +76,7 @@
             </a>
 
             <a href="{{ route('superadmin.services.index') }}"
-               class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 transition-colors"
+               class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-[#0a2558] bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-colors"
                aria-label="Buka Katalog Layanan">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -110,7 +110,7 @@
                     </p>
                     <p class="text-[11px] text-slate-500">Wilayah administrasi terdaftar</p>
                 </div>
-                <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center shrink-0 border border-purple-100">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 text-[#0a2558] flex items-center justify-center shrink-0 border border-blue-100">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
@@ -241,7 +241,7 @@
                     <p class="text-[11px] text-slate-400">Pengajuan per master layanan publik</p>
                 </div>
                 <a href="{{ route('superadmin.services.index') }}"
-                   class="text-[11px] font-semibold text-purple-700 hover:text-purple-900 transition-colors">
+                   class="text-[11px] font-semibold text-[#0a2558] hover:text-blue-900 transition-colors">
                     Lihat Semua Katalog &rarr;
                 </a>
             </div>
@@ -269,7 +269,7 @@
 
                         {{-- Progress Bar Proporsi Pengajuan --}}
                         <div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
-                            <div class="h-full bg-purple-600 rounded-full transition-all duration-500"
+                            <div class="h-full bg-[#0a2558] rounded-full transition-all duration-500"
                                  style="width: {{ $servicePercentage }}%">
                             </div>
                         </div>
@@ -298,7 +298,7 @@
                     <p class="text-[11px] text-slate-400">Kecamatan dengan volume pengajuan terbanyak</p>
                 </div>
                 <a href="{{ route('superadmin.wilayah.index') }}"
-                   class="text-[11px] font-semibold text-purple-700 hover:text-purple-900 transition-colors">
+                   class="text-[11px] font-semibold text-[#0a2558] hover:text-blue-900 transition-colors">
                     Master Wilayah &rarr;
                 </a>
             </div>
@@ -326,7 +326,7 @@
                                 {{ number_format($kec->submissions_count) }}
                                 <span class="text-[11px] font-normal text-slate-500">Pengajuan</span>
                             </p>
-                            <p class="text-[10px] text-purple-700 font-semibold">{{ $kecPercentage }}% dari total kab.</p>
+                            <p class="text-[10px] text-[#0a2558] font-semibold">{{ $kecPercentage }}% dari total kab.</p>
                         </div>
                     </div>
                 @empty
@@ -353,7 +353,7 @@
                 <div>
                     <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
                         <span>Pengajuan Terbaru</span>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200">
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#0a2558] border border-blue-200">
                             10 Data Terakhir
                         </span>
                     </h3>
@@ -372,7 +372,7 @@
                            type="text"
                            x-model="searchQuery"
                            placeholder="Cari pemohon, nomor tiket, layanan..."
-                           class="w-full text-xs rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 pl-8 pr-3 py-2 text-slate-800 transition-colors">
+                           class="w-full text-xs rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#0a2558] focus:ring-1 focus:ring-blue-500 pl-8 pr-3 py-2 text-slate-800 transition-colors">
                     <svg class="w-4 h-4 text-slate-400 absolute left-2.5 top-2.5 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
@@ -382,26 +382,26 @@
                 <div class="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0" role="tablist" aria-label="Filter Status">
                     <button type="button"
                             @click="statusFilter = 'all'"
-                            :class="statusFilter === 'all' ? 'bg-purple-600 text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
-                            class="px-3 py-1.5 rounded-lg text-[11px] transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            :class="statusFilter === 'all' ? 'bg-[#0a2558] text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
+                            class="px-3 py-1.5 rounded-lg text-[11px] transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500">
                         Semua (10)
                     </button>
                     <button type="button"
                             @click="statusFilter = 'in_progress'"
-                            :class="statusFilter === 'in_progress' ? 'bg-purple-600 text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
-                            class="px-3 py-1.5 rounded-lg text-[11px] transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            :class="statusFilter === 'in_progress' ? 'bg-[#0a2558] text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
+                            class="px-3 py-1.5 rounded-lg text-[11px] transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500">
                         Sedang Proses
                     </button>
                     <button type="button"
                             @click="statusFilter = 'completed'"
-                            :class="statusFilter === 'completed' ? 'bg-purple-600 text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
-                            class="px-3 py-1.5 rounded-lg text-[11px] transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            :class="statusFilter === 'completed' ? 'bg-[#0a2558] text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
+                            class="px-3 py-1.5 rounded-lg text-[11px] transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500">
                         Selesai
                     </button>
                     <button type="button"
                             @click="statusFilter = 'attention'"
-                            :class="statusFilter === 'attention' ? 'bg-purple-600 text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
-                            class="px-3 py-1.5 rounded-lg text-[11px] transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            :class="statusFilter === 'attention' ? 'bg-[#0a2558] text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
+                            class="px-3 py-1.5 rounded-lg text-[11px] transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500">
                         Perlu Perbaikan / Lainnya
                     </button>
                 </div>
@@ -492,7 +492,7 @@
                             <td class="py-3.5 px-5 text-right whitespace-nowrap">
                                 <button type="button"
                                         @click="openDetail({{ json_encode($jsData) }})"
-                                        class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-purple-700 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 border border-purple-200 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                        class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#0a2558] hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         aria-label="Lihat detail pengajuan {{ $sub->nomor_tiket }}">
                                     <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -531,7 +531,7 @@
             {{-- Modal Header --}}
             <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
                 <div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-purple-700">Rincian Pengajuan</span>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-[#0a2558]">Rincian Pengajuan</span>
                     <h3 id="modal-title" class="text-sm font-bold text-slate-900 font-mono" x-text="selectedSubmission?.tiket"></h3>
                 </div>
                 <button type="button"
@@ -599,7 +599,7 @@
             <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-end">
                 <button type="button"
                         @click="detailModalOpen = false"
-                        class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
                     Tutup
                 </button>
             </div>

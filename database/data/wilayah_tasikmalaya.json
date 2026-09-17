@@ -1,0 +1,2498 @@
+[
+    {
+        "kode_kecamatan": "KEC-027",
+        "nama_kecamatan": "Bantarkalong",
+        "alamat_kantor": "Jl. Raya Bantarkalong No. 1, Kab. Tasikmalaya",
+        "email": "kec.bantarkalong@tasikmalayakab.go.id",
+        "telepon": "0265-420027",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206080001",
+                "nama_desa": "Hegarwangi",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206080002",
+                "nama_desa": "Pamijahan",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206080003",
+                "nama_desa": "Parakanhonje",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206080004",
+                "nama_desa": "Simpang",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206080005",
+                "nama_desa": "Sirnagalih",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206080006",
+                "nama_desa": "Sukamaju",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206080007",
+                "nama_desa": "Wakap",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206080008",
+                "nama_desa": "Wangunsari",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-025",
+        "nama_kecamatan": "Bojongasih",
+        "alamat_kantor": "Jl. Raya Bojongasih No. 1, Kab. Tasikmalaya",
+        "email": "kec.bojongasih@tasikmalayakab.go.id",
+        "telepon": "0265-420025",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206090001",
+                "nama_desa": "Bojongasih",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206090002",
+                "nama_desa": "Cikadongdong",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206090003",
+                "nama_desa": "Girijaya",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206090004",
+                "nama_desa": "Mertajaya",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206090005",
+                "nama_desa": "Sindangsari",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206090006",
+                "nama_desa": "Toblongan",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-029",
+        "nama_kecamatan": "Bojonggambir",
+        "alamat_kantor": "Jl. Raya Bojonggambir No. 1, Kab. Tasikmalaya",
+        "email": "kec.bojonggambir@tasikmalayakab.go.id",
+        "telepon": "0265-420029",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206110001",
+                "nama_desa": "Bojonggambir",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206110002",
+                "nama_desa": "Bojongkapol",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206110003",
+                "nama_desa": "Campakasari",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206110004",
+                "nama_desa": "Ciroyom",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206110005",
+                "nama_desa": "Girimukti",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206110006",
+                "nama_desa": "Kertanegla",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206110007",
+                "nama_desa": "Mangkonjaya",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206110008",
+                "nama_desa": "Pedangkamulyan",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206110009",
+                "nama_desa": "Purwaraharja",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206110010",
+                "nama_desa": "Wandasari",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-003",
+        "nama_kecamatan": "Ciawi",
+        "alamat_kantor": "Jl. Raya Ciawi No. 1, Kab. Tasikmalaya",
+        "email": "kec.ciawi@tasikmalayakab.go.id",
+        "telepon": "0265-420003",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206360001",
+                "nama_desa": "Bugel",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206360002",
+                "nama_desa": "Ciawi",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206360003",
+                "nama_desa": "Citamba",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206360004",
+                "nama_desa": "Gombong",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206360005",
+                "nama_desa": "Kertamukti",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206360006",
+                "nama_desa": "Kurniabakti",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206360007",
+                "nama_desa": "Margasari",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206360008",
+                "nama_desa": "Pakemitan",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206360009",
+                "nama_desa": "Pakemitankidul",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206360010",
+                "nama_desa": "Pasirhuni",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206360011",
+                "nama_desa": "Sukamantri",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-032",
+        "nama_kecamatan": "Cibalong",
+        "alamat_kantor": "Jl. Raya Cibalong No. 1, Kab. Tasikmalaya",
+        "email": "kec.cibalong@tasikmalayakab.go.id",
+        "telepon": "0265-420032",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206060001",
+                "nama_desa": "Cibalong",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206060002",
+                "nama_desa": "Cisempur",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206060003",
+                "nama_desa": "Eureunpalay",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206060004",
+                "nama_desa": "Parung",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206060005",
+                "nama_desa": "Setiawaras",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206060006",
+                "nama_desa": "Singajaya",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-038",
+        "nama_kecamatan": "Cigalontang",
+        "alamat_kantor": "Jl. Raya Cigalontang No. 1, Kab. Tasikmalaya",
+        "email": "kec.cigalontang@tasikmalayakab.go.id",
+        "telepon": "0265-420038",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206270001",
+                "nama_desa": "Cidugaleun",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206270002",
+                "nama_desa": "Cigalontang",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206270003",
+                "nama_desa": "Jayapura",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206270004",
+                "nama_desa": "Kersamaju",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206270005",
+                "nama_desa": "Lengkongjaya",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206270006",
+                "nama_desa": "Nanggerang",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206270007",
+                "nama_desa": "Nangtang",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206270008",
+                "nama_desa": "Parentas",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206270009",
+                "nama_desa": "Puspamukti",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206270010",
+                "nama_desa": "Pusparaja",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206270011",
+                "nama_desa": "Sirnagalih",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206270012",
+                "nama_desa": "Sirnaputra",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206270013",
+                "nama_desa": "Sirnaraja",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206270014",
+                "nama_desa": "Sukamanah",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206270015",
+                "nama_desa": "Tanjungkarang",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206270016",
+                "nama_desa": "Tenjonagara",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-035",
+        "nama_kecamatan": "Cikalong",
+        "alamat_kantor": "Jl. Raya Cikalong No. 1, Kab. Tasikmalaya",
+        "email": "kec.cikalong@tasikmalayakab.go.id",
+        "telepon": "0265-420035",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206030001",
+                "nama_desa": "Cibeber",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206030002",
+                "nama_desa": "Cidadali",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206030003",
+                "nama_desa": "Cikadu",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206030004",
+                "nama_desa": "Cikalong",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206030005",
+                "nama_desa": "Cikancra",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206030006",
+                "nama_desa": "Cimanuk",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206030007",
+                "nama_desa": "Kalapagenep",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206030008",
+                "nama_desa": "Kubangsari",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206030009",
+                "nama_desa": "Mandalajaya",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206030010",
+                "nama_desa": "Panyiaran",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206030011",
+                "nama_desa": "Sindangjaya",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206030012",
+                "nama_desa": "Singkir",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206030013",
+                "nama_desa": "Tonjongsari",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-031",
+        "nama_kecamatan": "Cikatomas",
+        "alamat_kantor": "Jl. Raya Cikatomas No. 1, Kab. Tasikmalaya",
+        "email": "kec.cikatomas@tasikmalayakab.go.id",
+        "telepon": "0265-420031",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206050001",
+                "nama_desa": "Cayur",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206050002",
+                "nama_desa": "Cilumba",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206050003",
+                "nama_desa": "Cogreg",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206050004",
+                "nama_desa": "Gunungsari",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206050005",
+                "nama_desa": "Lengkongbarang",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206050006",
+                "nama_desa": "Linggalaksana",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206050007",
+                "nama_desa": "Pakemitan",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206050008",
+                "nama_desa": "Sindangasih",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206050009",
+                "nama_desa": "Tanjungbarang",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-018",
+        "nama_kecamatan": "Cineam",
+        "alamat_kantor": "Jl. Raya Cineam No. 1, Kab. Tasikmalaya",
+        "email": "kec.cineam@tasikmalayakab.go.id",
+        "telepon": "0265-420018",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206200001",
+                "nama_desa": "Ancol",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206200002",
+                "nama_desa": "Ciampanan",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206200003",
+                "nama_desa": "Cijulang",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206200004",
+                "nama_desa": "Cikondang",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206200005",
+                "nama_desa": "Cineam",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206200006",
+                "nama_desa": "Cisarua",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206200007",
+                "nama_desa": "Madiasari",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206200008",
+                "nama_desa": "Nagaratengah",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206200009",
+                "nama_desa": "Pasirmukti",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206200010",
+                "nama_desa": "Rajadatu",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-033",
+        "nama_kecamatan": "Cipatujah",
+        "alamat_kantor": "Jl. Raya Cipatujah No. 1, Kab. Tasikmalaya",
+        "email": "kec.cipatujah@tasikmalayakab.go.id",
+        "telepon": "0265-420033",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206010001",
+                "nama_desa": "Bantarkalong",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206010002",
+                "nama_desa": "Ciandum",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206010003",
+                "nama_desa": "Ciheras",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206010004",
+                "nama_desa": "Cikawungading",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206010005",
+                "nama_desa": "Cipanas",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206010006",
+                "nama_desa": "Cipatujah",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206010007",
+                "nama_desa": "Darawati",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206010008",
+                "nama_desa": "Kertasari",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206010009",
+                "nama_desa": "Nagrog",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206010010",
+                "nama_desa": "Nangelasari",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206010011",
+                "nama_desa": "Padawaras",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206010012",
+                "nama_desa": "Pameutingan",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206010013",
+                "nama_desa": "Sindangkerta",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206010014",
+                "nama_desa": "Sukahurip",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206010015",
+                "nama_desa": "Tobongjaya",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-008",
+        "nama_kecamatan": "Cisayong",
+        "alamat_kantor": "Jl. Raya Cisayong No. 1, Kab. Tasikmalaya",
+        "email": "kec.cisayong@tasikmalayakab.go.id",
+        "telepon": "0265-420008",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206320001",
+                "nama_desa": "Cikadu",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206320002",
+                "nama_desa": "Cileuleus",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206320003",
+                "nama_desa": "Cisayong",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206320004",
+                "nama_desa": "Jatihurip",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206320005",
+                "nama_desa": "Mekarwangi",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206320006",
+                "nama_desa": "Nusawangi",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206320007",
+                "nama_desa": "Purwasari",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206320008",
+                "nama_desa": "Santanamekar",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206320009",
+                "nama_desa": "Sukajadi",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206320010",
+                "nama_desa": "Sukamukti",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206320011",
+                "nama_desa": "Sukaraharja",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206320012",
+                "nama_desa": "Sukasetia",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206320013",
+                "nama_desa": "Sukasukur",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-028",
+        "nama_kecamatan": "Culamega",
+        "alamat_kantor": "Jl. Raya Culamega No. 1, Kab. Tasikmalaya",
+        "email": "kec.culamega@tasikmalayakab.go.id",
+        "telepon": "0265-420028",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206100001",
+                "nama_desa": "Bojongsari",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206100002",
+                "nama_desa": "Cikuya",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206100003",
+                "nama_desa": "Cintabodas",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206100004",
+                "nama_desa": "Cipicung",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206100005",
+                "nama_desa": "Mekarlaksana",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-023",
+        "nama_kecamatan": "Gunungtanjung",
+        "alamat_kantor": "Jl. Raya Gunungtanjung No. 1, Kab. Tasikmalaya",
+        "email": "kec.gunungtanjung@tasikmalayakab.go.id",
+        "telepon": "0265-420023",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206230001",
+                "nama_desa": "Bojongsari",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206230002",
+                "nama_desa": "Cinunjang",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206230003",
+                "nama_desa": "Giriwangi",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206230004",
+                "nama_desa": "Gunungtanjung",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206230005",
+                "nama_desa": "Jatijaya",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206230006",
+                "nama_desa": "Melatisuka",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206230007",
+                "nama_desa": "Tanjungsari",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-005",
+        "nama_kecamatan": "Jamanis",
+        "alamat_kantor": "Jl. Raya Jamanis No. 1, Kab. Tasikmalaya",
+        "email": "kec.jamanis@tasikmalayakab.go.id",
+        "telepon": "0265-420005",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206350001",
+                "nama_desa": "Bojonggaok",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206350002",
+                "nama_desa": "Condong",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206350003",
+                "nama_desa": "Geresik",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206350004",
+                "nama_desa": "Karangmulya",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206350005",
+                "nama_desa": "Karangresik",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206350006",
+                "nama_desa": "Karangsembung",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206350007",
+                "nama_desa": "Sindangraja",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206350008",
+                "nama_desa": "Tanjungmekar",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-037",
+        "nama_kecamatan": "Jatiwaras",
+        "alamat_kantor": "Jl. Raya Jatiwaras No. 1, Kab. Tasikmalaya",
+        "email": "kec.jatiwaras@tasikmalayakab.go.id",
+        "telepon": "0265-420037",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206190007",
+                "nama_desa": "Ciwarak",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206190005",
+                "nama_desa": "Jatiwaras",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206190001",
+                "nama_desa": "Kaputihan",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206190008",
+                "nama_desa": "Kersagalih",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206190010",
+                "nama_desa": "Kertarahayu",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206190011",
+                "nama_desa": "Mandalahurip",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206190009",
+                "nama_desa": "Mandalamekar",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206190004",
+                "nama_desa": "Neglasari",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206190006",
+                "nama_desa": "Papayan",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206190002",
+                "nama_desa": "Setiawangi",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206190003",
+                "nama_desa": "Sukakerta",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-001",
+        "nama_kecamatan": "Kadipaten",
+        "alamat_kantor": "Jl. Raya Kadipaten No. 1, Kab. Tasikmalaya",
+        "email": "kec.kadipaten@tasikmalayakab.go.id",
+        "telepon": "0265-420001",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206370001",
+                "nama_desa": "Buniasih",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206370002",
+                "nama_desa": "Cibahayu",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206370003",
+                "nama_desa": "Dirgahayu",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206370004",
+                "nama_desa": "Kadipaten",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206370005",
+                "nama_desa": "Mekarsari",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206370006",
+                "nama_desa": "Pamoyanan",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-024",
+        "nama_kecamatan": "Karangjaya",
+        "alamat_kantor": "Jl. Raya Karangjaya No. 1, Kab. Tasikmalaya",
+        "email": "kec.karangjaya@tasikmalayakab.go.id",
+        "telepon": "0265-420024",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206210001",
+                "nama_desa": "Citalahab",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206210002",
+                "nama_desa": "Karangjaya",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206210003",
+                "nama_desa": "Karanglayung",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206210004",
+                "nama_desa": "Sirnajaya",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-034",
+        "nama_kecamatan": "Karangnunggal",
+        "alamat_kantor": "Jl. Raya Karangnunggal No. 1, Kab. Tasikmalaya",
+        "email": "kec.karangnunggal@tasikmalayakab.go.id",
+        "telepon": "0265-420034",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206020001",
+                "nama_desa": "Ciawi",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206020002",
+                "nama_desa": "Cibatu",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206020003",
+                "nama_desa": "Cibatuireng",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206020004",
+                "nama_desa": "Cidadap",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206020005",
+                "nama_desa": "Cikapinis",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206020006",
+                "nama_desa": "Cikukulu",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206020007",
+                "nama_desa": "Cikupa",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206020008",
+                "nama_desa": "Cintawangi",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206020009",
+                "nama_desa": "Karangmekar",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206020010",
+                "nama_desa": "Karangnunggal",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206020011",
+                "nama_desa": "Kujang",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206020012",
+                "nama_desa": "Sarimanggu",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206020013",
+                "nama_desa": "Sarimukti",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206020014",
+                "nama_desa": "Sukawangun",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-010",
+        "nama_kecamatan": "Leuwisari",
+        "alamat_kantor": "Jl. Raya Leuwisari No. 1, Kab. Tasikmalaya",
+        "email": "kec.leuwisari@tasikmalayakab.go.id",
+        "telepon": "0265-420010",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206280004",
+                "nama_desa": "Arjasari",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206280002",
+                "nama_desa": "Ciawang",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206280003",
+                "nama_desa": "Cigadog",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206280008",
+                "nama_desa": "Jayamukti",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206280005",
+                "nama_desa": "Linggamulya",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206280006",
+                "nama_desa": "Linggawangi",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206280007",
+                "nama_desa": "Mandalagiri",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-015",
+        "nama_kecamatan": "Mangunreja",
+        "alamat_kantor": "Jl. Raya Mangunreja No. 1, Kab. Tasikmalaya",
+        "email": "kec.mangunreja@tasikmalayakab.go.id",
+        "telepon": "0265-420015",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206250001",
+                "nama_desa": "Mangunreja",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206250002",
+                "nama_desa": "Margajaya",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206250003",
+                "nama_desa": "Pasirsalam",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206250004",
+                "nama_desa": "Salebu",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206250005",
+                "nama_desa": "Sukaluyu",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206250006",
+                "nama_desa": "Sukasukur",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-017",
+        "nama_kecamatan": "Manonjaya",
+        "alamat_kantor": "Jl. Kaum No. 12, Manonjaya, Tasikmalaya",
+        "email": "kec.manonjaya@tasikmalayakab.go.id",
+        "telepon": "0265-380123",
+        "jam_operasional": "Senin - Jumat, 08.00 - 16.00 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206220001",
+                "nama_desa": "Batusumur",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206220002",
+                "nama_desa": "Cibeber",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206220003",
+                "nama_desa": "Cihaur",
+                "jumlah_rw": 4,
+                "jumlah_rt": 20
+            },
+            {
+                "kode_desa": "3206220004",
+                "nama_desa": "Cilangkap",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206220005",
+                "nama_desa": "Gunajaya",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206220006",
+                "nama_desa": "Kalimanggis",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206220007",
+                "nama_desa": "Kamulyan",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206220008",
+                "nama_desa": "Manonjaya",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206220009",
+                "nama_desa": "Margahayu",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206220010",
+                "nama_desa": "Margaluyu",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206220011",
+                "nama_desa": "Pasirbatang",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206220012",
+                "nama_desa": "Pasirpanjang",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-011",
+        "nama_kecamatan": "Padakembang",
+        "alamat_kantor": "Jl. Raya Padakembang No. 1, Kab. Tasikmalaya",
+        "email": "kec.padakembang@tasikmalayakab.go.id",
+        "telepon": "0265-420011",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206290001",
+                "nama_desa": "Cilampunghilir",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206290002",
+                "nama_desa": "Cisaruni",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206290003",
+                "nama_desa": "Mekarjaya",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206290004",
+                "nama_desa": "Padakembang",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206290005",
+                "nama_desa": "Rancapaku",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-002",
+        "nama_kecamatan": "Pagerageung",
+        "alamat_kantor": "Jl. Raya Pagerageung No. 1, Kab. Tasikmalaya",
+        "email": "kec.pagerageung@tasikmalayakab.go.id",
+        "telepon": "0265-420002",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206380001",
+                "nama_desa": "Cipacing",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206380002",
+                "nama_desa": "Guranteng",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206380003",
+                "nama_desa": "Nanggewer",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206380004",
+                "nama_desa": "Pagerageung",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206380005",
+                "nama_desa": "Pagersari",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206380006",
+                "nama_desa": "Puteran",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206380007",
+                "nama_desa": "Sukadana",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206380008",
+                "nama_desa": "Sukamaju",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206380009",
+                "nama_desa": "Sukapada",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206380010",
+                "nama_desa": "Tanjungkerta",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-036",
+        "nama_kecamatan": "Pancatengah",
+        "alamat_kantor": "Jl. Raya Pancatengah No. 1, Kab. Tasikmalaya",
+        "email": "kec.pancatengah@tasikmalayakab.go.id",
+        "telepon": "0265-420036",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206040001",
+                "nama_desa": "Cibongas",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206040002",
+                "nama_desa": "Cibuniasih",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206040003",
+                "nama_desa": "Cikawung",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206040004",
+                "nama_desa": "Jayamukti",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206040005",
+                "nama_desa": "Margaluyu",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206040006",
+                "nama_desa": "Mekarsari",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206040007",
+                "nama_desa": "Neglasari",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206040008",
+                "nama_desa": "Pancawangi",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206040009",
+                "nama_desa": "Pangliaran",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206040010",
+                "nama_desa": "Tawang",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206040011",
+                "nama_desa": "Tonjong",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-026",
+        "nama_kecamatan": "Parungponteng",
+        "alamat_kantor": "Jl. Raya Parungponteng No. 1, Kab. Tasikmalaya",
+        "email": "kec.parungponteng@tasikmalayakab.go.id",
+        "telepon": "0265-420026",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206070001",
+                "nama_desa": "Barumekar",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206070002",
+                "nama_desa": "Burujuljaya",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206070003",
+                "nama_desa": "Cibanteng",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206070004",
+                "nama_desa": "Cibungur",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206070005",
+                "nama_desa": "Cigunung",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206070006",
+                "nama_desa": "Girikencana",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206070007",
+                "nama_desa": "Karyabakti",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206070008",
+                "nama_desa": "Parungponteng",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-020",
+        "nama_kecamatan": "Puspahiang",
+        "alamat_kantor": "Jl. Raya Puspahiang No. 1, Kab. Tasikmalaya",
+        "email": "kec.puspahiang@tasikmalayakab.go.id",
+        "telepon": "0265-420020",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206150001",
+                "nama_desa": "Cimanggu",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206150002",
+                "nama_desa": "Layabakti",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206150003",
+                "nama_desa": "Mandalasari",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206150004",
+                "nama_desa": "Puspahiang",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206150005",
+                "nama_desa": "Puspajaya",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206150006",
+                "nama_desa": "Pusparahayu",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206150007",
+                "nama_desa": "Puspasari",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206150008",
+                "nama_desa": "Sukasari",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-007",
+        "nama_kecamatan": "Rajapolah",
+        "alamat_kantor": "Jl. Raya Rajapolah No. 1, Kab. Tasikmalaya",
+        "email": "kec.rajapolah@tasikmalayakab.go.id",
+        "telepon": "0265-420007",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206340001",
+                "nama_desa": "Dawagung",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206340002",
+                "nama_desa": "Manggungjaya",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206340003",
+                "nama_desa": "Manggungsari",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206340004",
+                "nama_desa": "Rajamandala",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206340005",
+                "nama_desa": "Rajapolah",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206340006",
+                "nama_desa": "Sukanagalih",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206340007",
+                "nama_desa": "Sukaraja",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206340008",
+                "nama_desa": "Tanjungpura",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-014",
+        "nama_kecamatan": "Salawu",
+        "alamat_kantor": "Jl. Raya Salawu No. 1, Kab. Tasikmalaya",
+        "email": "kec.salawu@tasikmalayakab.go.id",
+        "telepon": "0265-420014",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206140001",
+                "nama_desa": "Jahiang",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206140002",
+                "nama_desa": "Karangmukti",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206140003",
+                "nama_desa": "Kawungsari",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206140004",
+                "nama_desa": "Kutawaringin",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206140005",
+                "nama_desa": "Margalaksana",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206140006",
+                "nama_desa": "Neglasari",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206140007",
+                "nama_desa": "Salawu",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206140008",
+                "nama_desa": "Serang",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206140009",
+                "nama_desa": "Sukarasa",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206140010",
+                "nama_desa": "Sundawenang",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206140011",
+                "nama_desa": "Tanjungsari",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206140012",
+                "nama_desa": "Tenjowaringin",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-039",
+        "nama_kecamatan": "Salopa",
+        "alamat_kantor": "Jl. Raya Salopa No. 1, Kab. Tasikmalaya",
+        "email": "kec.salopa@tasikmalayakab.go.id",
+        "telepon": "0265-420039",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206180001",
+                "nama_desa": "Banjarwaringin",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206180002",
+                "nama_desa": "Karyamandala",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206180003",
+                "nama_desa": "Karyawangi",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206180004",
+                "nama_desa": "Kawitan",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206180005",
+                "nama_desa": "Mandalaguna",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206180006",
+                "nama_desa": "Mandalahayu",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206180007",
+                "nama_desa": "Mandalawangi",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206180008",
+                "nama_desa": "Mulyasari",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206180009",
+                "nama_desa": "Tanjungsari",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-009",
+        "nama_kecamatan": "Sariwangi",
+        "alamat_kantor": "Jl. Raya Sariwangi No. 1, Kab. Tasikmalaya",
+        "email": "kec.sariwangi@tasikmalayakab.go.id",
+        "telepon": "0265-420009",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206300001",
+                "nama_desa": "Jayaputra",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206300002",
+                "nama_desa": "Jayaratu",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206300003",
+                "nama_desa": "Linggasirna",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206300004",
+                "nama_desa": "Sariwangi",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206300005",
+                "nama_desa": "Selawangi",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206300006",
+                "nama_desa": "Sirnasari",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206300007",
+                "nama_desa": "Sukaharja",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206300008",
+                "nama_desa": "Sukamulih",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-013",
+        "nama_kecamatan": "Singaparna",
+        "alamat_kantor": "Jl. Raya Singaparna No. 1, Kab. Tasikmalaya",
+        "email": "kec.singaparna@tasikmalayakab.go.id",
+        "telepon": "0265-420013",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206240001",
+                "nama_desa": "Cikadongdong",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206240002",
+                "nama_desa": "Cikunir",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206240003",
+                "nama_desa": "Cikunten",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206240004",
+                "nama_desa": "Cintaraja",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206240005",
+                "nama_desa": "Cipakat",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206240006",
+                "nama_desa": "Singaparna",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206240007",
+                "nama_desa": "Singasari",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206240008",
+                "nama_desa": "Sukaasih",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206240009",
+                "nama_desa": "Sukaherang",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206240010",
+                "nama_desa": "Sukamulya",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-030",
+        "nama_kecamatan": "Sodonghilir",
+        "alamat_kantor": "Jl. Raya Sodonghilir No. 1, Kab. Tasikmalaya",
+        "email": "kec.sodonghilir@tasikmalayakab.go.id",
+        "telepon": "0265-420030",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206120001",
+                "nama_desa": "Cikalong",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206120002",
+                "nama_desa": "Cipaingeun",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206120003",
+                "nama_desa": "Cukangjayaguna",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206120004",
+                "nama_desa": "Cukangkawung",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206120005",
+                "nama_desa": "Leuwidulang",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206120006",
+                "nama_desa": "Muncang",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206120007",
+                "nama_desa": "Pakalongan",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206120008",
+                "nama_desa": "Parumasan",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206120009",
+                "nama_desa": "Raksajaya",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206120010",
+                "nama_desa": "Sepatnunggal",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206120011",
+                "nama_desa": "Sodonghilir",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206120012",
+                "nama_desa": "Sukabakti",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-006",
+        "nama_kecamatan": "Sukahening",
+        "alamat_kantor": "Jl. Raya Sukahening No. 1, Kab. Tasikmalaya",
+        "email": "kec.sukahening@tasikmalayakab.go.id",
+        "telepon": "0265-420006",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206330001",
+                "nama_desa": "Banyurasa",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206330002",
+                "nama_desa": "Banyuresmi",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206330003",
+                "nama_desa": "Calingcing",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206330004",
+                "nama_desa": "Kiarajangkung",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206330005",
+                "nama_desa": "Kudadepa",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206330006",
+                "nama_desa": "Sukahening",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206330007",
+                "nama_desa": "Sundakerta",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-022",
+        "nama_kecamatan": "Sukaraja",
+        "alamat_kantor": "Jl. Raya Sukaraja No. 1, Kab. Tasikmalaya",
+        "email": "kec.sukaraja@tasikmalayakab.go.id",
+        "telepon": "0265-420022",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206170001",
+                "nama_desa": "Janggala",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206170002",
+                "nama_desa": "Leuwibudah",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206170003",
+                "nama_desa": "Linggaraja",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206170004",
+                "nama_desa": "Margalaksana",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206170005",
+                "nama_desa": "Mekarjaya",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206170006",
+                "nama_desa": "Sirnajaya",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206170007",
+                "nama_desa": "Sukapura",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206170008",
+                "nama_desa": "Tarunajaya",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-016",
+        "nama_kecamatan": "Sukarame",
+        "alamat_kantor": "Jl. Raya Sukarame No. 1, Kab. Tasikmalaya",
+        "email": "kec.sukarame@tasikmalayakab.go.id",
+        "telepon": "0265-420016",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206260001",
+                "nama_desa": "Padasuka",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206260002",
+                "nama_desa": "Suka Menak",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206260003",
+                "nama_desa": "Sukakarsa",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206260004",
+                "nama_desa": "Sukarame",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206260005",
+                "nama_desa": "Sukarapih",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206260006",
+                "nama_desa": "Wargakerta",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-012",
+        "nama_kecamatan": "Sukaratu",
+        "alamat_kantor": "Jl. Raya Sukaratul No. 1, Kab. Tasikmalaya",
+        "email": "kec.sukaratu@tasikmalayakab.go.id",
+        "telepon": "0265-420012",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206310001",
+                "nama_desa": "Gunungsari",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206310002",
+                "nama_desa": "Indrajaya",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206310003",
+                "nama_desa": "Linggajati",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206310004",
+                "nama_desa": "Sinagar",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206310005",
+                "nama_desa": "Sukagalih",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206310006",
+                "nama_desa": "Sukamahi",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206310007",
+                "nama_desa": "Sukaratu",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206310008",
+                "nama_desa": "Tawangbanteng",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-004",
+        "nama_kecamatan": "Sukaresik",
+        "alamat_kantor": "Jl. Raya Sukaresik No. 1, Kab. Tasikmalaya",
+        "email": "kec.sukaresik@tasikmalayakab.go.id",
+        "telepon": "0265-420004",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206390001",
+                "nama_desa": "Banjarsari",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206390002",
+                "nama_desa": "Cipondok",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206390003",
+                "nama_desa": "Margamulya",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206390004",
+                "nama_desa": "Sukamenak",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206390005",
+                "nama_desa": "Sukapancar",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206390006",
+                "nama_desa": "Sukaratu",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206390007",
+                "nama_desa": "Sukaresik",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206390008",
+                "nama_desa": "Tanjungsari",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-021",
+        "nama_kecamatan": "Tanjungjaya",
+        "alamat_kantor": "Jl. Raya Tanjungjaya No. 1, Kab. Tasikmalaya",
+        "email": "kec.tanjungjaya@tasikmalayakab.go.id",
+        "telepon": "0265-420021",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206160001",
+                "nama_desa": "Cibalanarik",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206160002",
+                "nama_desa": "Cikeusal",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206160003",
+                "nama_desa": "Cilolohan",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206160004",
+                "nama_desa": "Cintajaya",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206160005",
+                "nama_desa": "Sukanagara",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206160006",
+                "nama_desa": "Sukasenang",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206160007",
+                "nama_desa": "Tanjungjaya",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            }
+        ]
+    },
+    {
+        "kode_kecamatan": "KEC-019",
+        "nama_kecamatan": "Taraju",
+        "alamat_kantor": "Jl. Raya Taraju No. 1, Kab. Tasikmalaya",
+        "email": "kec.taraju@tasikmalayakab.go.id",
+        "telepon": "0265-420019",
+        "jam_operasional": "Senin - Jumat, 08.00 - 15.30 WIB",
+        "desas": [
+            {
+                "kode_desa": "3206130001",
+                "nama_desa": "Banyuasih",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206130002",
+                "nama_desa": "Cikubang",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            },
+            {
+                "kode_desa": "3206130003",
+                "nama_desa": "Deudeul",
+                "jumlah_rw": 7,
+                "jumlah_rt": 35
+            },
+            {
+                "kode_desa": "3206130004",
+                "nama_desa": "Kertaraharja",
+                "jumlah_rw": 10,
+                "jumlah_rt": 50
+            },
+            {
+                "kode_desa": "3206130005",
+                "nama_desa": "Pageralam",
+                "jumlah_rw": 6,
+                "jumlah_rt": 30
+            },
+            {
+                "kode_desa": "3206130006",
+                "nama_desa": "Purwarahayu",
+                "jumlah_rw": 9,
+                "jumlah_rt": 45
+            },
+            {
+                "kode_desa": "3206130007",
+                "nama_desa": "Raksasari",
+                "jumlah_rw": 5,
+                "jumlah_rt": 25
+            },
+            {
+                "kode_desa": "3206130008",
+                "nama_desa": "Singasari",
+                "jumlah_rw": 8,
+                "jumlah_rt": 40
+            },
+            {
+                "kode_desa": "3206130009",
+                "nama_desa": "Taraju",
+                "jumlah_rw": 11,
+                "jumlah_rt": 55
+            }
+        ]
+    }
+]

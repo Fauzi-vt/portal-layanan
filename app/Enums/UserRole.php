@@ -31,7 +31,7 @@ enum UserRole: string
             self::Warga          => 'bg-blue-100 text-blue-800 border-blue-200',
             self::AdminDesa      => 'bg-amber-100 text-amber-800 border-amber-200',
             self::AdminKecamatan => 'bg-blue-100 text-[#0a2558] border-blue-200',
-            self::SuperAdmin     => 'bg-purple-100 text-purple-800 border-purple-200',
+            self::SuperAdmin     => 'bg-blue-100 text-blue-800 border-blue-200',
         };
     }
 

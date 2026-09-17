@@ -27,7 +27,7 @@
 
     @stack('styles')
 </head>
-<body class="h-full antialiased text-slate-800 bg-slate-100 selection:bg-purple-600 selection:text-white"
+<body class="h-full antialiased text-slate-800 bg-slate-100 selection:bg-[#0a2558] selection:text-white"
       x-data="{
           sidebarCollapsed: localStorage.getItem('sa_sidebar_collapsed') === 'true',
           mobileDrawerOpen: false,
@@ -68,25 +68,25 @@
                class="fixed inset-y-0 left-0 z-50 flex flex-col bg-slate-900 text-slate-300 border-r border-slate-800 transition-all duration-300 ease-in-out lg:translate-x-0 lg:static lg:z-30 shrink-0 w-64 shadow-2xl lg:shadow-none">
 
             {{-- 2.1 Sidebar Header / Brand --}}
-            <div class="h-16 flex items-center px-4 bg-slate-950/70 border-b border-slate-800/80 justify-between shrink-0">
-                <a href="{{ route('superadmin.dashboard') }}" class="flex items-center gap-3 overflow-hidden group">
-                    <img src="{{ asset('images/logo2.png') }}"
-                         alt="Logo Portal Layanan"
-                         class="h-9 w-auto max-w-none shrink-0 object-contain drop-shadow transition-transform group-hover:scale-105">
-                    <div x-show="!sidebarCollapsed"
-                         x-transition:enter="transition-opacity duration-200"
-                         x-transition:enter-start="opacity-0"
-                         x-transition:enter-end="opacity-100"
-                         class="overflow-hidden leading-tight whitespace-nowrap">
-                        <span class="block text-xs font-bold uppercase tracking-wider text-white">Diskominfo</span>
-                        <span class="block text-[11px] font-medium text-purple-400">Kab. Tasikmalaya</span>
+            <div class="px-3 py-3 border-b border-slate-800/80 bg-slate-950/70 transition-all duration-300 shrink-0 flex items-center"
+                 :class="sidebarCollapsed ? 'justify-center px-2' : 'justify-between'">
+                <a href="{{ route('superadmin.dashboard') }}"
+                   class="flex items-center group transition-all duration-300"
+                   :class="sidebarCollapsed ? 'w-auto' : 'flex-1 lg:w-full'">
+                    {{-- Card Putih Kontras Sesuai Ukuran Card Akses Otoritas --}}
+                    <div class="bg-white rounded-xl shadow-xs border border-white/90 flex items-center justify-center transition-all duration-300 group-hover:shadow-md group-hover:scale-[1.01]"
+                         :class="sidebarCollapsed ? 'w-11 h-11 p-1 overflow-hidden' : 'w-full px-3 py-2'">
+                        <img src="{{ asset('images/logo2.png') }}"
+                             alt="Logo Portal Layanan"
+                             class="h-8 w-auto max-h-8 max-w-full object-contain transition-all duration-300"
+                             :class="sidebarCollapsed ? 'h-6 object-left' : ''">
                     </div>
                 </a>
 
                 {{-- Close Button for Mobile Drawer --}}
                 <button type="button"
                         @click="mobileDrawerOpen = false"
-                        class="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                        class="lg:hidden p-1.5 ml-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors shrink-0"
                         aria-label="Tutup Menu">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -98,10 +98,10 @@
             <div class="px-3 py-3 border-b border-slate-800/60 bg-slate-900/90"
                  x-show="!sidebarCollapsed"
                  x-transition:enter="transition-opacity duration-200">
-                <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-purple-950/40 border border-purple-500/20 text-purple-200">
-                    <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse shrink-0"></span>
+                <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-blue-950/50 border border-blue-500/20 text-blue-200">
+                    <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse shrink-0"></span>
                     <div class="overflow-hidden">
-                        <p class="text-[10px] uppercase font-bold tracking-wider text-purple-300">Akses Otoritas</p>
+                        <p class="text-[10px] uppercase font-bold tracking-wider text-blue-300">Akses Otoritas</p>
                         <p class="text-xs font-semibold text-white truncate">Super Administrator</p>
                     </div>
                 </div>
@@ -119,8 +119,8 @@
                     {{-- 1. Monitoring Global --}}
                     <a href="{{ route('superadmin.dashboard') }}"
                        :title="sidebarCollapsed ? 'Monitoring Global' : ''"
-                       class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('superadmin.dashboard') ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30' : 'text-slate-300 hover:bg-slate-800/70 hover:text-white' }}">
-                        <svg class="w-5 h-5 shrink-0 transition-transform group-hover:scale-110 {{ request()->routeIs('superadmin.dashboard') ? 'text-white' : 'text-slate-400 group-hover:text-purple-400' }}"
+                       class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('superadmin.dashboard') ? 'bg-[#0a2558] text-white shadow-lg shadow-blue-950/30 border border-blue-500/20' : 'text-slate-300 hover:bg-slate-800/70 hover:text-white' }}">
+                        <svg class="w-5 h-5 shrink-0 transition-transform group-hover:scale-110 {{ request()->routeIs('superadmin.dashboard') ? 'text-white' : 'text-slate-400 group-hover:text-blue-400' }}"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -131,8 +131,8 @@
                     {{-- 2. Kelola Layanan Publik --}}
                     <a href="{{ route('superadmin.services.index') }}"
                        :title="sidebarCollapsed ? 'Kelola Layanan Publik' : ''"
-                       class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('superadmin.services.*') ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30' : 'text-slate-300 hover:bg-slate-800/70 hover:text-white' }}">
-                        <svg class="w-5 h-5 shrink-0 transition-transform group-hover:scale-110 {{ request()->routeIs('superadmin.services.*') ? 'text-white' : 'text-slate-400 group-hover:text-purple-400' }}"
+                       class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('superadmin.services.*') ? 'bg-[#0a2558] text-white shadow-lg shadow-blue-950/30 border border-blue-500/20' : 'text-slate-300 hover:bg-slate-800/70 hover:text-white' }}">
+                        <svg class="w-5 h-5 shrink-0 transition-transform group-hover:scale-110 {{ request()->routeIs('superadmin.services.*') ? 'text-white' : 'text-slate-400 group-hover:text-blue-400' }}"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -143,8 +143,8 @@
                     {{-- 3. Master Wilayah --}}
                     <a href="{{ route('superadmin.wilayah.index') }}"
                        :title="sidebarCollapsed ? 'Master Wilayah' : ''"
-                       class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('superadmin.wilayah.*') ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30' : 'text-slate-300 hover:bg-slate-800/70 hover:text-white' }}">
-                        <svg class="w-5 h-5 shrink-0 transition-transform group-hover:scale-110 {{ request()->routeIs('superadmin.wilayah.*') ? 'text-white' : 'text-slate-400 group-hover:text-purple-400' }}"
+                       class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all {{ request()->routeIs('superadmin.wilayah.*') ? 'bg-[#0a2558] text-white shadow-lg shadow-blue-950/30 border border-blue-500/20' : 'text-slate-300 hover:bg-slate-800/70 hover:text-white' }}">
+                        <svg class="w-5 h-5 shrink-0 transition-transform group-hover:scale-110 {{ request()->routeIs('superadmin.wilayah.*') ? 'text-white' : 'text-slate-400 group-hover:text-blue-400' }}"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -203,7 +203,7 @@
                     {{-- Mobile Menu Trigger --}}
                     <button type="button"
                             @click="mobileDrawerOpen = true"
-                            class="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            class="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
                             aria-label="Buka Navigasi">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -212,7 +212,7 @@
 
                     {{-- Breadcrumbs Navigation --}}
                     <nav class="flex items-center text-xs font-medium text-slate-500 truncate" aria-label="Breadcrumb">
-                        <a href="{{ route('superadmin.dashboard') }}" class="hover:text-purple-700 flex items-center gap-1.5 transition-colors">
+                        <a href="{{ route('superadmin.dashboard') }}" class="hover:text-[#0a2558] flex items-center gap-1.5 transition-colors">
                             <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                             </svg>
@@ -244,7 +244,7 @@
 
                     {{-- Otoritas Identitas Pemerintah --}}
                     <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200/80 text-[11px] font-medium text-slate-700">
-                        <span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#0a2558]"></span>
                         <span>Diskominfo Kab. Tasikmalaya</span>
                     </div>
 
@@ -252,17 +252,17 @@
                     <div class="relative" @click.outside="profileDropdownOpen = false">
                         <button type="button"
                                 @click="profileDropdownOpen = !profileDropdownOpen"
-                                class="flex items-center gap-2.5 p-1 sm:p-1.5 sm:pl-3 rounded-full hover:bg-slate-100 border border-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                class="flex items-center gap-2.5 p-1 sm:p-1.5 sm:pl-3 rounded-full hover:bg-slate-100 border border-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 aria-expanded="false"
                                 aria-haspopup="true">
-                            <span class="w-8 h-8 rounded-full bg-purple-700 text-white font-bold flex items-center justify-center text-xs shadow-xs">
+                            <span class="w-8 h-8 rounded-full bg-gradient-to-br from-[#0a2558] to-[#1e5799] text-white font-bold flex items-center justify-center text-xs shadow-xs">
                                 {{ strtoupper(substr(auth()->user()->name ?? 'S', 0, 1)) }}
                             </span>
                             <div class="hidden sm:block text-left leading-tight pr-1">
                                 <span class="block text-xs font-bold text-slate-800 max-w-[140px] truncate">
                                     {{ auth()->user()->name ?? 'Super Administrator' }}
                                 </span>
-                                <span class="block text-[10px] text-purple-700 font-semibold">Diskominfo</span>
+                                <span class="block text-[10px] text-[#0a2558] font-semibold">Diskominfo</span>
                             </div>
                             <svg class="w-4 h-4 text-slate-400 hidden sm:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -284,7 +284,7 @@
                             <div class="px-4 py-3">
                                 <p class="text-[11px] text-slate-500 font-medium">Akun Terautentikasi:</p>
                                 <p class="text-xs font-bold text-slate-900 truncate mt-0.5">{{ auth()->user()->email ?? '-' }}</p>
-                                <div class="mt-2 inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-200">
+                                <div class="mt-2 inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-100 text-[#0a2558] border border-blue-200">
                                     👑 {{ auth()->user()->role_label ?? 'Super Administrator' }}
                                 </div>
                             </div>
@@ -393,7 +393,7 @@
                 icon: 'success',
                 title: 'Berhasil!',
                 text: '{{ session('success') }}',
-                confirmButtonColor: '#7e22ce',
+                confirmButtonColor: '#0a2558',
                 customClass: { popup: 'rounded-2xl shadow-xl' }
             });
         @endif

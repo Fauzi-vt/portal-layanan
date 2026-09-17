@@ -4,14 +4,14 @@
             {{-- Brand Logo & Title --}}
             <div class="flex items-center gap-4">
                 <a href="{{ auth()->check() ? route('dashboard') : url('/') }}" class="flex items-center group">
-                    <img src="{{ asset('images/logo2.png') }}" alt="Dishub Kominfo - Portal Layanan Publik" class="h-8 sm:h-9 w-auto max-h-9 object-contain">
+                    <img src="{{ asset('images/logo2.png') }}" alt="Dishub Kominfo - Portal Layanan Publik" class="h-9 sm:h-10 md:h-11 w-auto max-h-11 object-contain transition-transform group-hover:scale-[1.01]">
                 </a>
 
                 {{-- Role / Workspace Badge --}}
                 @auth
                     <div class="hidden md:flex items-center ml-2">
                         @if (auth()->user()->isSuperAdmin())
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 border border-purple-200">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 border border-blue-200">
                                 👑 Super Admin Diskominfo
                             </span>
                         @elseif (auth()->user()->isAdminKecamatan())
@@ -82,15 +82,15 @@
                     @elseif (auth()->user()->isSuperAdmin())
                         {{-- Super Admin Links --}}
                         <a href="{{ route('superadmin.dashboard') }}"
-                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('superadmin.dashboard') ? 'bg-purple-50 text-purple-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('superadmin.dashboard') ? 'bg-blue-50 text-[#0a2558] font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                             Monitoring Global (39 Kec)
                         </a>
                         <a href="{{ route('superadmin.services.index') }}"
-                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('superadmin.services.*') ? 'bg-purple-50 text-purple-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('superadmin.services.*') ? 'bg-blue-50 text-[#0a2558] font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                             Kelola Layanan Publik
                         </a>
                         <a href="{{ route('superadmin.wilayah.index') }}"
-                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('superadmin.wilayah.*') ? 'bg-purple-50 text-purple-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('superadmin.wilayah.*') ? 'bg-blue-50 text-[#0a2558] font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                             Master Wilayah (39 Kec)
                         </a>
                     @endif
@@ -166,9 +166,9 @@
                 <a href="{{ route('kecamatan.submissions.index') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {{ request()->routeIs('kecamatan.submissions.*') ? 'bg-blue-50 text-[#0a2558]' : 'text-slate-700 hover:bg-slate-50' }}">Meja Verifikasi Berkas</a>
                 <a href="{{ route('kecamatan.wilayah.index') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {{ request()->routeIs('kecamatan.wilayah.*') ? 'bg-blue-50 text-[#0a2558]' : 'text-slate-700 hover:bg-slate-50' }}">Kewilayahan & Desa</a>
             @elseif (auth()->user()->isSuperAdmin())
-                <a href="{{ route('superadmin.dashboard') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Monitoring Global</a>
-                <a href="{{ route('superadmin.services.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Kelola Layanan Publik</a>
-                <a href="{{ route('superadmin.wilayah.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Master Wilayah (39 Kec)</a>
+                <a href="{{ route('superadmin.dashboard') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {{ request()->routeIs('superadmin.dashboard') ? 'bg-blue-50 text-[#0a2558]' : 'text-slate-700 hover:bg-slate-50' }}">Monitoring Global</a>
+                <a href="{{ route('superadmin.services.index') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {{ request()->routeIs('superadmin.services.*') ? 'bg-blue-50 text-[#0a2558]' : 'text-slate-700 hover:bg-slate-50' }}">Kelola Layanan Publik</a>
+                <a href="{{ route('superadmin.wilayah.index') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {{ request()->routeIs('superadmin.wilayah.*') ? 'bg-blue-50 text-[#0a2558]' : 'text-slate-700 hover:bg-slate-50' }}">Master Wilayah (39 Kec)</a>
             @endif
 
             <form method="POST" action="{{ route('logout') }}" class="pt-2 border-t border-slate-100">
