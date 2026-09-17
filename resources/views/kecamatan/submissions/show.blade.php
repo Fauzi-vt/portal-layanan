@@ -9,9 +9,9 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div class="space-y-1">
             <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
-                <a href="{{ route('kecamatan.dashboard') }}" class="hover:text-emerald-700">Dashboard</a>
+                <a href="{{ route('kecamatan.dashboard') }}" class="hover:text-[#0a2558]">Dashboard</a>
                 <span>/</span>
-                <a href="{{ route('kecamatan.submissions.index') }}" class="hover:text-emerald-700">Meja Verifikasi</a>
+                <a href="{{ route('kecamatan.submissions.index') }}" class="hover:text-[#0a2558]">Meja Verifikasi</a>
                 <span>/</span>
                 <span class="font-mono text-slate-800 font-semibold">{{ $submission->nomor_tiket }}</span>
             </div>
@@ -166,7 +166,7 @@
                                     {{-- Status Validasi Dokumen --}}
                                     <div>
                                         <label class="block text-[11px] font-bold text-slate-700 mb-1">Status Validitas Berkas:</label>
-                                        <select name="document_reviews[{{ $req->id }}][status]" class="w-full text-xs rounded-xl border-slate-200 bg-white py-1.5 focus:border-emerald-500 focus:ring-emerald-500">
+                                        <select name="document_reviews[{{ $req->id }}][status]" class="w-full text-xs rounded-xl border-slate-200 bg-white py-1.5 focus:border-blue-500 focus:ring-blue-500">
                                             <option value="valid" {{ $doc->status_validasi->value === 'valid' ? 'selected' : '' }}>✅ Dokumen Sesuai (Valid)</option>
                                             <option value="invalid" {{ $doc->status_validasi->value === 'invalid' ? 'selected' : '' }}>❌ Tidak Sesuai (Perlu Revisi)</option>
                                             <option value="pending" {{ $doc->status_validasi->value === 'pending' ? 'selected' : '' }}>⏳ Menunggu Validasi</option>
@@ -180,7 +180,7 @@
                                                name="document_reviews[{{ $req->id }}][note]"
                                                value="{{ $doc->catatan_dokumen }}"
                                                placeholder="Contoh: Foto terpotong, upload ulang scan asli"
-                                               class="w-full text-xs rounded-xl border-slate-200 bg-white py-1.5 focus:border-emerald-500 focus:ring-emerald-500">
+                                               class="w-full text-xs rounded-xl border-slate-200 bg-white py-1.5 focus:border-blue-500 focus:ring-blue-500">
                                     </div>
                                 </div>
                             @endif
@@ -221,7 +221,7 @@
                     {{-- Pesan Catatan untuk Warga --}}
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">Catatan / Instruksi Petugas untuk Warga:</label>
-                        <textarea name="catatan_petugas" rows="3" placeholder="Tuliskan catatan khusus atau instruksi perbaikan jika ada dokumen yang perlu diunggah ulang..." class="w-full text-xs rounded-xl border-slate-200 bg-slate-50 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500 p-3">{{ $submission->catatan_petugas }}</textarea>
+                        <textarea name="catatan_petugas" rows="3" placeholder="Tuliskan catatan khusus atau instruksi perbaikan jika ada dokumen yang perlu diunggah ulang..." class="w-full text-xs rounded-xl border-slate-200 bg-slate-50 focus:bg-white focus:border-blue-500 focus:ring-blue-500 p-3">{{ $submission->catatan_petugas }}</textarea>
                     </div>
 
                     <div class="flex justify-end">
@@ -251,21 +251,22 @@
                     <form action="{{ route('kecamatan.submissions.schedule-biometric', $submission) }}" method="POST" class="space-y-3 pt-2">
                         @csrf
                         <div>
-                            <label class="block text-[11px] font-semibold text-sky-200 mb-1">Waktu Perekaman:</label>
+                            <label class="block text-[11px] font-bold text-white mb-1">Waktu Perekaman:</label>
                             <input type="datetime-local"
                                    name="jadwal_biometrik"
                                    required
                                    value="{{ $submission->jadwal_biometrik ? $submission->jadwal_biometrik->format('Y-m-d\TH:i') : '' }}"
-                                   class="w-full text-xs text-slate-900 rounded-xl border-0 p-2.5 focus:ring-2 focus:ring-sky-400">
+                                   style="color-scheme: dark;"
+                                   class="w-full text-xs text-white bg-white/10 border border-white/25 rounded-xl p-2.5 focus:ring-2 focus:ring-sky-400 focus:bg-white/20 focus:border-white/40 font-semibold">
                         </div>
 
                         <div>
-                            <label class="block text-[11px] font-semibold text-sky-200 mb-1">Nomor Antrean (Opsional):</label>
+                            <label class="block text-[11px] font-bold text-white mb-1">Nomor Antrean (Opsional):</label>
                             <input type="text"
                                    name="nomor_antrean"
                                    value="{{ $submission->nomor_antrean }}"
                                    placeholder="Otomatis: A-001, A-002, dst."
-                                   class="w-full text-xs text-slate-900 rounded-xl border-0 p-2.5 focus:ring-2 focus:ring-sky-400 font-mono">
+                                   class="w-full text-xs text-white bg-white/10 border border-white/25 rounded-xl p-2.5 focus:ring-2 focus:ring-sky-400 focus:bg-white/20 focus:border-white/40 font-mono font-bold placeholder:text-white/40">
                         </div>
 
                         <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-xs text-slate-900 bg-sky-400 hover:bg-sky-300 shadow-md transition-colors">
@@ -276,29 +277,29 @@
             @endif
 
             {{-- 2. PANEL SELESAIKAN PERMOHONAN & TERBITKAN E-DOKUMEN --}}
-            <div class="bg-emerald-950 rounded-3xl p-6 text-white portal-shadow space-y-4">
+            <div class="rounded-3xl p-6 text-white portal-shadow space-y-4" style="background: linear-gradient(135deg, #0a2558 0%, #1a3a70 50%, #1e5799 100%)">
                 <div class="flex items-center gap-2">
                     <span class="text-xl">✅</span>
-                    <h3 class="text-sm font-bold">Penyelesaian Permohonan</h3>
+                    <h3 class="text-sm font-bold text-white">Penyelesaian Permohonan</h3>
                 </div>
-                <p class="text-xs text-emerald-200">Jika seluruh berkas sah dan diproses, terbitkan e-dokumen hasil untuk diunduh warga.</p>
+                <p class="text-xs text-blue-200">Jika seluruh berkas sah dan diproses, terbitkan e-dokumen hasil untuk diunduh warga.</p>
 
                 <form action="{{ route('kecamatan.submissions.complete', $submission) }}" method="POST" enctype="multipart/form-data" class="space-y-3 pt-2">
                     @csrf
                     <div>
-                        <label class="block text-[11px] font-semibold text-emerald-200 mb-1">Unggah e-Dokumen Hasil (PDF):</label>
+                        <label class="block text-[11px] font-semibold text-blue-200 mb-1">Unggah e-Dokumen Hasil (PDF):</label>
                         <input type="file"
                                name="output_file"
                                accept=".pdf,.jpg,.png"
-                               class="block w-full text-xs text-emerald-100 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-800 file:text-emerald-100 hover:file:bg-emerald-700 cursor-pointer">
+                               class="block w-full text-xs text-blue-100 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-white/20 file:text-white hover:file:bg-white/30 cursor-pointer">
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-semibold text-emerald-200 mb-1">Catatan Penyelesaian:</label>
-                        <textarea name="completion_notes" rows="2" placeholder="Dokumen telah selesai dan siap diunduh/diambil di kantor..." class="w-full text-xs text-slate-900 rounded-xl border-0 p-2.5"></textarea>
+                        <label class="block text-[11px] font-bold text-white mb-1">Catatan Penyelesaian:</label>
+                        <textarea name="completion_notes" rows="2" placeholder="Dokumen telah selesai dan siap diunduh/diambil di kantor..." class="w-full text-xs text-white bg-white/10 border border-white/20 rounded-xl p-2.5 focus:ring-2 focus:ring-sky-400 placeholder:text-white/40"></textarea>
                     </div>
 
-                    <button type="submit" class="w-full py-3 rounded-xl font-bold text-xs text-slate-900 bg-emerald-400 hover:bg-emerald-300 shadow-md transition-colors">
+                    <button type="submit" class="w-full py-3 rounded-xl font-bold text-xs bg-white text-[#0a2558] hover:bg-blue-50 shadow-md transition-colors">
                         🎉 Selesaikan & Terbitkan Dokumen
                     </button>
                 </form>

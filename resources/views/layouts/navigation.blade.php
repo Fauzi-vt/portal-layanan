@@ -15,7 +15,7 @@
                                 👑 Super Admin Diskominfo
                             </span>
                         @elseif (auth()->user()->isAdminKecamatan())
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-[#0a2558] border border-blue-200">
                                 🏛️ Admin Kec. {{ auth()->user()->kecamatan?->nama_kecamatan ?? '-' }}
                             </span>
                         @elseif (auth()->user()->isAdminDesa())
@@ -67,15 +67,15 @@
                     @elseif (auth()->user()->isAdminKecamatan())
                         {{-- Admin Kecamatan Links --}}
                         <a href="{{ route('kecamatan.dashboard') }}"
-                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('kecamatan.dashboard') ? 'bg-emerald-50 text-emerald-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('kecamatan.dashboard') ? 'bg-blue-50 text-[#0a2558] font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                             Dashboard
                         </a>
                         <a href="{{ route('kecamatan.submissions.index') }}"
-                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('kecamatan.submissions.*') ? 'bg-emerald-50 text-emerald-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('kecamatan.submissions.*') ? 'bg-blue-50 text-[#0a2558] font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                             Meja Verifikasi Berkas
                         </a>
                         <a href="{{ route('kecamatan.wilayah.index') }}"
-                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('kecamatan.wilayah.*') ? 'bg-emerald-50 text-emerald-800 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
+                           class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('kecamatan.wilayah.*') ? 'bg-blue-50 text-[#0a2558] font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50' }}">
                             Kewilayahan & Desa
                         </a>
 
@@ -98,7 +98,7 @@
                     {{-- User Dropdown Menu --}}
                     <div class="relative ml-3" @click.outside="userMenuOpen = false">
                         <button type="button" @click="userMenuOpen = !userMenuOpen" class="flex items-center gap-2.5 p-1.5 pl-3 rounded-full hover:bg-slate-100 text-sm font-medium text-slate-700 border border-slate-200">
-                            <span class="w-7 h-7 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-xs">
+                            <span class="w-7 h-7 rounded-full bg-gradient-to-br from-[#0a2558] to-[#1e5799] text-white font-bold flex items-center justify-center text-xs shadow-xs">
                                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                             </span>
                             <span class="text-xs font-semibold text-slate-700 hidden lg:inline">{{ auth()->user()->name }}</span>
@@ -109,7 +109,7 @@
                             <div class="px-4 py-2.5">
                                 <p class="text-xs text-slate-500">Masuk sebagai:</p>
                                 <p class="text-xs font-bold text-slate-900 truncate">{{ auth()->user()->email }}</p>
-                                <p class="text-[10px] font-semibold text-teal-600 mt-0.5">{{ auth()->user()->role_label }}</p>
+                                <p class="text-[10px] font-semibold text-[#0a2558] mt-0.5">{{ auth()->user()->role_label }}</p>
                             </div>
                             <div class="py-1">
                                 <form method="POST" action="{{ route('logout') }}">
@@ -126,7 +126,7 @@
                 @else
                     {{-- Guest Links --}}
                     <a href="{{ url('/') }}" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50">Beranda</a>
-                    <a href="{{ route('login') }}" class="ml-2 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-teal-600 to-sky-600 hover:from-teal-700 hover:to-sky-700 shadow-sm transition-all duration-200">
+                    <a href="{{ route('login') }}" class="ml-2 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-[#0a2558] to-[#1e5799] hover:from-[#102a5c] hover:to-[#2563eb] shadow-sm transition-all duration-200">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                         Masuk / Login
                     </a>
@@ -150,7 +150,7 @@
         @auth
             <div class="pb-3 pt-2 border-b border-slate-100">
                 <p class="font-bold text-slate-900">{{ auth()->user()->name }}</p>
-                <p class="text-xs text-teal-600">{{ auth()->user()->role_label }}</p>
+                <p class="text-xs font-semibold text-[#0a2558]">{{ auth()->user()->role_label }}</p>
             </div>
 
             @if (auth()->user()->isWarga())
@@ -162,9 +162,9 @@
                 <a href="{{ route('desa.submissions.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Verifikasi Berkas Desa</a>
                 <a href="{{ route('desa.wilayah.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Data Wilayah Desa</a>
             @elseif (auth()->user()->isAdminKecamatan())
-                <a href="{{ route('kecamatan.dashboard') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Dashboard</a>
-                <a href="{{ route('kecamatan.submissions.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Meja Verifikasi Berkas</a>
-                <a href="{{ route('kecamatan.wilayah.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Kewilayahan & Desa</a>
+                <a href="{{ route('kecamatan.dashboard') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {{ request()->routeIs('kecamatan.dashboard') ? 'bg-blue-50 text-[#0a2558]' : 'text-slate-700 hover:bg-slate-50' }}">Dashboard</a>
+                <a href="{{ route('kecamatan.submissions.index') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {{ request()->routeIs('kecamatan.submissions.*') ? 'bg-blue-50 text-[#0a2558]' : 'text-slate-700 hover:bg-slate-50' }}">Meja Verifikasi Berkas</a>
+                <a href="{{ route('kecamatan.wilayah.index') }}" class="block px-3 py-2 rounded-lg text-base font-semibold {{ request()->routeIs('kecamatan.wilayah.*') ? 'bg-blue-50 text-[#0a2558]' : 'text-slate-700 hover:bg-slate-50' }}">Kewilayahan & Desa</a>
             @elseif (auth()->user()->isSuperAdmin())
                 <a href="{{ route('superadmin.dashboard') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Monitoring Global</a>
                 <a href="{{ route('superadmin.services.index') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50">Kelola Layanan Publik</a>
@@ -176,7 +176,7 @@
                 <button type="submit" class="w-full text-left px-3 py-2 text-rose-600 font-semibold text-sm">Keluar (Logout)</button>
             </form>
         @else
-            <a href="{{ route('login') }}" class="block text-center px-4 py-2.5 rounded-xl font-semibold text-white bg-teal-600">Masuk / Login</a>
+            <a href="{{ route('login') }}" class="block text-center px-4 py-2.5 rounded-xl font-semibold text-white bg-gradient-to-r from-[#0a2558] to-[#1e5799]">Masuk / Login</a>
         @endauth
     </div>
 </nav>

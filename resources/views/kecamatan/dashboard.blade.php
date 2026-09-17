@@ -8,28 +8,31 @@
     {{-- ═══════════════════════════════════════════════════════════════════════════
          1. KECAMATAN OFFICIAL IDENTITY BANNER
     ═══════════════════════════════════════════════════════════════════════════ --}}
-    <div class="bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 rounded-3xl p-6 sm:p-8 text-white portal-shadow relative overflow-hidden">
-        <div class="absolute right-0 top-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="relative overflow-hidden rounded-3xl p-6 sm:p-8 text-white portal-shadow" style="background: linear-gradient(135deg, #0a2558 0%, #1a3a70 50%, #1e5799 100%)">
+        {{-- Background decoration --}}
+        <div class="absolute -top-8 -right-8 w-48 h-48 rounded-full bg-white/5 pointer-events-none"></div>
+        <div class="absolute -bottom-10 -left-4 w-40 h-40 rounded-full bg-white/5 pointer-events-none"></div>
+        <div class="absolute top-4 right-24 w-20 h-20 rounded-full bg-white/5 pointer-events-none"></div>
 
         <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div class="space-y-2">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-blue-200 border border-white/20 backdrop-blur-xs">
                     <span>🏛️ Ruang Kerja Verifikator Kecamatan</span>
                 </div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
                     Kecamatan {{ $admin->kecamatan?->nama_kecamatan ?? '-' }}
                 </h1>
-                <p class="text-xs sm:text-sm text-slate-300 flex flex-wrap items-center gap-x-4 gap-y-1">
+                <p class="text-xs sm:text-sm text-blue-100 flex flex-wrap items-center gap-x-4 gap-y-1 font-medium">
                     <span>Petugas: <strong class="text-white">{{ $admin->name }}</strong></span>
-                    <span>Kode Wilayah: <strong class="font-mono text-emerald-300">{{ $admin->kecamatan?->kode_kecamatan ?? '-' }}</strong></span>
-                    <span>Jam Operasional: <strong class="text-emerald-300">{{ $admin->kecamatan?->jam_operasional ?? '08.00 - 16.00 WIB' }}</strong></span>
+                    <span>Kode Wilayah: <strong class="font-mono text-blue-200">{{ $admin->kecamatan?->kode_kecamatan ?? '-' }}</strong></span>
+                    <span>Jam Operasional: <strong class="text-blue-200">{{ $admin->kecamatan?->jam_operasional ?? '08.00 - 16.00 WIB' }}</strong></span>
                 </p>
             </div>
 
             <div class="flex items-center gap-3">
-                <a href="{{ route('kecamatan.submissions.index') }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-xs sm:text-sm text-slate-900 bg-emerald-400 hover:bg-emerald-300 shadow-lg shadow-emerald-500/20 transition-all transform hover:-translate-y-0.5">
+                <a href="{{ route('kecamatan.submissions.index') }}" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm bg-white text-[#0a2558] hover:bg-blue-50 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 shrink-0 focus:ring-4 focus:ring-white/30">
                     <span>Buka Meja Verifikasi Berkas</span>
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    <svg class="w-4 h-4 text-[#0a2558]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 </a>
             </div>
         </div>
@@ -49,12 +52,12 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-2xl p-5 border-2 border-emerald-300 portal-shadow flex items-center justify-between bg-emerald-50/20">
+        <div class="bg-white rounded-2xl p-5 border-2 border-blue-200 portal-shadow flex items-center justify-between bg-blue-50/30">
             <div>
-                <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">Butuh Verifikasi</p>
-                <p class="text-2xl sm:text-3xl font-extrabold text-emerald-800 mt-1">{{ $stats['needs_action'] }}</p>
+                <p class="text-xs text-[#0a2558] font-bold uppercase tracking-wider">Butuh Verifikasi</p>
+                <p class="text-2xl sm:text-3xl font-extrabold text-[#0a2558] mt-1">{{ $stats['needs_action'] }}</p>
             </div>
-            <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-lg">
+            <div class="w-11 h-11 rounded-xl bg-blue-100 text-[#0a2558] flex items-center justify-center font-bold text-lg">
                 ⚡
             </div>
         </div>
@@ -71,10 +74,10 @@
 
         <div class="bg-white rounded-2xl p-5 border border-slate-200 portal-shadow flex items-center justify-between">
             <div>
-                <p class="text-xs text-teal-600 font-semibold uppercase tracking-wider">Selesai Hari Ini</p>
-                <p class="text-2xl sm:text-3xl font-extrabold text-teal-700 mt-1">{{ $stats['completed_today'] }}</p>
+                <p class="text-xs text-emerald-600 font-semibold uppercase tracking-wider">Selesai Hari Ini</p>
+                <p class="text-2xl sm:text-3xl font-extrabold text-emerald-700 mt-1">{{ $stats['completed_today'] }}</p>
             </div>
-            <div class="w-11 h-11 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center font-bold text-lg">
+            <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg">
                 ✅
             </div>
         </div>
@@ -88,17 +91,17 @@
         <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-200 portal-shadow overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#0a2558]"></span>
                     <h2 class="text-base font-bold text-slate-900">Antrean Berkas Masuk yang Perlu Ditinjau</h2>
                 </div>
-                <a href="{{ route('kecamatan.submissions.index', ['status' => 'submitted']) }}" class="text-xs font-bold text-emerald-700 hover:text-emerald-900">
+                <a href="{{ route('kecamatan.submissions.index', ['status' => 'submitted']) }}" class="text-xs font-bold text-[#0a2558] hover:text-blue-700 transition-colors">
                     Lihat Semua &rarr;
                 </a>
             </div>
 
             @if ($pendingSubmissions->isEmpty())
                 <div class="p-12 text-center space-y-2">
-                    <div class="w-12 h-12 mx-auto rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
+                    <div class="w-12 h-12 mx-auto rounded-2xl bg-blue-50 text-[#0a2558] flex items-center justify-center text-xl">
                         🎉
                     </div>
                     <p class="text-sm font-bold text-slate-800">Semua Berkas Telah Diverifikasi</p>
@@ -133,7 +136,7 @@
                                         {{ $sub->created_at->diffForHumans() }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <a href="{{ route('kecamatan.submissions.show', $sub) }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-bold text-emerald-800 bg-emerald-100 hover:bg-emerald-200 transition-colors">
+                                        <a href="{{ route('kecamatan.submissions.show', $sub) }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-bold text-[#0a2558] bg-blue-50 hover:bg-[#0a2558] hover:text-white border border-blue-200 transition-all shadow-2xs">
                                             <span>Verifikasi</span>
                                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                         </a>
@@ -153,7 +156,7 @@
                     <span class="text-base">📸</span>
                     <h3 class="text-sm font-bold text-slate-900">Jadwal e-KTP Hari Ini</h3>
                 </div>
-                <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full">
+                <span class="text-xs font-bold text-[#0a2558] bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200/60">
                     {{ $todayBiometrics->count() }} Warga
                 </span>
             </div>
@@ -172,7 +175,7 @@
                                 <span class="text-slate-500 text-[11px] font-mono">NIK: {{ $bio->user->nik ?? '-' }}</span>
                             </div>
                             <div class="text-right">
-                                <span class="px-2 py-0.5 rounded font-mono font-bold bg-sky-100 text-sky-800 block text-[11px]">
+                                <span class="px-2 py-0.5 rounded font-mono font-bold bg-blue-100 text-[#0a2558] block text-[11px]">
                                     {{ $bio->nomor_antrean ?? 'A-001' }}
                                 </span>
                                 <span class="text-[10px] text-slate-400">{{ $bio->jadwal_biometrik?->format('H:i') }} WIB</span>

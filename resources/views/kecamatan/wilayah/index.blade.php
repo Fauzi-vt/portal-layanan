@@ -46,18 +46,21 @@
     {{-- ═══════════════════════════════════════════════════════════════════════════
          1. BANNER HEADER
     ═══════════════════════════════════════════════════════════════════════════ --}}
-    <div class="bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 rounded-3xl p-6 sm:p-8 text-white portal-shadow relative overflow-hidden">
-        <div class="absolute right-0 top-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="relative overflow-hidden rounded-3xl p-6 sm:p-8 text-white portal-shadow" style="background: linear-gradient(135deg, #0a2558 0%, #1a3a70 50%, #1e5799 100%)">
+        {{-- Background decoration --}}
+        <div class="absolute -top-8 -right-8 w-48 h-48 rounded-full bg-white/5 pointer-events-none"></div>
+        <div class="absolute -bottom-10 -left-4 w-40 h-40 rounded-full bg-white/5 pointer-events-none"></div>
+        <div class="absolute top-4 right-24 w-20 h-20 rounded-full bg-white/5 pointer-events-none"></div>
 
         <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div class="space-y-2">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-blue-200 border border-white/20 backdrop-blur-xs">
                     <span>🏛️ Admin Kecamatan {{ $kecamatan->nama_kecamatan }}</span>
                 </div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
                     Pengelolaan Data Kantor & Desa Binaan
                 </h1>
-                <p class="text-xs sm:text-sm text-slate-300 max-w-2xl">
+                <p class="text-xs sm:text-sm text-blue-100 max-w-2xl font-medium">
                     Perbarui profil kantor kecamatan, data kontak, jam layanan, serta kelola daftar desa/kelurahan yang terintegrasi langsung dengan landing page portal publik.
                 </p>
             </div>
@@ -77,9 +80,9 @@
         <div class="bg-white rounded-2xl p-5 border border-slate-200 portal-shadow flex items-center justify-between">
             <div>
                 <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Desa / Kelurahan</p>
-                <p class="text-2xl sm:text-3xl font-extrabold text-emerald-700 mt-1">{{ $stats['total_desa'] }}</p>
+                <p class="text-2xl sm:text-3xl font-extrabold text-[#0a2558] mt-1">{{ $stats['total_desa'] }}</p>
             </div>
-            <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg">
+            <div class="w-11 h-11 rounded-xl bg-blue-50 text-[#0a2558] flex items-center justify-center font-bold text-lg">
                 🏡
             </div>
         </div>
@@ -151,42 +154,42 @@
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Alamat Kantor Kecamatan *</label>
                     <textarea name="alamat_kantor" rows="3" required
-                              class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">{{ old('alamat_kantor', $kecamatan->alamat_kantor) }}</textarea>
+                              class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">{{ old('alamat_kantor', $kecamatan->alamat_kantor) }}</textarea>
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">No. Telepon Kantor</label>
                     <input type="text" name="telepon" value="{{ old('telepon', $kecamatan->telepon) }}" placeholder="(0265) 54xxxx"
-                           class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                           class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Email Resmi</label>
                     <input type="email" name="email" value="{{ old('email', $kecamatan->email) }}" placeholder="kecamatan@tasikmalayakab.go.id"
-                           class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                           class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Jam Operasional Pelayanan</label>
                     <input type="text" name="jam_operasional" value="{{ old('jam_operasional', $kecamatan->jam_operasional) }}" placeholder="Senin - Jumat (08.00 - 15.30 WIB)"
-                           class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                           class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-100">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Estimasi RW</label>
                         <input type="number" name="jumlah_rw" value="{{ old('jumlah_rw', $kecamatan->jumlah_rw) }}"
-                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Estimasi RT</label>
                         <input type="number" name="jumlah_rt" value="{{ old('jumlah_rt', $kecamatan->jumlah_rt) }}"
-                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                     </div>
                 </div>
 
                 <div class="pt-3">
-                    <button type="submit" class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 transition-colors shadow-sm">
+                    <button type="submit" class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-[#0a2558] hover:bg-[#1a3a70] transition-colors shadow-sm">
                         Simpan Perubahan Kantor
                     </button>
                 </div>
@@ -208,7 +211,7 @@
 
                 <button type="button"
                         @click="openCreateDesa()"
-                        class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors shadow-sm flex items-center gap-2">
+                        class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#0a2558] hover:bg-[#1a3a70] transition-colors shadow-sm flex items-center gap-2">
                     <span>+ Tambah Desa Baru</span>
                 </button>
             </div>
@@ -220,7 +223,7 @@
                            name="q"
                            value="{{ $search }}"
                            placeholder="Cari nama atau kode desa..."
-                           class="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                           class="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                     <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
@@ -249,8 +252,8 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100 bg-white">
                         @forelse ($desas as $d)
-                            <tr class="hover:bg-emerald-50/40 transition-colors">
-                                <td class="py-3 px-4 font-mono font-bold text-emerald-800">
+                            <tr class="hover:bg-blue-50/40 transition-colors">
+                                <td class="py-3 px-4 font-mono font-bold text-[#0a2558]">
                                     {{ $d->kode_desa }}
                                 </td>
                                 <td class="py-3 px-4 font-bold text-slate-900">
@@ -259,14 +262,14 @@
                                 <td class="py-3 px-4 text-center font-semibold text-amber-800">
                                     {{ $d->jumlah_rw }}
                                 </td>
-                                <td class="py-3 px-4 text-center font-semibold text-emerald-800">
+                                <td class="py-3 px-4 text-center font-semibold text-slate-700">
                                     {{ $d->jumlah_rt }}
                                 </td>
                                 <td class="py-3 px-4 text-center">
                                     <div class="flex items-center justify-center gap-1.5">
                                         <button type="button"
                                                 @click="openEditDesa({{ json_encode($d) }})"
-                                                class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition-colors">
+                                                class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-50 hover:bg-blue-100 text-[#0a2558] transition-colors">
                                             Edit
                                         </button>
                                         <form method="POST"
@@ -327,31 +330,31 @@
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Kode Desa *</label>
                     <input type="text" name="kode_desa" x-model="desaForm.kode_desa" required placeholder="Contoh: 3206150001"
-                           class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                           class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Desa / Kelurahan *</label>
                     <input type="text" name="nama_desa" x-model="desaForm.nama_desa" required placeholder="Contoh: Pasirbatang"
-                           class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                           class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Jumlah RW</label>
                         <input type="number" name="jumlah_rw" x-model="desaForm.jumlah_rw" placeholder="8"
-                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Jumlah RT</label>
                         <input type="number" name="jumlah_rt" x-model="desaForm.jumlah_rt" placeholder="42"
-                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                               class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                     </div>
                 </div>
 
                 <div class="pt-4 flex items-center justify-end gap-2 border-t border-slate-100">
                     <button type="button" @click="modalDesaOpen = false" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl">Batal</button>
-                    <button type="submit" class="px-5 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-sm">Simpan Desa</button>
+                    <button type="submit" class="px-5 py-2 text-xs font-bold text-white bg-[#0a2558] hover:bg-[#1a3a70] rounded-xl shadow-sm">Simpan Desa</button>
                 </div>
             </form>
         </div>

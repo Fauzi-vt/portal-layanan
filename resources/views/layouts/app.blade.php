@@ -19,13 +19,13 @@
 
     @stack('styles')
 </head>
-<body class="h-full flex flex-col antialiased text-slate-800 bg-slate-50 selection:bg-teal-500 selection:text-white" x-data="{ mobileMenuOpen: false }">
+<body class="h-full flex flex-col antialiased text-slate-800 bg-slate-50 selection:bg-[#0a2558] selection:text-white" x-data="{ mobileMenuOpen: false }">
 
     {{-- Top Bar Government Identity --}}
-    <div class="bg-gradient-to-r from-teal-900 via-slate-900 to-sky-950 text-slate-300 text-xs py-1.5 px-4 sm:px-6 lg:px-8 border-b border-teal-800/30">
+    <div class="bg-gradient-to-r from-[#0a2558] via-[#0f2d6b] to-[#0a2558] text-slate-200 text-xs py-1.5 px-4 sm:px-6 lg:px-8 border-b border-blue-900/40">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="inline-block w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
                 <span class="font-medium tracking-wide">Portal Resmi Pelayanan Administrasi Masyarakat Terintegrasi — 39 Kecamatan</span>
             </div>
             <div class="hidden sm:flex items-center gap-4 text-[11px] text-slate-400">
@@ -111,7 +111,7 @@
                 icon: 'success',
                 title: 'Berhasil!',
                 text: '{{ session('success') }}',
-                confirmButtonColor: '#0d9488',
+                confirmButtonColor: '#0a2558',
                 customClass: { popup: 'rounded-2xl shadow-xl' }
             });
         @endif

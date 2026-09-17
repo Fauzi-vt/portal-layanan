@@ -9,7 +9,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <div class="flex items-center gap-2">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-[#0a2558] border border-blue-200">
                     Wilayah: Kec. {{ auth()->user()->kecamatan?->nama_kecamatan ?? '-' }}
                 </span>
             </div>
@@ -35,9 +35,9 @@
 
         @foreach ($statusTabs as $key => $tab)
             <a href="{{ route('kecamatan.submissions.index', array_merge(request()->query(), ['status' => $key, 'page' => 1])) }}"
-               class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 border {{ $status === $key || (!$status && !$key) ? 'bg-emerald-900 text-white border-emerald-900 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50' }}">
+               class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 border {{ $status === $key || (!$status && !$key) ? 'bg-[#0a2558] text-white border-[#0a2558] shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50' }}">
                 <span>{{ $tab['label'] }}</span>
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold {{ $status === $key || (!$status && !$key) ? 'bg-emerald-800 text-emerald-100' : 'bg-slate-100 text-slate-600' }}">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold {{ $status === $key || (!$status && !$key) ? 'bg-[#1a3a70] text-blue-100' : 'bg-slate-100 text-slate-600' }}">
                     {{ $tab['count'] }}
                 </span>
             </a>
@@ -62,12 +62,12 @@
                        name="search"
                        value="{{ $search }}"
                        placeholder="Cari nomor tiket, nama pemohon, atau 16 digit NIK..."
-                       class="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-emerald-500 focus:ring-emerald-500">
+                       class="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-blue-500 focus:ring-blue-500">
             </div>
 
             {{-- Service Dropdown Filter --}}
             <div class="w-full sm:w-64">
-                <select name="service_id" onchange="this.form.submit()" class="w-full text-xs rounded-xl border-slate-200 bg-slate-50 py-2 focus:border-emerald-500 focus:ring-emerald-500">
+                <select name="service_id" onchange="this.form.submit()" class="w-full text-xs rounded-xl border-slate-200 bg-slate-50 py-2 focus:border-blue-500 focus:ring-blue-500">
                     <option value="">Semua 8 Jenis Layanan</option>
                     @foreach ($services as $srv)
                         <option value="{{ $srv->id }}" {{ $serviceId == $srv->id ? 'selected' : '' }}>
@@ -77,7 +77,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="w-full sm:w-auto px-5 py-2 rounded-xl text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 transition-colors">
+            <button type="submit" class="w-full sm:w-auto px-5 py-2 rounded-xl text-xs font-bold text-white bg-[#0a2558] hover:bg-[#1a3a70] transition-colors">
                 Cari
             </button>
 
@@ -117,7 +117,7 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @foreach ($submissions as $sub)
-                            <tr class="hover:bg-slate-50/80 transition-colors {{ $sub->status === \App\Enums\SubmissionStatus::Submitted ? 'bg-emerald-50/30' : '' }}">
+                            <tr class="hover:bg-slate-50/80 transition-colors {{ $sub->status === \App\Enums\SubmissionStatus::Submitted ? 'bg-blue-50/30' : '' }}">
                                 <td class="px-6 py-4 font-mono font-bold text-slate-900">
                                     {{ $sub->nomor_tiket }}
                                 </td>
@@ -143,7 +143,7 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <a href="{{ route('kecamatan.submissions.show', $sub) }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl font-bold text-xs text-white bg-emerald-700 hover:bg-emerald-800 shadow-sm transition-all">
+                                    <a href="{{ route('kecamatan.submissions.show', $sub) }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl font-bold text-xs text-white bg-[#0a2558] hover:bg-[#1a3a70] shadow-sm transition-all">
                                         <span>Periksa Berkas</span>
                                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                     </a>
