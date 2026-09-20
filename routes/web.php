@@ -77,6 +77,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/permohonan/buat', [WargaSubmissionController::class, 'create'])->name('submissions.create');
             Route::post('/permohonan', [WargaSubmissionController::class, 'store'])->name('submissions.store');
             Route::get('/permohonan/{submission}', [WargaSubmissionController::class, 'show'])->name('submissions.show');
+            Route::get('/permohonan/{submission}/edit', [WargaSubmissionController::class, 'edit'])->name('submissions.edit');
+            Route::put('/permohonan/{submission}', [WargaSubmissionController::class, 'update'])->name('submissions.update');
             Route::post('/permohonan/{submission}/kirim-draft', [WargaSubmissionController::class, 'submitDraft'])->name('submissions.submit-draft');
             Route::post('/permohonan/{submission}/revisi', [WargaSubmissionController::class, 'updateRevision'])->name('submissions.update-revision');
             Route::get('/permohonan/{submission}/unduh-hasil', [WargaSubmissionController::class, 'downloadOutput'])->name('submissions.download-output');

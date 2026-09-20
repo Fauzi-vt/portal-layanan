@@ -6,6 +6,7 @@
     });
     $defaultKecAsal = strtoupper($user->kecamatan?->nama_kecamatan ?? 'MANONJAYA');
     $defaultDesaAsal = $user->desa?->nama_desa ?: ($desas->first()?->nama_desa ?? '');
+    $oldData = old('form_data.pindah_antar_kecamatan', isset($submission) ? ($submission->form_data['pindah_antar_kecamatan'] ?? null) : null);
 @endphp
 
 <div x-data="{
@@ -17,32 +18,32 @@
     kecamatanMap: @js($kecamatanMap),
     kecamatanAsalName: @js($defaultKecAsal),
     desaAsalName: @js($defaultDesaAsal),
-    noKk: '',
-    namaKepala: '',
-    dusunAsal: '',
-    rtAsal: '001',
-    rwAsal: '001',
-    kodePosAsal: '46182',
-    teleponAsal: @js($user->phone ?? ''),
+    noKk: @js($oldData['no_kk'] ?? ''),
+    namaKepala: @js($oldData['nama_kepala'] ?? ''),
+    dusunAsal: @js($oldData['dusun_asal'] ?? ''),
+    rtAsal: @js($oldData['rt_asal'] ?? '001'),
+    rwAsal: @js($oldData['rw_asal'] ?? '001'),
+    kodePosAsal: @js($oldData['kode_pos_asal'] ?? '46182'),
+    teleponAsal: @js($oldData['telepon_asal'] ?? ($user->phone ?? '')),
     
-    alasanPindah: '1', // 1. Pekerjaan, 2. Pendidikan, 3. Keamanan, 4. Kesehatan, 5. Perumahan, 6. Keluarga, 7. Lainnya
-    alasanLainnya: '',
-    kecamatanTujuan: '',
-    desaTujuan: '',
-    dusunTujuan: '',
-    rtTujuan: '001',
-    rwTujuan: '001',
-    kodePosTujuan: '46182',
-    teleponTujuan: '',
-    tglRencanaPindah: '',
+    alasanPindah: @js($oldData['alasan_pindah'] ?? '1'), // 1. Pekerjaan, 2. Pendidikan, 3. Keamanan, 4. Kesehatan, 5. Perumahan, 6. Keluarga, 7. Lainnya
+    alasanLainnya: @js($oldData['alasan_lainnya'] ?? ''),
+    kecamatanTujuan: @js($oldData['kecamatan_tujuan'] ?? ''),
+    desaTujuan: @js($oldData['desa_tujuan'] ?? ''),
+    dusunTujuan: @js($oldData['dusun_tujuan'] ?? ''),
+    rtTujuan: @js($oldData['rt_tujuan'] ?? '001'),
+    rwTujuan: @js($oldData['rw_tujuan'] ?? '001'),
+    kodePosTujuan: @js($oldData['kode_pos_tujuan'] ?? '46182'),
+    teleponTujuan: @js($oldData['telepon_tujuan'] ?? ''),
+    tglRencanaPindah: @js($oldData['tgl_rencana_pindah'] ?? ''),
     
-    jenisKepindahan: '2', // 1. Kep. Keluarga, 2. Kep. Keluarga dan Seluruh Angg. Keluarga, 3. Kep. Keluarga dan Sbg. Angg. Keluarga, 4. Angg. Keluarga
-    statusKkTidakPindah: '3', // 1. Numpang KK, 2. Membuat KK Baru, 3. Nomor KK Tetap
-    statusKkPindah: '2', // 1. Numpang KK, 2. Membuat KK Baru, 3. Nomor KK Tetap
+    jenisKepindahan: @js($oldData['jenis_kepindahan'] ?? '2'), // 1. Kep. Keluarga, 2. Kep. Keluarga dan Seluruh Angg. Keluarga, 3. Kep. Keluarga dan Sbg. Angg. Keluarga, 4. Angg. Keluarga
+    statusKkTidakPindah: @js($oldData['status_kk_tidak_pindah'] ?? '3'), // 1. Numpang KK, 2. Membuat KK Baru, 3. Nomor KK Tetap
+    statusKkPindah: @js($oldData['status_kk_pindah'] ?? '2'), // 1. Numpang KK, 2. Membuat KK Baru, 3. Nomor KK Tetap
     
-    anggota: [
-        { nik: @js($user->nik ?? ''), nama: @js($user->name), ktpSd: 'Seumur Hidup', shdk: 'Kepala Keluarga' }
-    ],
+    anggota: @js($oldData['anggota'] ?? [
+        [ 'nik' => $user->nik ?? '', 'nama' => $user->name, 'ktpSd' => 'Seumur Hidup', 'shdk' => 'Kepala Keluarga' ]
+    ]),
     get desasTujuanList() {
         if (!this.kecamatanTujuan) return [];
         return this.kecamatanMap[this.kecamatanTujuan] || [];

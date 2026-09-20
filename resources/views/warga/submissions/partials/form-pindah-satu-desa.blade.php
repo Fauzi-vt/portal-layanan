@@ -5,6 +5,7 @@
         ];
     });
     $defaultDesa = $user->desa?->nama_desa ?: ($desas->first()?->nama_desa ?? '');
+    $oldData = old('form_data.pindah_satu_desa', isset($submission) ? ($submission->form_data['pindah_satu_desa'] ?? null) : null);
 @endphp
 
 <div x-data="{
@@ -15,26 +16,26 @@
     userAlamat: @js($user->alamat_detail ?? ''),
     kecamatanName: @js($user->kecamatan?->nama_kecamatan ?? 'MANONJAYA'),
     desaName: @js($defaultDesa),
-    noKk: '',
-    namaKepala: '',
-    dusunAsal: '',
-    rtAsal: '001',
-    rwAsal: '001',
-    kodePosAsal: '46182',
-    teleponAsal: @js($user->phone ?? ''),
+    noKk: @js($oldData['no_kk'] ?? ''),
+    namaKepala: @js($oldData['nama_kepala'] ?? ''),
+    dusunAsal: @js($oldData['dusun_asal'] ?? ''),
+    rtAsal: @js($oldData['rt_asal'] ?? '001'),
+    rwAsal: @js($oldData['rw_asal'] ?? '001'),
+    kodePosAsal: @js($oldData['kode_pos_asal'] ?? '46182'),
+    teleponAsal: @js($oldData['telepon_asal'] ?? ($user->phone ?? '')),
     
-    statusKkTujuan: '1', // 1. Numpang KK, 2. Membuat KK Baru, 3. Nomor KK Tetap
-    noKkTujuan: '',
-    nikKepalaTujuan: '',
-    namaKepalaTujuan: '',
-    tglKedatangan: '',
-    dusunTujuan: '',
-    rtTujuan: '001',
-    rwTujuan: '001',
+    statusKkTujuan: @js($oldData['status_kk_tujuan'] ?? '1'), // 1. Numpang KK, 2. Membuat KK Baru, 3. Nomor KK Tetap
+    noKkTujuan: @js($oldData['no_kk_tujuan'] ?? ''),
+    nikKepalaTujuan: @js($oldData['nik_kepala_tujuan'] ?? ''),
+    namaKepalaTujuan: @js($oldData['nama_kepala_tujuan'] ?? ''),
+    tglKedatangan: @js($oldData['tgl_kedatangan'] ?? ''),
+    dusunTujuan: @js($oldData['dusun_tujuan'] ?? ''),
+    rtTujuan: @js($oldData['rt_tujuan'] ?? '001'),
+    rwTujuan: @js($oldData['rw_tujuan'] ?? '001'),
     
-    anggota: [
-        { nik: @js($user->nik ?? ''), nama: @js($user->name), ktpSd: 'Seumur Hidup', shdk: 'Kepala Keluarga' }
-    ],
+    anggota: @js($oldData['anggota'] ?? [
+        [ 'nik' => $user->nik ?? '', 'nama' => $user->name, 'ktpSd' => 'Seumur Hidup', 'shdk' => 'Kepala Keluarga' ]
+    ]),
 
     maskDigits(val, maxLen) {
         let clean = (val || '').toString().replace(/\D/g, '');
