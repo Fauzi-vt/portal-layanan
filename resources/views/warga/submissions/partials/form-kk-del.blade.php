@@ -15,7 +15,8 @@
     userAlamat: @js($user->alamat_detail ?? ''),
     kecamatanName: @js($user->kecamatan?->nama_kecamatan ?? 'SINGAPARNA'),
     desaName: @js($user->desa?->nama_desa ?? ''),
-    kecamatanMap: @js($kecamatanMap)
+    kecamatanMap: @js($kecamatanMap),
+    oldData: @js(old('form_data.kk_del', isset($submission) ? ($submission->form_data['kk_del'] ?? null) : null))
 })" class="bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden space-y-0 transition-all font-sans">
 
     {{-- ═══════════════════════════════════════════════════════════════════════
@@ -485,26 +486,26 @@
     function kkDelComponent(config) {
         return {
             meta: {
-                no_kk: '',
-                alasan_pengurangan: 'MENINGGAL',
-                tanggal_peristiwa: new Date().toISOString().split('T')[0],
-                no_dokumen_bukti: '',
-                nama_kepala_keluarga: config.userName || '',
-                alamat: config.userAlamat || '',
-                rt: '001',
-                rw: '001',
-                kode_pos: '46182',
-                kecamatan: (config.kecamatanName || 'SINGAPARNA').toUpperCase(),
-                desa: (config.desaName || '').toUpperCase(),
-                kabupaten: 'KABUPATEN TASIKMALAYA',
-                provinsi: 'JAWA BARAT',
-                negara: 'INDONESIA',
+                no_kk: config.oldData?.no_kk || '',
+                alasan_pengurangan: config.oldData?.alasan_pengurangan || 'MENINGGAL',
+                tanggal_peristiwa: config.oldData?.tanggal_peristiwa || new Date().toISOString().split('T')[0],
+                no_dokumen_bukti: config.oldData?.no_dokumen_bukti || '',
+                nama_kepala_keluarga: config.oldData?.nama_kepala_keluarga || config.userName || '',
+                alamat: config.oldData?.alamat || config.userAlamat || '',
+                rt: config.oldData?.rt || '001',
+                rw: config.oldData?.rw || '001',
+                kode_pos: config.oldData?.kode_pos || '46182',
+                kecamatan: config.oldData?.nama_kecamatan || (config.kecamatanName || 'SINGAPARNA').toUpperCase(),
+                desa: config.oldData?.nama_desa || (config.desaName || '').toUpperCase(),
+                kabupaten: config.oldData?.nama_kabupaten || 'KABUPATEN TASIKMALAYA',
+                provinsi: config.oldData?.nama_provinsi || 'JAWA BARAT',
+                negara: config.oldData?.negara || 'INDONESIA',
             },
 
             kecamatanMap: config.kecamatanMap || {},
             availableDesas: [],
 
-            anggota: [
+            anggota: config.oldData?.anggota ? config.oldData.anggota : [
                 {
                     nama: '',
                     nik: '',

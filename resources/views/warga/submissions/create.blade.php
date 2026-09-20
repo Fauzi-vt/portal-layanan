@@ -1,18 +1,56 @@
 @extends('layouts.warga')
 
-@section('title', 'Tambah Permohonan — Portal Layanan Publik KOMDIGI')
+@section('title', $service ? 'Pengajuan ' . $service->nama_layanan . ' — Portal Layanan Publik' : 'Tambah Permohonan — Portal Layanan Publik')
 
 @section('content')
-<div class="space-y-6" x-data="{ searchQuery: '', selectedServiceId: '{{ $service?->id ?? '' }}' }">
+<style>
+    /* Stepper */
+    .step-connector { flex: 1; height: 2px; background: #e2e8f0; transition: background 0.4s ease; }
+    .step-connector.done { background: #3b82f6; }
 
-    {{-- ═══════════════════════════════════════════════════════════════════════════
-         1. TITLE & BREADCRUMB (Exact match with KOMDIGI screenshot)
-    ═══════════════════════════════════════════════════════════════════════════ --}}
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-4">
+    /* Step pill */
+    .step-pill {
+        display: flex; align-items: center; justify-content: center;
+        width: 2rem; height: 2rem; border-radius: 50%;
+        font-size: 0.7rem; font-weight: 800;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+    }
+    .step-pill.inactive { background: #f1f5f9; color: #94a3b8; border: 2px solid #e2e8f0; }
+    .step-pill.active   { background: #2563eb; color: #fff; border: 2px solid #2563eb; box-shadow: 0 0 0 4px #dbeafe; }
+    .step-pill.done     { background: #22c55e; color: #fff; border: 2px solid #22c55e; }
+
+    /* File upload card */
+    .doc-upload-card { transition: all 0.2s ease; }
+    .doc-upload-card:hover { border-color: #93c5fd; box-shadow: 0 2px 10px rgba(59,130,246,.12); }
+    .doc-upload-card.has-file { border-color: #86efac; background: #f0fdf4; }
+
+    /* Review card */
+    .review-section { border-left: 3px solid #2563eb; }
+
+    /* Smooth step transitions */
+    [x-cloak] { display: none !important; }
+    .step-panel { animation: stepIn 0.25s ease forwards; }
+    @keyframes stepIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+
+    /* Sticky bottom action bar */
+    .action-bar {
+        position: sticky; bottom: 0; z-index: 30;
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(12px);
+        border-top: 1px solid #e2e8f0;
+        padding: 0.875rem 1.25rem;
+    }
+</style>
+<div x-data="{ searchQuery: '', selectedServiceId: '{{ $service?->id ?? '' }}' }">
+
+    {{-- ═══════════════════════════════════════════════════════
+         HEADER + BREADCRUMB
+    ═══════════════════════════════════════════════════════ --}}
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-4 mb-6">
         <h1 class="text-xl font-bold text-slate-900 tracking-tight">
-            Tambah Permohonan
+            {{ $service ? $service->nama_layanan : 'Tambah Permohonan' }}
         </h1>
-
         <div class="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
             <a href="{{ route('warga.dashboard') }}" class="text-blue-600 hover:underline">Dashboard</a>
             <span>/</span>
@@ -23,99 +61,67 @@
     </div>
 
     @if (! $service)
-        {{-- ═══════════════════════════════════════════════════════════════════════
-             2. PERMOHONAN BARU & SEARCH BAR (Exact match with screenshot)
-        ═══════════════════════════════════════════════════════════════════════ --}}
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
-            <h2 class="text-base font-bold text-slate-900">
-                Permohonan Baru
-            </h2>
 
-            {{-- Pill Search Input with Dark Blue Circle Search Button --}}
+        {{-- ═══════════════════════════════════════════════════════
+             HALAMAN PILIH LAYANAN
+        ═══════════════════════════════════════════════════════ --}}
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+            <div>
+                <h2 class="text-base font-bold text-slate-900">Permohonan Baru</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Pilih jenis layanan yang ingin Anda ajukan.</p>
+            </div>
             <div class="relative w-full sm:w-96">
-                <input
-                    type="text"
-                    x-model="searchQuery"
-                    placeholder="Telusuri layanan di sini"
-                    class="w-full pl-5 pr-14 py-2.5 rounded-full bg-white border border-slate-200 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-2xs"
-                >
-                <button type="button" class="absolute right-1 top-1 bottom-1 w-9 h-9 rounded-full bg-[#0b256b] text-white flex items-center justify-center hover:bg-[#081c52] transition-colors cursor-pointer shadow-xs">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
+                <input type="text" x-model="searchQuery"
+                    placeholder="Telusuri layanan di sini…"
+                    class="w-full pl-5 pr-14 py-2.5 rounded-full bg-white border border-slate-200 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm">
+                <button type="button" class="absolute right-1 top-1 bottom-1 w-9 h-9 rounded-full bg-[#0b256b] text-white flex items-center justify-center hover:bg-[#081c52] transition-colors cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </button>
             </div>
         </div>
 
-        {{-- ═══════════════════════════════════════════════════════════════════════
-             3. LIST OF SERVICE ROWS (Horizontal Cards with Amber Chevron >)
-        ═══════════════════════════════════════════════════════════════════════ --}}
-        <div class="space-y-3.5 pt-1">
+        <div class="space-y-3.5">
             @php
-                $kkServices = $services->filter(fn($s) => in_array($s->kode_layanan, ['KK_BARU', 'KK_ADD', 'KK_DEL']));
-                $moveServices = $services->filter(fn($s) => in_array($s->kode_layanan, ['PINDAH_SATU_DESA', 'PINDAH_ANTAR_DESA', 'PINDAH_ANTAR_KEC']));
-                $kkRendered = false;
+                $kkServices   = $services->filter(fn($s) => in_array($s->kode_layanan, ['KK_BARU','KK_ADD','KK_DEL']));
+                $moveServices = $services->filter(fn($s) => in_array($s->kode_layanan, ['PINDAH_SATU_DESA','PINDAH_ANTAR_DESA','PINDAH_ANTAR_KEC']));
+                $kkRendered   = false;
                 $moveRendered = false;
             @endphp
 
             @foreach ($services as $srv)
-                @if (in_array($srv->kode_layanan, ['KK_BARU', 'KK_ADD', 'KK_DEL']))
-                    @if (! $kkRendered)
+                @if (in_array($srv->kode_layanan, ['KK_BARU','KK_ADD','KK_DEL']))
+                    @if (!$kkRendered)
                         @php $kkRendered = true; @endphp
-
-                        {{-- ── UNIFIED PARENT MENU: LAYANAN KARTU KELUARGA ── --}}
-                        <div x-data="{ openKk: false }"
-                             x-init="$watch('searchQuery', val => { if (val.trim() !== '') openKk = true; })"
+                        <div x-data="{ open: false }"
+                             x-init="$watch('searchQuery', v => { if(v.trim()) open = true; })"
                              x-show="searchQuery === '' || 'layanan kartu keluarga pembuatan kk baru perbaikan kk penambahan anggota keluarga pengurangan anggota keluarga'.includes(searchQuery.toLowerCase())"
-                             class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden transition-all">
-                            
-                            {{-- Main Parent Header --}}
-                            <button type="button"
-                                    @click="openKk = !openKk; $nextTick(() => window.lucide?.createIcons())"
-                                    class="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-slate-50/80 transition-colors group cursor-pointer">
+                             class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <button type="button" @click="open = !open; $nextTick(() => window.lucide?.createIcons())"
+                                    class="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-slate-50 transition-colors group cursor-pointer">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-[#0a2558] border border-blue-100 flex items-center justify-center text-xl font-bold flex-shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-[#0a2558] border border-blue-100 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
                                         <i data-lucide="users" class="w-6 h-6"></i>
                                     </div>
                                     <div>
                                         <div class="flex items-center gap-2">
-                                            <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
-                                                Layanan Kartu Keluarga
-                                            </h3>
-                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-100 text-blue-800">
-                                                3 Sub-Layanan
-                                            </span>
+                                            <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-blue-700">Layanan Kartu Keluarga</h3>
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-100 text-blue-800">3 Sub-Layanan</span>
                                         </div>
-                                        <p class="text-xs text-slate-500 mt-0.5">
-                                            Pengurusan Kartu Keluarga (KK Baru, Penambahan Anggota, Pengurangan Anggota)
-                                        </p>
+                                        <p class="text-xs text-slate-500 mt-0.5">KK Baru, Penambahan Anggota, Pengurangan Anggota</p>
                                     </div>
                                 </div>
-
                                 <div class="pl-4 flex-shrink-0 flex items-center gap-2">
-                                    <span class="text-xs font-semibold text-slate-400 group-hover:text-blue-600 hidden sm:inline" x-text="openKk ? 'Tutup Pilihan' : 'Pilih Jenis KK'">Pilih Jenis KK</span>
-                                    <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center transition-transform duration-200"
-                                         :class="{ 'rotate-180 bg-blue-50 text-blue-700': openKk }">
+                                    <span class="text-xs font-semibold text-slate-400 group-hover:text-blue-600 hidden sm:inline" x-text="open ? 'Tutup' : 'Pilih Jenis'"></span>
+                                    <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center transition-all duration-200" :class="{'rotate-180 bg-blue-50 text-blue-700': open}">
                                         <i data-lucide="chevron-down" class="w-5 h-5"></i>
                                     </div>
                                 </div>
                             </button>
-
-                            {{-- Sub-Menu List Container --}}
-                            <div x-show="openKk"
-                                 x-cloak
-                                 x-transition:enter="transition ease-out duration-200"
-                                 x-transition:enter-start="opacity-0 max-h-0"
-                                 x-transition:enter-end="opacity-100 max-h-[500px]"
-                                 x-transition:leave="transition ease-in duration-150"
-                                 x-transition:leave-start="opacity-100 max-h-[500px]"
-                                 x-transition:leave-end="opacity-0 max-h-0"
-                                 class="border-t border-slate-100 bg-slate-50/50 p-3 sm:p-4 space-y-2.5">
-
+                            <div x-show="open" x-cloak x-transition class="border-t border-slate-100 bg-slate-50/50 p-3 sm:p-4 space-y-2.5">
                                 @foreach ($kkServices as $kkSrv)
                                     <a href="{{ route('warga.submissions.create', ['service' => $kkSrv->kode_layanan]) }}"
                                        x-show="searchQuery === '' || '{{ strtolower($kkSrv->nama_layanan . ' ' . $kkSrv->kode_layanan . ' ' . $kkSrv->deskripsi) }}'.includes(searchQuery.toLowerCase())"
-                                       class="bg-white rounded-lg border border-slate-200 shadow-2xs hover:border-blue-500 hover:shadow-xs p-3.5 sm:p-4 flex items-center justify-between transition-all group cursor-pointer block">
+                                       class="bg-white rounded-lg border border-slate-200 hover:border-blue-500 hover:shadow-sm p-3.5 sm:p-4 flex items-center justify-between transition-all group block">
                                         <div class="flex items-center gap-3.5">
                                             <div class="w-9 h-9 rounded-lg bg-blue-50 text-[#0a2558] border border-blue-100 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
                                                 @if ($kkSrv->kode_layanan === 'KK_BARU') <i data-lucide="users" class="w-4 h-4"></i>
@@ -124,82 +130,51 @@
                                                 @endif
                                             </div>
                                             <div>
-                                                <h4 class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-blue-700 transition-colors">
-                                                    {{ $kkSrv->nama_layanan }}
-                                                </h4>
-                                                <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5 line-clamp-1">
-                                                    {{ $kkSrv->deskripsi }}
-                                                </p>
+                                                <h4 class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-blue-700">{{ $kkSrv->nama_layanan }}</h4>
+                                                <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5 line-clamp-1">{{ $kkSrv->deskripsi }}</p>
                                             </div>
                                         </div>
-                                        <div class="pl-3 flex-shrink-0">
-                                            <i data-lucide="arrow-right" class="w-4 h-4 text-amber-500 group-hover:translate-x-1 transition-transform"></i>
-                                        </div>
+                                        <i data-lucide="arrow-right" class="w-4 h-4 text-amber-500 group-hover:translate-x-1 transition-transform flex-shrink-0"></i>
                                     </a>
                                 @endforeach
-
                             </div>
                         </div>
                     @endif
-                @elseif (in_array($srv->kode_layanan, ['PINDAH_SATU_DESA', 'PINDAH_ANTAR_DESA', 'PINDAH_ANTAR_KEC', 'PINDAH', 'DATANG']))
-                    @if (! $moveRendered)
+                @elseif (in_array($srv->kode_layanan, ['PINDAH_SATU_DESA','PINDAH_ANTAR_DESA','PINDAH_ANTAR_KEC','PINDAH','DATANG']))
+                    @if (!$moveRendered)
                         @php $moveRendered = true; @endphp
-
-                        {{-- ── UNIFIED PARENT MENU: LAYANAN PERPINDAHAN PENDUDUK ── --}}
-                        <div x-data="{ openPindah: false }"
-                             x-init="$watch('searchQuery', val => { if (val.trim() !== '') openPindah = true; })"
+                        <div x-data="{ open: false }"
+                             x-init="$watch('searchQuery', v => { if(v.trim()) open = true; })"
                              x-show="searchQuery === '' || 'layanan perpindahan penduduk permohonan pindah datang wni satu desa antar desa kecamatan'.includes(searchQuery.toLowerCase())"
-                             class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden transition-all">
-                            
-                            {{-- Main Parent Header --}}
-                            <button type="button"
-                                    @click="openPindah = !openPindah; $nextTick(() => window.lucide?.createIcons())"
-                                    class="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-slate-50/80 transition-colors group cursor-pointer">
+                             class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <button type="button" @click="open = !open; $nextTick(() => window.lucide?.createIcons())"
+                                    class="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-slate-50 transition-colors group cursor-pointer">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-[#0a2558] border border-blue-100 flex items-center justify-center text-xl font-bold flex-shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                                    <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-700 border border-indigo-100 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
                                         <i data-lucide="truck" class="w-6 h-6"></i>
                                     </div>
                                     <div>
                                         <div class="flex items-center gap-2">
-                                            <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
-                                                Layanan Perpindahan Penduduk
-                                            </h3>
-                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-100 text-blue-800">
-                                                3 Sub-Layanan
-                                            </span>
+                                            <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-indigo-700">Layanan Perpindahan Penduduk</h3>
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-indigo-100 text-indigo-800">3 Sub-Layanan</span>
                                         </div>
-                                        <p class="text-xs text-slate-500 mt-0.5">
-                                            Pengurusan Surat Permohonan Pindah Datang WNI (Satu Desa, Antar Desa, Antar Kecamatan)
-                                        </p>
+                                        <p class="text-xs text-slate-500 mt-0.5">Pindah Datang WNI (Satu Desa, Antar Desa, Antar Kecamatan)</p>
                                     </div>
                                 </div>
-
                                 <div class="pl-4 flex-shrink-0 flex items-center gap-2">
-                                    <span class="text-xs font-semibold text-slate-400 group-hover:text-blue-600 hidden sm:inline" x-text="openPindah ? 'Tutup Pilihan' : 'Pilih Jenis Layanan'">Pilih Jenis Layanan</span>
-                                    <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center transition-transform duration-200"
-                                         :class="{ 'rotate-180 bg-blue-50 text-blue-700': openPindah }">
+                                    <span class="text-xs font-semibold text-slate-400 group-hover:text-indigo-600 hidden sm:inline" x-text="open ? 'Tutup' : 'Pilih Jenis'"></span>
+                                    <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center transition-all duration-200" :class="{'rotate-180 bg-indigo-50 text-indigo-700': open}">
                                         <i data-lucide="chevron-down" class="w-5 h-5"></i>
                                     </div>
                                 </div>
                             </button>
-
-                            {{-- Sub-Menu List Container --}}
-                            <div x-show="openPindah"
-                                 x-cloak
-                                 x-transition:enter="transition ease-out duration-200"
-                                 x-transition:enter-start="opacity-0 max-h-0"
-                                 x-transition:enter-end="opacity-100 max-h-[500px]"
-                                 x-transition:leave="transition ease-in duration-150"
-                                 x-transition:leave-start="opacity-100 max-h-[500px]"
-                                 x-transition:leave-end="opacity-0 max-h-0"
-                                 class="border-t border-slate-100 bg-slate-50/50 p-3 sm:p-4 space-y-2.5">
-
+                            <div x-show="open" x-cloak x-transition class="border-t border-slate-100 bg-slate-50/50 p-3 sm:p-4 space-y-2.5">
                                 @foreach ($moveServices as $moveSrv)
                                     <a href="{{ route('warga.submissions.create', ['service' => $moveSrv->kode_layanan]) }}"
                                        x-show="searchQuery === '' || '{{ strtolower($moveSrv->nama_layanan . ' ' . $moveSrv->kode_layanan . ' ' . $moveSrv->deskripsi) }}'.includes(searchQuery.toLowerCase())"
-                                       class="bg-white rounded-lg border border-slate-200 shadow-2xs hover:border-blue-500 hover:shadow-xs p-3.5 sm:p-4 flex items-center justify-between transition-all group cursor-pointer block">
+                                       class="bg-white rounded-lg border border-slate-200 hover:border-indigo-500 hover:shadow-sm p-3.5 sm:p-4 flex items-center justify-between transition-all group block">
                                         <div class="flex items-center gap-3.5">
-                                            <div class="w-9 h-9 rounded-lg bg-blue-50 text-[#0a2558] border border-blue-100 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                                            <div class="w-9 h-9 rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-100 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
                                                 @if ($moveSrv->kode_layanan === 'PINDAH_SATU_DESA') <i data-lucide="home" class="w-4 h-4"></i>
                                                 @elseif ($moveSrv->kode_layanan === 'PINDAH_ANTAR_DESA') <i data-lucide="building-2" class="w-4 h-4"></i>
                                                 @elseif ($moveSrv->kode_layanan === 'PINDAH_ANTAR_KEC') <i data-lucide="map" class="w-4 h-4"></i>
@@ -207,56 +182,36 @@
                                                 @endif
                                             </div>
                                             <div>
-                                                <h4 class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-blue-700 transition-colors">
-                                                    {{ $moveSrv->nama_layanan }}
-                                                </h4>
-                                                <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5 line-clamp-1">
-                                                    {{ $moveSrv->deskripsi }}
-                                                </p>
+                                                <h4 class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-indigo-700">{{ $moveSrv->nama_layanan }}</h4>
+                                                <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5 line-clamp-1">{{ $moveSrv->deskripsi }}</p>
                                             </div>
                                         </div>
-                                        <div class="pl-3 flex-shrink-0">
-                                            <i data-lucide="arrow-right" class="w-4 h-4 text-amber-500 group-hover:translate-x-1 transition-transform"></i>
-                                        </div>
+                                        <i data-lucide="arrow-right" class="w-4 h-4 text-amber-500 group-hover:translate-x-1 transition-transform flex-shrink-0"></i>
                                     </a>
                                 @endforeach
-
                             </div>
                         </div>
                     @endif
                 @else
-                    {{-- Standard Individual Service Card --}}
                     <a href="{{ route('warga.submissions.create', ['service' => $srv->kode_layanan]) }}"
                        x-show="searchQuery === '' || '{{ strtolower($srv->nama_layanan . ' ' . $srv->kode_layanan . ' ' . $srv->deskripsi) }}'.includes(searchQuery.toLowerCase())"
-                       class="bg-white rounded-xl border border-slate-200 shadow-xs hover:border-blue-400 hover:shadow-sm p-4 sm:p-5 flex items-center justify-between transition-all group cursor-pointer block">
-                        
-                        {{-- Left: Icon + Title --}}
+                       class="bg-white rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 hover:shadow-md p-4 sm:p-5 flex items-center justify-between transition-all group block">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-105 transition-transform shadow-2xs text-[#0a2558]">
+                            <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-[#0a2558] flex-shrink-0 group-hover:scale-105 transition-transform">
                                 @if ($srv->kode_layanan === 'KIA') <i data-lucide="contact" class="w-6 h-6"></i>
                                 @elseif ($srv->kode_layanan === 'EKTP') <i data-lucide="camera" class="w-6 h-6"></i>
                                 @elseif ($srv->kode_layanan === 'NIKAH') <i data-lucide="heart" class="w-6 h-6"></i>
                                 @else <i data-lucide="file-text" class="w-6 h-6"></i>
                                 @endif
                             </div>
-
                             <div>
-                                <h3 class="text-sm sm:text-base font-semibold text-slate-800 group-hover:text-blue-700 transition-colors">
-                                    {{ $srv->nama_layanan }}
-                                </h3>
-                                <p class="text-xs text-slate-500 mt-0.5 line-clamp-1">
-                                    {{ $srv->deskripsi }}
-                                </p>
+                                <h3 class="text-sm sm:text-base font-semibold text-slate-800 group-hover:text-blue-700">{{ $srv->nama_layanan }}</h3>
+                                <p class="text-xs text-slate-500 mt-0.5 line-clamp-1">{{ $srv->deskripsi }}</p>
                             </div>
                         </div>
-
-                        {{-- Right: Amber Gold Chevron Arrow --}}
-                        <div class="pl-4 flex-shrink-0">
-                            <svg class="w-6 h-6 text-amber-500 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </div>
-
+                        <svg class="w-6 h-6 text-amber-500 group-hover:translate-x-1 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                        </svg>
                     </a>
                 @endif
             @endforeach
@@ -264,220 +219,618 @@
 
     @else
 
-        {{-- ═══════════════════════════════════════════════════════════════════════
-             4. FORMULIR PENGAJUAN LAYANAN TERPILIH
-        ═══════════════════════════════════════════════════════════════════════ --}}
-        <form action="{{ route('warga.submissions.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-            @csrf
-            <input type="hidden" name="service_id" value="{{ $service->id }}">
+        {{-- ═══════════════════════════════════════════════════════
+             MULTI-STEP WIZARD FORM
+        ═══════════════════════════════════════════════════════ --}}
+        @php
+            $hasFormSection = in_array($service->kode_layanan, [
+                'KK_BARU','KK_ADD','KK_DEL',
+                'PINDAH_SATU_DESA','PINDAH_ANTAR_DESA','PINDAH_ANTAR_KEC','PINDAH','DATANG'
+            ]) || $service->requirements->contains(fn($r) =>
+                str_contains($r->nama_persyaratan, 'F-1.01') || str_contains($r->nama_persyaratan, 'F-1.15')
+            );
+            $totalSteps = $hasFormSection ? 4 : 3;
+        @endphp
 
-            {{-- Selected Service Card --}}
-            <div class="bg-white rounded-xl border border-slate-200 shadow-xs p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center text-xl font-bold flex-shrink-0 border border-blue-100">
-                        @if ($service->kode_layanan === 'KIA') <i data-lucide="contact" class="w-6 h-6"></i>
-                        @elseif ($service->kode_layanan === 'EKTP') <i data-lucide="camera" class="w-6 h-6"></i>
-                        @elseif ($service->kode_layanan === 'KK_BARU') <i data-lucide="users" class="w-6 h-6"></i>
-                        @elseif ($service->kode_layanan === 'KK_ADD') <i data-lucide="user-plus" class="w-6 h-6"></i>
-                        @elseif ($service->kode_layanan === 'KK_DEL') <i data-lucide="user-minus" class="w-6 h-6"></i>
-                        @elseif ($service->kode_layanan === 'PINDAH') <i data-lucide="truck" class="w-6 h-6"></i>
-                        @elseif ($service->kode_layanan === 'DATANG') <i data-lucide="home" class="w-6 h-6"></i>
-                        @elseif ($service->kode_layanan === 'NIKAH') <i data-lucide="heart" class="w-6 h-6"></i>
-                        @else <i data-lucide="file-text" class="w-6 h-6"></i>
+        <div x-data="{
+            activeStep: 1,
+            totalSteps: {{ $totalSteps }},
+            hasFormSection: {{ $hasFormSection ? 'true' : 'false' }},
+            submitting: false,
+            filePreviews: {},
+
+            goNext() {
+                if (this.activeStep < this.totalSteps) {
+                    this.activeStep++;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            },
+            goPrev() {
+                if (this.activeStep > 1) {
+                    this.activeStep--;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            },
+            submitForm(draftVal) {
+                if (this.submitting) return;
+                this.submitting = true;
+                this.$refs.submitNowInput.value = draftVal;
+                this.$refs.mainForm.submit();
+            },
+            handleFileChange(reqId, event) {
+                const file = event.target.files[0];
+                if (file) {
+                    this.filePreviews[reqId] = {
+                        name: file.name,
+                        size: (file.size / 1024 / 1024).toFixed(2) + ' MB'
+                    };
+                } else {
+                    delete this.filePreviews[reqId];
+                }
+            },
+            stepLabel(step) {
+                if (!this.hasFormSection) {
+                    const labels = { 1: 'Wilayah & Pemohon', 2: 'Berkas Dokumen', 3: 'Tinjau & Ajukan' };
+                    return labels[step] || '';
+                }
+                const labels = { 1: 'Wilayah & Pemohon', 2: 'Formulir Digital', 3: 'Berkas Dokumen', 4: 'Tinjau & Ajukan' };
+                return labels[step] || '';
+            },
+            get lastStep() { return this.totalSteps; }
+        }" class="space-y-5">
+
+            {{-- ── SERVICE BADGE ── --}}
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white rounded-xl border border-slate-200 shadow-sm p-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 flex items-center justify-center flex-shrink-0">
+                        @if ($service->kode_layanan === 'KIA') <i data-lucide="contact" class="w-5 h-5"></i>
+                        @elseif ($service->kode_layanan === 'EKTP') <i data-lucide="camera" class="w-5 h-5"></i>
+                        @elseif ($service->kode_layanan === 'KK_BARU') <i data-lucide="users" class="w-5 h-5"></i>
+                        @elseif ($service->kode_layanan === 'KK_ADD') <i data-lucide="user-plus" class="w-5 h-5"></i>
+                        @elseif ($service->kode_layanan === 'KK_DEL') <i data-lucide="user-minus" class="w-5 h-5"></i>
+                        @elseif (str_starts_with($service->kode_layanan, 'PINDAH') || $service->kode_layanan === 'DATANG') <i data-lucide="truck" class="w-5 h-5"></i>
+                        @elseif ($service->kode_layanan === 'NIKAH') <i data-lucide="heart" class="w-5 h-5"></i>
+                        @else <i data-lucide="file-text" class="w-5 h-5"></i>
                         @endif
                     </div>
                     <div>
-                        <div class="flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-100 text-blue-800">
-                                {{ $service->kode_layanan }}
-                            </span>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-100 text-blue-800">{{ $service->kode_layanan }}</span>
                             <span class="px-2 py-0.5 rounded text-[10px] font-semibold {{ $service->jenis_proses->badgeColor() }}">
                                 {{ $service->jenis_proses === \App\Enums\ServiceProcessType::FullDigital ? 'Digital Penuh' : 'Hybrid' }}
                             </span>
                         </div>
-                        <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-1">{{ $service->nama_layanan }}</h2>
-                        <p class="text-xs text-slate-500 mt-0.5">{{ $service->deskripsi }}</p>
+                        <h2 class="text-sm font-bold text-slate-900 mt-0.5">{{ $service->nama_layanan }}</h2>
                     </div>
                 </div>
-
-                <a href="{{ route('warga.submissions.create') }}" class="text-xs text-blue-600 hover:text-blue-800 font-semibold underline whitespace-nowrap self-start sm:self-center">
+                <a href="{{ route('warga.submissions.create') }}"
+                   class="text-xs text-blue-600 hover:text-blue-800 font-semibold underline whitespace-nowrap flex items-center gap-1">
+                    <i data-lucide="arrow-left" class="w-3 h-3"></i>
                     Ganti Layanan
                 </a>
             </div>
 
-            {{-- Formulir Fisik Notice (If Hybrid) --}}
-            @if ($service->isHybrid() && $service->template_formulir_path)
-                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs">
-                    <div class="flex items-center gap-3">
-                        <span class="text-xl">📄</span>
-                        <div>
-                            <p class="font-bold text-amber-900">Perhatian: Layanan Membutuhkan Formulir Fisik Desa / KUA</p>
-                            <p class="text-amber-800 mt-0.5">Unduh template form, minta tanda tangan & stempel kantor desa asal, lalu unggah hasil scan aslinya di bawah.</p>
-                        </div>
-                    </div>
-                    <a href="#" onclick="alert('Template formulir siap diunduh.');" class="px-3.5 py-2 rounded-lg font-bold text-white bg-amber-600 hover:bg-amber-700 whitespace-nowrap shadow-2xs">
-                        Unduh Template PDF
-                    </a>
-                </div>
-            @endif
-
-            {{-- Form Section 1: Wilayah & Identitas --}}
-            <div class="bg-white rounded-xl border border-slate-200 shadow-xs p-6 space-y-4">
-                <h3 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-3">
-                    1. Wilayah Verifikasi & Data Pemohon
-                </h3>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label for="kecamatan_id" class="block text-xs font-semibold text-slate-800 mb-1.5 flex items-center justify-between">
-                            <span>Kecamatan Tujuan Verifikasi <span class="text-rose-600 font-bold" aria-hidden="true">*</span></span>
-                            <span class="text-[11px] text-slate-400">39 Kecamatan</span>
-                        </label>
-                        <select name="kecamatan_id"
-                                id="kecamatan_id"
-                                required
-                                aria-required="true"
-                                class="w-full text-xs font-semibold rounded-xl border border-slate-300 bg-white text-slate-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none py-2.5 px-3 shadow-2xs transition-colors">
-                            @foreach ($kecamatans as $kec)
-                                <option value="{{ $kec->id }}" {{ old('kecamatan_id', $user->kecamatan_id) == $kec->id ? 'selected' : '' }}>
-                                    Kecamatan {{ $kec->nama_kecamatan }} ({{ $kec->kode_kecamatan }})
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <div class="flex items-center justify-between mb-1.5">
-                            <span class="block text-xs font-semibold text-slate-800">Identitas Pemohon Terdaftar</span>
-                            <span class="inline-flex items-center gap-1 text-[10px] font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
-                                <i data-lucide="lock" class="w-3 h-3"></i>
-                                Terisi otomatis dari profil akun
-                            </span>
-                        </div>
-                        <div class="p-3 bg-[#F3F4F6] border border-slate-200 rounded-xl text-xs space-y-1 cursor-not-allowed select-none shadow-2xs">
-                            <p class="font-bold text-slate-900">{{ $user->name }} <span class="font-mono text-slate-600 font-medium">(NIK: {{ $user->nik ?? '-' }})</span></p>
-                            <p class="text-[11px] text-slate-600">Email: {{ $user->email }} | WhatsApp: {{ $user->phone ?? '-' }}</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            {{-- Form Section: Formulir Kartu Keluarga (KK Baru, Penambahan KK, Pengurangan KK) --}}
-            @if ($service->kode_layanan === 'KK_BARU')
-                <div class="space-y-3">
-                    <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                        <span>2. Pengisian Formulir Pembuatan Kartu Keluarga Baru</span>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">Format Resmi Dukcapil</span>
-                    </h3>
-                    @include('warga.submissions.partials.form-f101')
-                </div>
-            @elseif ($service->kode_layanan === 'KK_ADD')
-                <div class="space-y-3">
-                    <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                        <span>2. Pengisian Formulir Penambahan Anggota Keluarga</span>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Format Resmi Dukcapil</span>
-                    </h3>
-                    @include('warga.submissions.partials.form-kk-add')
-                </div>
-            @elseif ($service->kode_layanan === 'KK_DEL')
-                <div class="space-y-3">
-                    <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                        <span>2. Pengisian Formulir Pengurangan Anggota Keluarga</span>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800">Format Resmi Dukcapil</span>
-                    </h3>
-                    @include('warga.submissions.partials.form-kk-del')
-                </div>
-            @elseif (!str_starts_with($service->kode_layanan, 'PINDAH') && $service->kode_layanan !== 'DATANG' && $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01') || str_contains($r->nama_persyaratan, 'F-1.15')))
-                <div class="space-y-3">
-                    <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                        <span>2. Pengisian Formulir Kartu Keluarga</span>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">Format Resmi Dukcapil</span>
-                    </h3>
-                    @include('warga.submissions.partials.form-f101')
-                </div>
-            @endif
-
-            {{-- Form Section: Formulir Pindah Datang WNI (Satu Desa, Antar Desa, Antar Kecamatan) --}}
-            @if ($service->kode_layanan === 'PINDAH_SATU_DESA')
-                <div class="space-y-3">
-                    @include('warga.submissions.partials.form-pindah-satu-desa')
-                </div>
-            @elseif ($service->kode_layanan === 'PINDAH_ANTAR_DESA')
-                <div class="space-y-3">
-                    @include('warga.submissions.partials.form-pindah-antar-desa')
-                </div>
-            @elseif ($service->kode_layanan === 'PINDAH_ANTAR_KEC' || $service->kode_layanan === 'PINDAH' || $service->kode_layanan === 'DATANG')
-                <div class="space-y-3">
-                    @include('warga.submissions.partials.form-pindah-antar-kecamatan')
-                </div>
-            @endif
-
-            {{-- Form Section: Upload Persyaratan --}}
-            <div class="bg-white rounded-xl border border-slate-200 shadow-xs p-6 space-y-5">
-                <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
-                    <h3 class="text-sm font-bold text-slate-900">
-                        {{ (in_array($service->kode_layanan, ['KK_BARU', 'KK_ADD', 'KK_DEL']) || str_starts_with($service->kode_layanan, 'PINDAH') || $service->kode_layanan === 'DATANG' || $service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01') || str_contains($r->nama_persyaratan, 'F-1.15'))) ? '3. Dokumen Persyaratan & Berkas Pendukung' : '2. Dokumen Persyaratan' }}
-                    </h3>
-                    <span class="text-xs text-slate-400">PDF, JPG, PNG (Maks 5 MB)</span>
-                </div>
-
-                <div class="space-y-4">
-                    @foreach ($service->requirements as $req)
-                        @php
-                            $isF101Doc = str_contains($req->nama_persyaratan, 'F-1.01') || str_contains($req->nama_persyaratan, 'F-1.15') || str_contains($req->nama_persyaratan, 'Formulir');
-                        @endphp
-                        <div class="p-4 rounded-xl border {{ $isF101Doc ? 'border-blue-200 bg-blue-50/40' : 'border-slate-200 bg-slate-50/60' }} space-y-2.5">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <h4 class="text-xs font-bold text-slate-800">{{ $req->nama_persyaratan }}</h4>
-                                    @if ($isF101Doc)
-                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                            ✓ Sudah Diisi Online (Scan Fisik Opsional)
-                                        </span>
-                                    @elseif ($req->is_required)
-                                        <span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-rose-100 text-rose-700">Wajib</span>
-                                    @else
-                                        <span class="px-1.5 py-0.2 rounded text-[10px] font-semibold bg-slate-200 text-slate-600">Opsional</span>
-                                    @endif
-                                </div>
-                            </div>
-                            <p class="text-[11px] text-slate-500 leading-relaxed">{{ $req->deskripsi }}</p>
-
-                            @if ($isF101Doc)
-                                <div class="p-3 bg-white border border-blue-200 rounded-xl text-xs text-slate-700 space-y-1">
-                                    <div class="flex items-center gap-1.5 text-blue-800 font-bold">
-                                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-500"></i>
-                                        <span>Kemudahan Layanan Online:</span>
+            {{-- ── PROGRESS STEPPER ── --}}
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm px-4 sm:px-6 py-4">
+                <div class="flex items-center gap-0">
+                    @php $stepLabels = $hasFormSection
+                        ? ['Wilayah & Pemohon', 'Formulir Digital', 'Berkas Dokumen', 'Tinjau & Ajukan']
+                        : ['Wilayah & Pemohon', 'Berkas Dokumen', 'Tinjau & Ajukan'];
+                    @endphp
+                    @foreach ($stepLabels as $i => $label)
+                        @php $stepNum = $i + 1; @endphp
+                        <div class="flex flex-col items-center {{ $stepNum < count($stepLabels) ? 'flex-1' : '' }}">
+                            {{-- Pill + label --}}
+                            <div class="flex items-center {{ $stepNum < count($stepLabels) ? 'w-full' : '' }}">
+                                <div class="flex flex-col items-center">
+                                    <div class="step-pill"
+                                         :class="{
+                                            'active': activeStep === {{ $stepNum }},
+                                            'done': activeStep > {{ $stepNum }},
+                                            'inactive': activeStep < {{ $stepNum }}
+                                         }">
+                                        <template x-if="activeStep > {{ $stepNum }}">
+                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                        </template>
+                                        <template x-if="activeStep <= {{ $stepNum }}">
+                                            <span>{{ $stepNum }}</span>
+                                        </template>
                                     </div>
-                                    <p class="text-[11px] text-slate-600">
-                                        Karena Anda telah mengisi <strong>Formulir Digital F-1.15</strong> pada bagian formulir di atas, pengunggahan scan formulir kertas ini bersifat <strong>opsional</strong>. Namun jika Anda sudah memiliki scan bertanda tangan basah dari Desa, Anda tetap dapat melampirkannya di bawah.
-                                    </p>
                                 </div>
-                            @endif
-
-                            <input type="file"
-                                   id="doc_{{ $req->id }}"
-                                   name="documents[{{ $req->id }}]"
-                                   accept=".pdf,.jpg,.jpeg,.png"
-                                   {{ ($req->is_required && !$isF101Doc) ? 'required' : '' }}
-                                   class="block w-full text-xs text-slate-700 file:mr-3 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer border border-slate-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 shadow-2xs transition-colors">
+                                @if ($stepNum < count($stepLabels))
+                                    <div class="step-connector flex-1 mx-1" :class="{'done': activeStep > {{ $stepNum }}}"></div>
+                                @endif
+                            </div>
+                            {{-- Step label (hidden on mobile for space) --}}
+                            <span class="text-[10px] font-semibold mt-1.5 hidden sm:block text-center leading-tight"
+                                  :class="{
+                                    'text-blue-600': activeStep === {{ $stepNum }},
+                                    'text-green-600': activeStep > {{ $stepNum }},
+                                    'text-slate-400': activeStep < {{ $stepNum }}
+                                  }">
+                                {{ $label }}
+                            </span>
                         </div>
                     @endforeach
                 </div>
+                {{-- Mobile: current step label --}}
+                <p class="text-xs font-bold text-blue-700 mt-3 sm:hidden text-center"
+                   x-text="'Langkah ' + activeStep + ' dari ' + totalSteps + ': ' + stepLabel(activeStep)"></p>
             </div>
 
-            {{-- Form Actions --}}
-            <div class="flex items-center justify-end gap-3 pt-2">
-                <button type="submit" name="submit_now" value="0" class="px-5 py-2.5 rounded-lg font-semibold text-xs text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 transition-colors cursor-pointer">
-                    Simpan Draft
-                </button>
-                <button type="submit" name="submit_now" value="1" class="px-6 py-2.5 rounded-lg font-semibold text-xs text-white bg-blue-700 hover:bg-blue-800 transition-colors shadow-xs cursor-pointer">
-                    Ajukan Permohonan &rarr;
-                </button>
+            {{-- ── VALIDATION ERRORS ── --}}
+            @if ($errors->any())
+                <div class="bg-rose-50 border border-rose-200 rounded-xl p-4 flex gap-3">
+                    <div class="flex-shrink-0 w-5 h-5 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs font-black">!</div>
+                    <div>
+                        <p class="text-xs font-bold text-rose-800 mb-1">Terdapat kesalahan pada pengisian formulir:</p>
+                        <ul class="text-xs text-rose-700 space-y-0.5 list-disc list-inside">
+                            @foreach ($errors->all() as $err)
+                                <li>{{ $err }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            @endif
+
+            {{-- ════════════════════════════════════════════════════
+                 MAIN FORM
+            ════════════════════════════════════════════════════ --}}
+            <form x-ref="mainForm"
+                  action="{{ route('warga.submissions.store') }}"
+                  method="POST"
+                  enctype="multipart/form-data"
+                  @submit.prevent>
+                @csrf
+                <input type="hidden" name="service_id" value="{{ $service->id }}">
+                <input type="hidden" name="submit_now" value="1" x-ref="submitNowInput">
+
+                {{-- ════════════════════════════════════════════════
+                     STEP 1 — WILAYAH & PEMOHON
+                ════════════════════════════════════════════════ --}}
+                <div x-show="activeStep === 1" x-cloak class="step-panel space-y-4">
+
+                    {{-- Info banner --}}
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex gap-3 items-start">
+                        <i data-lucide="info" class="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5"></i>
+                        <div class="text-xs text-blue-800 leading-relaxed">
+                            <strong>Data Pemohon</strong> terisi otomatis dari profil akun Anda. Pilih kecamatan tujuan verifikasi, lalu lanjutkan ke langkah berikutnya.
+                        </div>
+                    </div>
+
+                    {{-- Kecamatan selector --}}
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 space-y-5">
+                        <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+                            <div class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900">Wilayah Verifikasi</h3>
+                        </div>
+
+                        <div>
+                            <label for="kecamatan_id" class="block text-xs font-semibold text-slate-700 mb-1.5">
+                                Kecamatan Tujuan Verifikasi <span class="text-rose-500">*</span>
+                                <span class="ml-1 text-slate-400 font-normal">(39 Kecamatan Kabupaten Tasikmalaya)</span>
+                            </label>
+                            <select name="kecamatan_id" id="kecamatan_id" required
+                                    class="w-full text-xs font-semibold rounded-xl border border-slate-300 bg-white text-slate-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none py-2.5 px-3 shadow-sm">
+                                @foreach ($kecamatans as $kec)
+                                    <option value="{{ $kec->id }}" {{ old('kecamatan_id', $user->kecamatan_id) == $kec->id ? 'selected' : '' }}>
+                                        Kecamatan {{ $kec->nama_kecamatan }} ({{ $kec->kode_kecamatan }})
+                                    </option>
+                                @endforeach
+                            </select>
+                            <p class="text-[11px] text-slate-500 mt-1.5">
+                                Pilih kecamatan tempat permohonan ini akan diproses. Biasanya sesuai dengan kecamatan domisili Anda.
+                            </p>
+                        </div>
+                    </div>
+
+                    {{-- Pemohon card --}}
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 space-y-4">
+                        <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+                            <div class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="user-circle" class="w-3.5 h-3.5"></i>
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900">Identitas Pemohon</h3>
+                            <span class="ml-auto inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                                <i data-lucide="lock" class="w-3 h-3"></i>
+                                Terisi dari profil akun
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-black text-sm flex-shrink-0">
+                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-black text-slate-900">{{ $user->name }}</p>
+                                        <p class="text-[11px] text-slate-500 font-mono">NIK: {{ $user->nik ?? '—' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-1.5">
+                                <div class="flex items-center gap-2 text-xs text-slate-600">
+                                    <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400 flex-shrink-0"></i>
+                                    <span class="truncate">{{ $user->email }}</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs text-slate-600">
+                                    <i data-lucide="phone" class="w-3.5 h-3.5 text-slate-400 flex-shrink-0"></i>
+                                    <span>{{ $user->phone ?? '—' }}</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs text-slate-600">
+                                    <i data-lucide="home" class="w-3.5 h-3.5 text-slate-400 flex-shrink-0"></i>
+                                    <span class="truncate">{{ $user->desa?->nama_desa ?? '—' }}, {{ $user->kecamatan?->nama_kecamatan ?? '—' }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="text-[11px] text-slate-500">
+                            Data di atas diambil dari profil akun Anda secara otomatis dan tidak dapat diubah di sini.
+                            Jika ada yang tidak sesuai, silakan perbarui melalui halaman <a href="#" class="text-blue-600 underline font-semibold">Profil Akun</a>.
+                        </p>
+                    </div>
+
+                    {{-- Formulir fisik notice --}}
+                    @if ($service->isHybrid() && $service->template_formulir_path)
+                        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <div class="flex items-start gap-3">
+                                <span class="text-xl mt-0.5">📄</span>
+                                <div>
+                                    <p class="text-xs font-bold text-amber-900">Layanan Membutuhkan Formulir Fisik</p>
+                                    <p class="text-[11px] text-amber-800 mt-0.5">Unduh template, minta tanda tangan & stempel desa, lalu unggah hasil scan di langkah Berkas Dokumen.</p>
+                                </div>
+                            </div>
+                            <a href="#" onclick="alert('Template formulir siap diunduh.');" class="px-3.5 py-2 rounded-lg font-bold text-white text-xs bg-amber-600 hover:bg-amber-700 whitespace-nowrap shadow-sm">
+                                Unduh Template PDF
+                            </a>
+                        </div>
+                    @endif
+
+                </div>
+
+                {{-- ════════════════════════════════════════════════
+                     STEP 2 — FORMULIR DIGITAL (only if hasFormSection)
+                ════════════════════════════════════════════════ --}}
+                @if ($hasFormSection)
+                <div x-show="activeStep === 2" x-cloak class="step-panel space-y-4">
+
+                    <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 flex gap-3 items-start">
+                        <i data-lucide="clipboard-list" class="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5"></i>
+                        <div class="text-xs text-indigo-800 leading-relaxed">
+                            <strong>Formulir Digital.</strong> Isi data dengan lengkap dan benar. Data yang diisi di sini setara dengan formulir resmi Dukcapil.
+                        </div>
+                    </div>
+
+                    {{-- Service-specific form includes --}}
+                    @if ($service->kode_layanan === 'KK_BARU')
+                        @include('warga.submissions.partials.form-f101')
+                    @elseif ($service->kode_layanan === 'KK_ADD')
+                        @include('warga.submissions.partials.form-kk-add')
+                    @elseif ($service->kode_layanan === 'KK_DEL')
+                        @include('warga.submissions.partials.form-kk-del')
+                    @elseif ($service->kode_layanan === 'PINDAH_SATU_DESA')
+                        @include('warga.submissions.partials.form-pindah-satu-desa')
+                    @elseif ($service->kode_layanan === 'PINDAH_ANTAR_DESA')
+                        @include('warga.submissions.partials.form-pindah-antar-desa')
+                    @elseif ($service->kode_layanan === 'PINDAH_ANTAR_KEC' || $service->kode_layanan === 'PINDAH' || $service->kode_layanan === 'DATANG')
+                        @include('warga.submissions.partials.form-pindah-antar-kecamatan')
+                    @elseif ($service->requirements->contains(fn($r) => str_contains($r->nama_persyaratan, 'F-1.01') || str_contains($r->nama_persyaratan, 'F-1.15')))
+                        @include('warga.submissions.partials.form-f101')
+                    @endif
+
+                </div>
+                @endif
+
+                {{-- ════════════════════════════════════════════════
+                     STEP 3 (or 2 if no form) — BERKAS DOKUMEN
+                ════════════════════════════════════════════════ --}}
+                @php $docStep = $hasFormSection ? 3 : 2; @endphp
+                <div x-show="activeStep === {{ $docStep }}" x-cloak class="step-panel space-y-4">
+
+                    <div class="bg-violet-50 border border-violet-200 rounded-xl p-4 flex gap-3 items-start">
+                        <i data-lucide="paperclip" class="w-4 h-4 text-violet-600 flex-shrink-0 mt-0.5"></i>
+                        <div class="text-xs text-violet-800 leading-relaxed">
+                            <strong>Unggah Berkas Persyaratan.</strong> Dokumen yang ditandai <span class="font-bold text-rose-600">Wajib</span> harus diunggah sebelum mengajukan permohonan. Ukuran file maks 5 MB (PDF, JPG, PNG).
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        @foreach ($service->requirements as $req)
+                            @php
+                                $isF1Doc = str_contains($req->nama_persyaratan, 'F-1.01')
+                                    || str_contains($req->nama_persyaratan, 'F-1.15')
+                                    || str_contains($req->nama_persyaratan, 'Formulir');
+                            @endphp
+
+                            <div class="doc-upload-card bg-white rounded-xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3"
+                                 :class="{ 'has-file': filePreviews[{{ $req->id }}] }">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div class="flex items-start gap-3 flex-1">
+                                        <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5
+                                            {{ $isF1Doc ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : ($req->is_required ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-slate-50 text-slate-500 border border-slate-200') }}">
+                                            <i data-lucide="{{ $isF1Doc ? 'file-check' : 'file-up' }}" class="w-4 h-4"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-2 flex-wrap">
+                                                <h4 class="text-xs font-bold text-slate-900">{{ $req->nama_persyaratan }}</h4>
+                                                @if ($isF1Doc)
+                                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">✓ Diisi Online — Opsional</span>
+                                                @elseif ($req->is_required)
+                                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200">Wajib</span>
+                                                @else
+                                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">Opsional</span>
+                                                @endif
+                                            </div>
+                                            @if ($req->deskripsi)
+                                                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">{{ $req->deskripsi }}</p>
+                                            @endif
+                                            @if ($isF1Doc && $hasFormSection)
+                                                <p class="text-[11px] text-emerald-700 mt-1 font-medium">
+                                                    Karena Anda telah mengisi formulir digital, unggah scan fisik bersifat opsional. Anda tetap dapat melampirkannya jika tersedia.
+                                                </p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    {{-- File status indicator --}}
+                                    <div class="flex-shrink-0" x-show="filePreviews[{{ $req->id }}]">
+                                        <div class="w-7 h-7 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                                            <i data-lucide="check" class="w-4 h-4"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- File preview info --}}
+                                <div x-show="filePreviews[{{ $req->id }}]" x-cloak
+                                     class="flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                                    <i data-lucide="file-check-2" class="w-3.5 h-3.5 text-green-600 flex-shrink-0"></i>
+                                    <span class="text-[11px] text-green-800 font-semibold truncate" x-text="filePreviews[{{ $req->id }}]?.name"></span>
+                                    <span class="text-[11px] text-green-600 ml-auto flex-shrink-0" x-text="filePreviews[{{ $req->id }}]?.size"></span>
+                                </div>
+
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <div class="flex-1">
+                                        <input type="file"
+                                               id="doc_{{ $req->id }}"
+                                               name="documents[{{ $req->id }}]"
+                                               accept=".pdf,.jpg,.jpeg,.png"
+                                               {{ ($req->is_required && !$isF1Doc) ? 'required' : '' }}
+                                               @change="handleFileChange({{ $req->id }}, $event)"
+                                               class="block w-full text-xs text-slate-700
+                                                      file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0
+                                                      file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700
+                                                      hover:file:bg-blue-100 file:cursor-pointer
+                                                      border border-dashed border-slate-300 rounded-xl bg-slate-50/50
+                                                      focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-400
+                                                      transition-all p-2 group-hover:border-blue-400">
+                                    </div>
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+
+                </div>
+
+                {{-- ════════════════════════════════════════════════
+                     STEP 4 (or 3 if no form) — TINJAU & AJUKAN
+                ════════════════════════════════════════════════ --}}
+                @php $reviewStep = $hasFormSection ? 4 : 3; @endphp
+                <div x-show="activeStep === {{ $reviewStep }}" x-cloak class="step-panel space-y-4">
+
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex gap-3 items-start">
+                        <i data-lucide="eye" class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5"></i>
+                        <div class="text-xs text-amber-800 leading-relaxed">
+                            <strong>Tinjau sebelum mengajukan.</strong> Pastikan semua informasi sudah benar sebelum mengirimkan permohonan. Anda masih dapat kembali ke langkah sebelumnya jika ada yang perlu diperbaiki.
+                        </div>
+                    </div>
+
+                    {{-- Review: Layanan --}}
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="bg-gradient-to-r from-slate-800 to-slate-700 px-5 py-3 flex items-center gap-2">
+                            <i data-lucide="briefcase" class="w-4 h-4 text-slate-300"></i>
+                            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Layanan yang Dipilih</h3>
+                        </div>
+                        <div class="p-5 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 flex items-center justify-center flex-shrink-0">
+                                @if ($service->kode_layanan === 'KIA') <i data-lucide="contact" class="w-5 h-5"></i>
+                                @elseif ($service->kode_layanan === 'EKTP') <i data-lucide="camera" class="w-5 h-5"></i>
+                                @elseif ($service->kode_layanan === 'KK_BARU') <i data-lucide="users" class="w-5 h-5"></i>
+                                @elseif ($service->kode_layanan === 'KK_ADD') <i data-lucide="user-plus" class="w-5 h-5"></i>
+                                @elseif ($service->kode_layanan === 'KK_DEL') <i data-lucide="user-minus" class="w-5 h-5"></i>
+                                @elseif (str_starts_with($service->kode_layanan, 'PINDAH') || $service->kode_layanan === 'DATANG') <i data-lucide="truck" class="w-5 h-5"></i>
+                                @elseif ($service->kode_layanan === 'NIKAH') <i data-lucide="heart" class="w-5 h-5"></i>
+                                @else <i data-lucide="file-text" class="w-5 h-5"></i>
+                                @endif
+                            </div>
+                            <div>
+                                <p class="text-sm font-black text-slate-900">{{ $service->nama_layanan }}</p>
+                                <p class="text-[11px] text-slate-500 mt-0.5">{{ $service->deskripsi }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Review: Pemohon --}}
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="bg-gradient-to-r from-blue-700 to-blue-600 px-5 py-3 flex items-center gap-2">
+                            <i data-lucide="user" class="w-4 h-4 text-blue-200"></i>
+                            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Data Pemohon & Wilayah</h3>
+                        </div>
+                        <div class="p-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                            <div class="review-section pl-3 space-y-0.5">
+                                <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Nama Lengkap</p>
+                                <p class="font-bold text-slate-900">{{ $user->name }}</p>
+                            </div>
+                            <div class="review-section pl-3 space-y-0.5">
+                                <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">NIK</p>
+                                <p class="font-bold text-slate-900 font-mono">{{ $user->nik ?? '—' }}</p>
+                            </div>
+                            <div class="review-section pl-3 space-y-0.5">
+                                <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Kecamatan Verifikasi</p>
+                                <p class="font-bold text-slate-900" id="review-kecamatan-display">
+                                    @php
+                                        $defaultKec = $kecamatans->firstWhere('id', old('kecamatan_id', $user->kecamatan_id));
+                                    @endphp
+                                    {{ $defaultKec ? 'Kec. ' . $defaultKec->nama_kecamatan : '—' }}
+                                </p>
+                            </div>
+                            <div class="review-section pl-3 space-y-0.5">
+                                <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Email / WhatsApp</p>
+                                <p class="font-bold text-slate-900">{{ $user->email }} / {{ $user->phone ?? '—' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Review: Dokumen --}}
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="bg-gradient-to-r from-violet-700 to-violet-600 px-5 py-3 flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="files" class="w-4 h-4 text-violet-200"></i>
+                                <h3 class="text-xs font-bold text-white uppercase tracking-wider">Berkas Persyaratan</h3>
+                            </div>
+                            <span class="text-[10px] text-violet-200 font-semibold">
+                                {{ $service->requirements->count() }} Persyaratan
+                            </span>
+                        </div>
+                        <div class="p-5 space-y-2.5">
+                            @foreach ($service->requirements as $req)
+                                @php
+                                    $isF1DocRev = str_contains($req->nama_persyaratan, 'F-1.01')
+                                        || str_contains($req->nama_persyaratan, 'F-1.15')
+                                        || str_contains($req->nama_persyaratan, 'Formulir');
+                                @endphp
+                                <div class="flex items-center gap-3 text-xs py-2.5 border-b border-slate-50 last:border-0">
+                                    <div x-show="!filePreviews[{{ $req->id }}] && !{{ $isF1DocRev && $hasFormSection ? 'true' : 'false' }}"
+                                         class="w-5 h-5 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="minus" class="w-3 h-3"></i>
+                                    </div>
+                                    <div x-show="filePreviews[{{ $req->id }}]"
+                                         class="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="check" class="w-3 h-3"></i>
+                                    </div>
+                                    @if ($isF1DocRev && $hasFormSection)
+                                    <div x-show="!filePreviews[{{ $req->id }}]"
+                                         class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="check-check" class="w-3 h-3"></i>
+                                    </div>
+                                    @endif
+                                    <div class="flex-1 flex items-center justify-between gap-3">
+                                        <span class="text-slate-700 font-semibold">{{ $req->nama_persyaratan }}</span>
+                                        <span x-show="filePreviews[{{ $req->id }}]"
+                                              class="text-green-700 font-bold text-[10px]"
+                                              x-text="'✓ ' + (filePreviews[{{ $req->id }}]?.name || '')"></span>
+                                        @if ($isF1DocRev && $hasFormSection)
+                                            <span x-show="!filePreviews[{{ $req->id }}]"
+                                                  class="text-emerald-700 font-bold text-[10px]">✓ Diisi online</span>
+                                        @elseif (!$req->is_required)
+                                            <span x-show="!filePreviews[{{ $req->id }}]"
+                                                  class="text-slate-400 font-semibold text-[10px]">Opsional</span>
+                                        @else
+                                            <span x-show="!filePreviews[{{ $req->id }}]"
+                                                  class="text-rose-600 font-bold text-[10px]">⚠ Belum diunggah</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    {{-- Final call-to-action --}}
+                    <div class="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-2xl p-6 sm:p-8 text-center space-y-4">
+                        <div class="w-14 h-14 rounded-2xl bg-white/10 text-white flex items-center justify-center mx-auto">
+                            <i data-lucide="send" class="w-7 h-7"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-base font-black text-white">Siap Mengajukan?</h3>
+                            <p class="text-xs text-blue-200 mt-1 max-w-md mx-auto">
+                                Periksa kembali data di atas. Setelah diajukan, permohonan akan diproses oleh petugas kecamatan atau desa.
+                            </p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
+                            <button type="button"
+                                    :disabled="submitting"
+                                    @click="submitForm('0')"
+                                    class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm text-white bg-white/10 border border-white/20 hover:bg-white/20 transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2">
+                                <i data-lucide="bookmark" class="w-4 h-4"></i>
+                                Simpan sebagai Draft
+                            </button>
+                            <button type="button"
+                                    :disabled="submitting"
+                                    @click="submitForm('1')"
+                                    class="w-full sm:w-auto px-8 py-3 rounded-xl font-black text-sm text-blue-900 bg-white hover:bg-blue-50 transition-all shadow-lg disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2">
+                                <span x-show="!submitting">Ajukan Permohonan</span>
+                                <span x-show="submitting">Mengirim…</span>
+                                <i data-lucide="send" class="w-4 h-4" x-show="!submitting"></i>
+                                <svg x-show="submitting" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </form>
+
+            {{-- ════════════════════════════════════════════════
+                 STICKY BOTTOM ACTION BAR (Step 1–(N-1))
+            ════════════════════════════════════════════════ --}}
+            <div class="action-bar rounded-b-xl" x-show="activeStep < totalSteps">
+                <div class="flex items-center justify-between gap-3 max-w-3xl mx-auto">
+                    {{-- Save as draft (always available except step 1) --}}
+                    <div>
+                        <button type="button"
+                                x-show="activeStep > 1"
+                                :disabled="submitting"
+                                @click="$refs.submitNowInput.value = '0'; $refs.mainForm.submit(); submitting = true"
+                                class="text-xs font-semibold text-slate-500 hover:text-slate-700 flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50">
+                            <i data-lucide="bookmark" class="w-3.5 h-3.5"></i>
+                            Simpan Draft
+                        </button>
+                        <div x-show="activeStep === 1" class="text-xs text-slate-400">
+                            <span>Langkah </span><span x-text="activeStep"></span><span> dari </span><span x-text="totalSteps"></span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2.5">
+                        {{-- Back button --}}
+                        <button type="button"
+                                x-show="activeStep > 1"
+                                @click="goPrev()"
+                                class="px-4 py-2.5 rounded-xl font-semibold text-xs text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm">
+                            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+                            Kembali
+                        </button>
+
+                        {{-- Next button --}}
+                        <button type="button"
+                                @click="goNext()"
+                                class="px-5 py-2.5 rounded-xl font-bold text-xs text-white bg-blue-600 hover:bg-blue-700 transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer">
+                            <span x-text="activeStep === (totalSteps - 1) ? 'Ke Tahap Review' : 'Lanjutkan'"></span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
-        </form>
+
+        </div>
     @endif
 
 </div>
+
+<script>
+    // Update kecamatan display on review page when selector changes
+    document.addEventListener('DOMContentLoaded', function() {
+        const sel = document.getElementById('kecamatan_id');
+        const display = document.getElementById('review-kecamatan-display');
+        if (sel && display) {
+            sel.addEventListener('change', function() {
+                const opt = sel.options[sel.selectedIndex];
+                if (display) display.textContent = opt ? opt.text : '—';
+            });
+        }
+    });
+</script>
 @endsection

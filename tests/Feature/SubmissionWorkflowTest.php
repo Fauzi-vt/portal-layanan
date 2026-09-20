@@ -142,4 +142,106 @@ class SubmissionWorkflowTest extends TestCase
         $this->assertEquals(SubmissionStatus::Completed, $submission->fresh()->status);
         $this->assertNotNull($submission->fresh()->output_document_path);
     }
+
+    public function test_warga_can_save_draft_edit_draft_and_submit_draft(): void
+    {
+        $manonjaya = Kecamatan::where('kode_kecamatan', 'KEC-017')->first();
+        $service = Service::where('kode_layanan', 'KIA')->first();
+
+        $warga = User::factory()->create([
+            'role'         => UserRole::Warga,
+            'kecamatan_id' => $manonjaya->id,
+            'nik'          => '3206171505980002',
+        ]);
+
+        // 1. Simpan sebagai draft (tanpa berkas lengkap)
+        $responseCreate = $this->actingAs($warga)->post(route('warga.submissions.store'), [
+            'service_id'   => $service->id,
+            'kecamatan_id' => $manonjaya->id,
+            'submit_now'   => 0, // simpan draft
+            'form_data'    => ['catatan' => 'Draft awal'],
+        ]);
+
+        $responseCreate->assertRedirect();
+        $submission = Submission::where('user_id', $warga->id)->latest()->first();
+        $this->assertNotNull($submission);
+        $this->assertEquals(SubmissionStatus::Draft, $submission->status);
+
+        // 2. Akses halaman edit draft
+        $responseEdit = $this->actingAs($warga)->get(route('warga.submissions.edit', $submission));
+        $responseEdit->assertOk();
+        $responseEdit->assertSee('Edit Draft Permohonan');
+
+        // 3. Coba kirim draft sebelum berkas lengkap -> harus gagal validasi
+        $responseSubmitIncomplete = $this->actingAs($warga)->post(route('warga.submissions.submit-draft', $submission));
+        $responseSubmitIncomplete->assertSessionHas('error', 'Masih ada dokumen persyaratan wajib yang belum diunggah.');
+        $this->assertEquals(SubmissionStatus::Draft, $submission->fresh()->status);
+
+        // 4. Update data & unggah semua berkas persyaratan wajib
+        $docsPayload = [];
+        foreach ($service->requiredDocuments as $req) {
+            $docsPayload[$req->id] = UploadedFile::fake()->create("doc_{$req->id}.pdf", 200, 'application/pdf');
+        }
+
+        $responseUpdate = $this->actingAs($warga)->put(route('warga.submissions.update', $submission), [
+            'kecamatan_id' => $manonjaya->id,
+            'form_data'    => ['catatan' => 'Draft telah diperbarui'],
+            'documents'    => $docsPayload,
+        ]);
+
+        $responseUpdate->assertRedirect(route('warga.submissions.show', $submission));
+        $this->assertEquals('Draft telah diperbarui', $submission->fresh()->form_data['catatan']);
+        $this->assertCount($service->requiredDocuments->count(), $submission->fresh()->documents);
+
+        // 5. Kirim draft yang kini sudah lengkap
+        $responseSubmit = $this->actingAs($warga)->post(route('warga.submissions.submit-draft', $submission));
+        $responseSubmit->assertSessionHas('success');
+        $this->assertEquals(SubmissionStatus::Submitted, $submission->fresh()->status);
+    }
+
+    public function test_warga_cannot_edit_other_warga_draft(): void
+    {
+        $manonjaya = Kecamatan::where('kode_kecamatan', 'KEC-017')->first();
+        $service = Service::where('kode_layanan', 'KIA')->first();
+
+        $wargaOwner = User::factory()->create(['role' => UserRole::Warga, 'kecamatan_id' => $manonjaya->id]);
+        $wargaOther = User::factory()->create(['role' => UserRole::Warga, 'kecamatan_id' => $manonjaya->id]);
+
+        $submission = Submission::create([
+            'nomor_tiket'  => 'TKT-DRAFT-999',
+            'user_id'      => $wargaOwner->id,
+            'kecamatan_id' => $manonjaya->id,
+            'service_id'   => $service->id,
+            'status'       => SubmissionStatus::Draft,
+        ]);
+
+        // Warga lain tidak boleh mengakses edit draft
+        $responseEdit = $this->actingAs($wargaOther)->get(route('warga.submissions.edit', $submission));
+        $responseEdit->assertForbidden();
+
+        // Warga lain tidak boleh mengirimkan update
+        $responseUpdate = $this->actingAs($wargaOther)->put(route('warga.submissions.update', $submission), [
+            'kecamatan_id' => $manonjaya->id,
+        ]);
+        $responseUpdate->assertForbidden();
+    }
+
+    public function test_cannot_edit_submission_once_submitted(): void
+    {
+        $manonjaya = Kecamatan::where('kode_kecamatan', 'KEC-017')->first();
+        $service = Service::where('kode_layanan', 'KIA')->first();
+        $warga = User::factory()->create(['role' => UserRole::Warga, 'kecamatan_id' => $manonjaya->id]);
+
+        $submission = Submission::create([
+            'nomor_tiket'  => 'TKT-SUBMITTED-888',
+            'user_id'      => $warga->id,
+            'kecamatan_id' => $manonjaya->id,
+            'service_id'   => $service->id,
+            'status'       => SubmissionStatus::Submitted,
+        ]);
+
+        // Policy melarang modifikasi permohonan yang bukan draft (403 Forbidden)
+        $responseEdit = $this->actingAs($warga)->get(route('warga.submissions.edit', $submission));
+        $responseEdit->assertForbidden();
+    }
 }

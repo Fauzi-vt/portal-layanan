@@ -15,7 +15,8 @@
     userAlamat: @js($user->alamat_detail ?? ''),
     kecamatanName: @js($user->kecamatan?->nama_kecamatan ?? 'SINGAPARNA'),
     desaName: @js($user->desa?->nama_desa ?? ''),
-    kecamatanMap: @js($kecamatanMap)
+    kecamatanMap: @js($kecamatanMap),
+    oldData: @js(old('form_data.f101', isset($submission) ? ($submission->form_data['f101'] ?? null) : null))
 })" class="bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden space-y-0 transition-all font-sans">
 
     {{-- ═══════════════════════════════════════════════════════════════════════
@@ -722,16 +723,16 @@
             availableDesas: [],
 
             meta: {
-                nama_kepala_keluarga: initialData.userName || '',
-                alamat: initialData.userAlamat || '',
-                rt: '001',
-                rw: '001',
-                kode_pos: '46182',
-                kecamatan: initialData.kecamatanName || 'SINGAPARNA',
-                desa: initialData.desaName || '',
-                kabupaten: 'KABUPATEN TASIKMALAYA',
-                provinsi: 'JAWA BARAT',
-                negara: 'INDONESIA',
+                nama_kepala_keluarga: initialData.oldData?.nama_kepala_keluarga || initialData.userName || '',
+                alamat: initialData.oldData?.alamat || initialData.userAlamat || '',
+                rt: initialData.oldData?.rt || '001',
+                rw: initialData.oldData?.rw || '001',
+                kode_pos: initialData.oldData?.kode_pos || '46182',
+                kecamatan: initialData.oldData?.nama_kecamatan || initialData.kecamatanName || 'SINGAPARNA',
+                desa: initialData.oldData?.nama_desa || initialData.desaName || '',
+                kabupaten: initialData.oldData?.nama_kabupaten || 'KABUPATEN TASIKMALAYA',
+                provinsi: initialData.oldData?.nama_provinsi || 'JAWA BARAT',
+                negara: initialData.oldData?.negara || 'INDONESIA',
             },
 
             showMemberForm: false,
@@ -758,8 +759,8 @@
                 nama_ibu: '',
             },
 
-            // Inisialisasi awal dengan data kepala keluarga
-            anggota: [
+            // Inisialisasi awal dengan data anggota yang sudah tersimpan / kepala keluarga default
+            anggota: initialData.oldData?.anggota ? initialData.oldData.anggota : [
                 {
                     nama: initialData.userName || '',
                     nik: initialData.userNik || '',
