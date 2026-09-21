@@ -126,11 +126,7 @@
 
             {{-- Form Section: Formulir Kartu Keluarga (KK Baru, Penambahan KK, Pengurangan KK) --}}
             @if ($service->kode_layanan === 'KK_BARU')
-                <div class="space-y-3">
-                    <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                        <span>2. Pengisian Formulir Pembuatan Kartu Keluarga Baru</span>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">Format Resmi Dukcapil</span>
-                    </h3>
+                <div class="space-y-4">
                     @include('warga.submissions.partials.form-f101')
                 </div>
             @elseif ($service->kode_layanan === 'KK_ADD')
