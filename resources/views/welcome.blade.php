@@ -1459,7 +1459,7 @@
                 'time' => '1 Hari Kerja',
                 'modules' => '4 Dokumen Syarat',
                 'learners' => '52.410 Pemohon',
-                'image' => 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=700&q=80',
+                'image' => asset('images/layanan-kia.png'),
                 'url' => route('layanan.show', ['serviceCode' => 'KIA']),
             ],
             [
