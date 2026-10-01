@@ -1514,7 +1514,7 @@
                 'time' => '1 Hari Kerja',
                 'modules' => '5 Dokumen Syarat',
                 'learners' => '28.640 Pemohon',
-                'image' => 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80',
+                'image' => asset('images/layanan-nikah.png'),
                 'url' => route('layanan.show', ['serviceCode' => 'NIKAH']),
             ],
             [
