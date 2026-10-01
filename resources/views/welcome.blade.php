@@ -1525,7 +1525,7 @@
                 'time' => '1 Hari Kerja',
                 'modules' => '4 Dokumen Syarat',
                 'learners' => '61.930 Pemohon',
-                'image' => 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=700&q=80',
+                'image' => asset('images/layanan-surat-keterangan.png'),
                 'url' => route('layanan.show', ['serviceCode' => 'LAINNYA']),
             ],
         ];
