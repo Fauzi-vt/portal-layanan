@@ -1481,7 +1481,7 @@
                 'time' => '1 Hari Kerja',
                 'modules' => '3 Dokumen Syarat',
                 'learners' => '48.290 Pemohon',
-                'image' => 'https://images.unsplash.com/photo-1609234656388-0ff363383899?auto=format&fit=crop&w=700&q=80',
+                'image' => asset('images/layanan-kk-add.png'),
                 'url' => route('layanan.show', ['serviceCode' => 'KK_ADD']),
             ],
             [
