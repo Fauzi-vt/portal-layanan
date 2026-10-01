@@ -131,6 +131,55 @@ class SubmissionController extends Controller
     }
 
     /**
+     * Edit draft permohonan.
+     */
+    public function edit(Submission $submission, Request $request): View|\Illuminate\Http\RedirectResponse
+    {
+        $this->authorize('update', $submission);
+
+        if ($submission->status !== \App\Enums\SubmissionStatus::Draft) {
+            return redirect()->route('warga.submissions.show', $submission)
+                ->with('error', 'Hanya permohonan berstatus Draft yang dapat diubah.');
+        }
+
+        $submission->load([
+            'service.requirements',
+            'documents.requirement',
+        ]);
+
+        $service = $submission->service;
+        $kecamatans = \App\Models\Kecamatan::with('desas')->orderBy('nama_kecamatan')->get();
+        $user = $request->user()->load(['kecamatan', 'desa']);
+        $desas = $user->kecamatan_id
+            ? \App\Models\Desa::where('kecamatan_id', $user->kecamatan_id)->orderBy('nama_desa')->get()
+            : collect();
+
+        return view('warga.submissions.edit', compact('submission', 'service', 'kecamatans', 'desas', 'user'));
+    }
+
+    /**
+     * Simpan perubahan draft permohonan.
+     */
+    public function update(\App\Http\Requests\Submission\UpdateDraftRequest $request, Submission $submission): \Illuminate\Http\RedirectResponse
+    {
+        $this->authorize('update', $submission);
+
+        if ($submission->status !== \App\Enums\SubmissionStatus::Draft) {
+            return redirect()->route('warga.submissions.show', $submission)
+                ->with('error', 'Hanya permohonan berstatus Draft yang dapat diubah.');
+        }
+
+        $this->submissionService->updateDraft(
+            $submission,
+            $request->validated()
+        );
+
+        return redirect()
+            ->route('warga.submissions.show', $submission)
+            ->with('success', 'Perubahan pada draft berhasil disimpan.');
+    }
+
+    /**
      * Kirim draft pengajuan ke status submitted.
      */
     public function submitDraft(Submission $submission): RedirectResponse
@@ -140,6 +189,9 @@ class SubmissionController extends Controller
         try {
             $this->submissionService->submitDraft($submission);
             return back()->with('success', 'Permohonan Anda berhasil diajukan dan sedang mengantre verifikasi.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $firstError = collect($e->errors())->flatten()->first() ?: 'Masih ada dokumen persyaratan wajib yang belum diunggah.';
+            return back()->withErrors($e->errors())->with('error', $firstError);
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

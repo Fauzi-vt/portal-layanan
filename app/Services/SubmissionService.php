@@ -82,6 +82,39 @@ class SubmissionService
     }
 
     /**
+     * Update permohonan yang masih berstatus draft.
+     */
+    public function updateDraft(Submission $submission, array $data): Submission
+    {
+        return DB::transaction(function () use ($submission, $data) {
+            if ($submission->status !== SubmissionStatus::Draft) {
+                throw new \DomainException('Hanya permohonan dalam status Draft yang dapat diubah.');
+            }
+
+            $updateData = [];
+            
+            if (isset($data['kecamatan_id'])) {
+                $updateData['kecamatan_id'] = $data['kecamatan_id'];
+            }
+            
+            if (array_key_exists('form_data', $data)) {
+                $updateData['form_data'] = $data['form_data'];
+            }
+
+            if (!empty($updateData)) {
+                $submission->update($updateData);
+            }
+
+            // Simpan berkas yang diunggah
+            if (!empty($data['documents']) && is_array($data['documents'])) {
+                $this->uploadRequirementDocuments($submission, $submission->service, $data['documents']);
+            }
+
+            return $submission->fresh(['service.requirements', 'documents.requirement', 'kecamatan', 'desa', 'user']);
+        });
+    }
+
+    /**
      * Kirimkan permohonan yang masih berstatus draft ke status submitted / submitted_desa.
      */
     public function submitDraft(Submission $submission): Submission
@@ -384,10 +417,32 @@ class SubmissionService
 
     private function assertRequiredDocumentsUploaded(Submission $submission): void
     {
-        $requiredReqIds = $submission->service->requiredDocuments()->pluck('id')->toArray();
+        $requiredReqs = $submission->service->requiredDocuments()->get();
         $uploadedReqIds = $submission->documents()->pluck('service_requirement_id')->toArray();
 
-        $missing = array_diff($requiredReqIds, $uploadedReqIds);
+        $formData = $submission->form_data ?? [];
+        $hasOnlineForm = !empty($formData['f101']['nama_pemohon'])
+            || !empty($formData['f101']['nama_kepala_keluarga'])
+            || !empty($formData['kk_add']['nama_kepala_keluarga'])
+            || !empty($formData['kk_del']['nama_kepala_keluarga'])
+            || !empty($formData['pindah_satu_desa']['nama_kepala'])
+            || !empty($formData['pindah_antar_desa']['nama_kepala'])
+            || !empty($formData['pindah_antar_kecamatan']['nama_kepala']);
+
+        $missing = [];
+        foreach ($requiredReqs as $req) {
+            $isF1Doc = str_contains($req->nama_persyaratan, 'F-1.01')
+                || str_contains($req->nama_persyaratan, 'F-1.15')
+                || str_contains($req->nama_persyaratan, 'Formulir');
+
+            if ($isF1Doc && $hasOnlineForm) {
+                continue;
+            }
+
+            if (!in_array($req->id, $uploadedReqIds)) {
+                $missing[] = $req->id;
+            }
+        }
 
         if (!empty($missing)) {
             throw ValidationException::withMessages([

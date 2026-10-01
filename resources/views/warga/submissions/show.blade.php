@@ -88,6 +88,36 @@
         </div>
     </div>
 
+    {{-- Banner Status Draft (Permohonan Belum Dikirim) --}}
+    @if ($submission->status === \App\Enums\SubmissionStatus::Draft)
+        <div class="bg-blue-50 border-2 border-blue-200 rounded-3xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 portal-shadow">
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-2xl font-bold flex-shrink-0 shadow-md">
+                    📝
+                </div>
+                <div class="space-y-1 text-xs">
+                    <h3 class="text-base font-extrabold text-blue-950">Permohonan Masih Berupa Draft</h3>
+                    <p class="text-blue-800 leading-relaxed">
+                        Permohonan ini tersimpan sebagai draft dan belum diajukan ke petugas verifikator. Anda dapat mengubah isi formulir atau melengkapi berkas persyaratan sebelum mengajukannya.
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <a href="{{ route('warga.submissions.edit', $submission) }}" class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs text-blue-700 bg-white border border-blue-300 hover:bg-blue-50 shadow-xs transition-all whitespace-nowrap">
+                    <i data-lucide="edit-3" class="w-4 h-4"></i>
+                    <span>Edit Draft</span>
+                </a>
+                <form action="{{ route('warga.submissions.submit-draft', $submission) }}" method="POST" class="flex-1 sm:flex-initial">
+                    @csrf
+                    <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs text-white bg-blue-700 hover:bg-blue-800 shadow-sm transition-all whitespace-nowrap">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                        <span>Kirim Permohonan &rarr;</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    @endif
+
     {{-- Banner Status Verifikasi Desa (Informasi Warga) --}}
     @if ($submission->status->value === 'submitted_desa')
         <div class="bg-amber-50 border-2 border-amber-300 rounded-3xl p-6 flex items-start gap-4 portal-shadow">
@@ -281,7 +311,11 @@
 
             {{-- Action jika masih draft --}}
             @if ($submission->status === \App\Enums\SubmissionStatus::Draft)
-                <div class="pt-4 border-t border-slate-100">
+                <div class="pt-4 border-t border-slate-100 space-y-2">
+                    <a href="{{ route('warga.submissions.edit', $submission) }}" class="w-full inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-bold text-xs text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 shadow-2xs transition-colors">
+                        <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                        <span>Ubah / Lengkapi Berkas Draft</span>
+                    </a>
                     <form action="{{ route('warga.submissions.submit-draft', $submission) }}" method="POST">
                         @csrf
                         <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-xs text-white bg-teal-600 hover:bg-teal-700 shadow-sm transition-colors">
