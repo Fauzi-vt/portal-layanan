@@ -1,4 +1,4 @@
-﻿    @php
+    @php
         $publicServicesData = [
             [
                 'kode' => 'EKTP',
@@ -93,13 +93,84 @@
 
     <section id="layanan" class="aiclass-section bg-white" x-data="{
         activeCategory: 'all',
+        currentDisplayPage: 1,
+        thumbLeft: 0,
+        thumbWidth: 25,
         services: {{ json_encode($publicServicesData) }},
         get filteredServices() {
             if (this.activeCategory === 'all') return this.services;
             return this.services.filter(s => s.category_id === this.activeCategory);
         },
-        scrollTrack(offset) {
-            this.$refs.cardTrack.scrollBy({ left: offset, behavior: 'smooth' });
+        init() {
+            this.$nextTick(() => {
+                this.updateScroll();
+            });
+        },
+        setActiveCategory(cat) {
+            this.activeCategory = cat;
+            this.$nextTick(() => {
+                const el = this.$refs.cardTrack;
+                if (el) {
+                    el.scrollLeft = 0;
+                    this.updateScroll();
+                }
+            });
+        },
+        slide(direction) {
+            const el = this.$refs.cardTrack;
+            if (!el) return;
+            const card = el.querySelector('.aiclass-card');
+            const gap = 20;
+            const step = card ? (card.offsetWidth + gap) : 320;
+            el.scrollBy({ left: direction * step, behavior: 'smooth' });
+
+            let count = 0;
+            const timer = setInterval(() => {
+                this.updateScroll();
+                count++;
+                if (count > 14) clearInterval(timer);
+            }, 40);
+        },
+        updateScroll() {
+            const el = this.$refs.cardTrack;
+            if (!el) return;
+            const scrollLeft = el.scrollLeft;
+            const maxScroll = el.scrollWidth - el.clientWidth;
+            const total = this.filteredServices.length;
+
+            const card = el.querySelector('.aiclass-card');
+            const gap = 20;
+            const step = card ? (card.offsetWidth + gap) : 320;
+
+            if (total > 0 && step > 0) {
+                const visibleCards = Math.max(1, Math.round(el.clientWidth / step));
+                const idx = Math.min(Math.max(1, Math.round(scrollLeft / step) + 1), total);
+                this.currentDisplayPage = idx;
+
+                const ratioVisible = Math.min(1, Math.max(0.15, visibleCards / total));
+                this.thumbWidth = Math.round(ratioVisible * 100);
+
+                if (maxScroll > 0) {
+                    const scrollRatio = Math.min(1, Math.max(0, scrollLeft / maxScroll));
+                    const maxThumbLeft = 100 - this.thumbWidth;
+                    this.thumbLeft = Math.round(scrollRatio * maxThumbLeft * 100) / 100;
+                } else {
+                    this.thumbLeft = 0;
+                    this.thumbWidth = 100;
+                }
+            }
+        },
+        handleTrackClick(e) {
+            const track = e.currentTarget;
+            const rect = track.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+            const el = this.$refs.cardTrack;
+            if (el) {
+                const maxScroll = el.scrollWidth - el.clientWidth;
+                el.scrollTo({ left: ratio * maxScroll, behavior: 'smooth' });
+                this.updateScroll();
+            }
         }
     }">
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
@@ -116,31 +187,31 @@
                 {{-- Filter Pills Bar (Meniru Persis Bentuk, Border, & Gradien Tombol Aktif) --}}
                 <div class="aiclass-filter-bar">
                     <button type="button"
-                            @click="activeCategory = 'all'; $refs.cardTrack.scrollLeft = 0"
+                            @click="setActiveCategory('all')"
                             :class="activeCategory === 'all' ? 'active' : ''"
                             class="aiclass-filter-btn">
                         Semua Layanan
                     </button>
                     <button type="button"
-                            @click="activeCategory = 'identitas'; $refs.cardTrack.scrollLeft = 0"
+                            @click="setActiveCategory('identitas')"
                             :class="activeCategory === 'identitas' ? 'active' : ''"
                             class="aiclass-filter-btn">
                         Identitas Kependudukan
                     </button>
                     <button type="button"
-                            @click="activeCategory = 'kk'; $refs.cardTrack.scrollLeft = 0"
+                            @click="setActiveCategory('kk')"
                             :class="activeCategory === 'kk' ? 'active' : ''"
                             class="aiclass-filter-btn">
                         Kartu Keluarga
                     </button>
                     <button type="button"
-                            @click="activeCategory = 'pindah'; $refs.cardTrack.scrollLeft = 0"
+                            @click="setActiveCategory('pindah')"
                             :class="activeCategory === 'pindah' ? 'active' : ''"
                             class="aiclass-filter-btn">
                         Perpindahan Domisili
                     </button>
                     <button type="button"
-                            @click="activeCategory = 'surat'; $refs.cardTrack.scrollLeft = 0"
+                            @click="setActiveCategory('surat')"
                             :class="activeCategory === 'surat' ? 'active' : ''"
                             class="aiclass-filter-btn">
                         Dispensasi & Keterangan
@@ -148,11 +219,13 @@
                 </div>
             </div>
 
-            {{-- Horizontal Cards Carousel (Meniru Bentuk Kartu & 3.5 Kartu Horizontal Berjajar) --}}
+            {{-- Horizontal Cards Carousel (Tepat 4 Card di Desktop, Sudut Siku 90 Derajat) --}}
             <div class="relative overflow-hidden w-full">
                 <div x-ref="cardTrack"
-                     class="flex gap-6 overflow-x-auto scroll-smooth pb-4 px-2 select-none"
-                     style="scrollbar-width: none; -ms-overflow-style: none;">
+                     @scroll.passive="updateScroll()"
+                     @resize.window.debounce.100ms="updateScroll()"
+                     class="aiclass-track select-none">
+
                     
                     <template x-for="(item, index) in filteredServices" :key="item.kode">
                         <div class="aiclass-card">
@@ -166,7 +239,7 @@
                                 <div class="tags">
                                     <span class="competency" x-text="item.category"></span>
                                     <span class="time">
-                                        <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #ffffff;"></span>
+                                        <span style="display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #ffffff;"></span>
                                         <span x-text="item.time"></span>
                                     </span>
                                 </div>
@@ -192,7 +265,7 @@
                                     </span>
                                 </div>
 
-                                {{-- Action Button: Aligned Left with Rounded Top Corners Only --}}
+                                {{-- Action Button: Aligned Left with Rounded Top Corners Only, Touching Bottom --}}
                                 <a :href="item.url" class="btn-detail">
                                     Lihat Detail
                                 </a>
@@ -202,22 +275,32 @@
                 </div>
             </div>
 
-            {{-- Slider Controls (Arrow Buttons & Progress Line) --}}
+            {{-- Slider Controls: Counter + Scrollbar Track Geser + Navigation Arrows (Persis AICLASSASEAN) --}}
             <div class="aiclass-controls">
-                <button type="button" @click="scrollTrack(-344)" class="aiclass-nav-arrow" aria-label="Sebelumnya">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
-                    </svg>
-                </button>
-                <div class="w-32 h-1 bg-slate-200 rounded-full overflow-hidden">
-                    <div class="h-full bg-[#ff9d00] rounded-full w-1/3 transition-all duration-300"></div>
+                {{-- Counter: Menampilkan Halaman / Total Layanan --}}
+                <span class="aiclass-counter" x-text="currentDisplayPage + '/' + filteredServices.length"></span>
+
+                {{-- Horizontal Scrollbar Track & Red Sliding Thumb --}}
+                <div class="aiclass-progress-track" @click="handleTrackClick($event)" title="Klik untuk menggeser slide">
+                    <div class="aiclass-progress-thumb" :style="`left: ${thumbLeft}%; width: ${thumbWidth}%;`"></div>
                 </div>
-                <button type="button" @click="scrollTrack(344)" class="aiclass-nav-arrow" aria-label="Selanjutnya">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
-                    </svg>
-                </button>
+
+                {{-- Navigation Arrows (Tombol Lingkaran Geser) --}}
+                <div class="aiclass-nav-buttons">
+                    <button type="button" @click="slide(-1)" class="aiclass-nav-arrow" aria-label="Sebelumnya">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button type="button" @click="slide(1)" class="aiclass-nav-arrow" aria-label="Selanjutnya">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
             </div>
+
+
 
         </div>
     </section>
