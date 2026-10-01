@@ -1470,7 +1470,7 @@
                 'time' => '2 Hari Kerja',
                 'modules' => '4 Dokumen Syarat',
                 'learners' => '71.372 Pemohon',
-                'image' => 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=700&q=80',
+                'image' => asset('images/layanan-kk.png'),
                 'url' => route('layanan.show', ['serviceCode' => 'KK_BARU']),
             ],
             [
