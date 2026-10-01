@@ -31,6 +31,16 @@ Route::get('/', function () {
 });
 
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\PublicServiceController;
+
+// ── Katalog & Informasi Detail Layanan Publik (Akses Terbuka Tanpa Login) ─────
+Route::get('/layanan', [PublicServiceController::class, 'index'])->name('layanan.index');
+Route::get('/layanan/{serviceCode}', [PublicServiceController::class, 'show'])->name('layanan.show');
+
+// ── Portal PPID & Keterbukaan Informasi Publik ──────────────────────────────
+Route::get('/ppid', function () {
+    return redirect('/#ppid');
+})->name('ppid.index');
 
 // ── Auth Routes ───────────────────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {

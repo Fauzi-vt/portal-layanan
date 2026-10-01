@@ -29,7 +29,7 @@
                     <div>
                         <h3 class="text-base font-bold text-slate-900">Data Kepala Keluarga</h3>
                         <p class="text-xs text-slate-500 mt-0.5">
-                            Masukkan nama kepala keluarga dan alamat lengkap tempat tinggal domisili Kartu Keluarga baru.
+                            Masukkan data kepala keluarga dan alamat tempat tinggal.
                         </p>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
 
             {{-- Form Fields Grid --}}
             <div class="space-y-4 pt-1">
-                {{-- Baris 1: Nama Kepala Keluarga & Alamat Jalan --}}
+                {{-- Baris 1: Nama Kepala Keluarga & Alamat --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label for="f101_nama_kepala_keluarga" class="block text-xs font-bold text-slate-800 mb-1.5">
@@ -53,12 +53,12 @@
                                required
                                placeholder="Nama Lengkap sesuai KTP / Dokumen Resmi"
                                class="w-full text-xs font-bold uppercase rounded-xl border-slate-300 py-2.5 px-3.5 bg-slate-50/60 text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-600 focus:border-blue-600 shadow-2xs transition-colors">
-                        <p class="text-[11px] text-slate-400 mt-1">Nama orang yang ditunjuk sebagai kepala keluarga pada KK baru.</p>
+                        <p class="text-[11px] text-slate-400 mt-1">Nama kepala keluarga yang akan tercantum pada Kartu Keluarga.</p>
                     </div>
 
                     <div>
                         <label for="f101_alamat" class="block text-xs font-bold text-slate-800 mb-1.5">
-                            Alamat Tempat Tinggal (Jalan / Dusun / Kampung) <span class="text-rose-600">*</span>
+                            Alamat <span class="text-rose-600">*</span>
                         </label>
                         <input type="text"
                                id="f101_alamat"
@@ -66,7 +66,7 @@
                                required
                                placeholder="Contoh: Jl. Pahlawan No. 45, Dusun Sukamaju"
                                class="w-full text-xs font-medium uppercase rounded-xl border-slate-300 py-2.5 px-3.5 bg-slate-50/60 text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-600 focus:border-blue-600 shadow-2xs transition-colors">
-                        <p class="text-[11px] text-slate-400 mt-1">Nama jalan, nomor rumah, atau nama dusun/kampung.</p>
+                        <p class="text-[11px] text-slate-400 mt-1">Nama jalan, nomor rumah, atau nama dusun/kampung tempat tinggal.</p>
                     </div>
                 </div>
 
@@ -143,7 +143,7 @@
                     {{-- Desa / Kelurahan --}}
                     <div>
                         <label for="f101_desa" class="block text-xs font-bold text-slate-800 mb-1.5 flex items-center justify-between">
-                            <span>Desa / Kelurahan <span class="text-rose-600">*</span></span>
+                            <span>Desa <span class="text-rose-600">*</span></span>
                             <span class="text-[10px] text-slate-400 font-normal">Pilih/Ketik</span>
                         </label>
                         <input type="text"
@@ -165,7 +165,7 @@
                     <p class="text-[11px] font-semibold text-slate-500 mb-2">Wilayah Administratif Terisi Otomatis (Dapat Disesuaikan jika Diperlukan):</p>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-1">Kabupaten / Kota</label>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">Kabupaten</label>
                             <input type="text"
                                    x-model="$store.kkBaru.meta.kabupaten"
                                    placeholder="KABUPATEN TASIKMALAYA"
@@ -209,14 +209,14 @@
                     <div>
                         <h3 class="text-base font-bold text-slate-900">Anggota Keluarga</h3>
                         <p class="text-xs text-slate-500 mt-0.5">
-                            Tambahkan seluruh anggota keluarga yang akan tercantum dalam Kartu Keluarga Baru.
+                            Tambahkan anggota keluarga yang akan tercantum dalam KK.
                         </p>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-3 self-start sm:self-auto">
                     <span class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs"
-                          x-text="$store.kkBaru.anggota.length + ' Anggota Terdaftar'">
+                          x-text="$store.kkBaru.anggota.length + ' Anggota Keluarga'">
                     </span>
 
                     <button type="button"
@@ -244,7 +244,7 @@
                             @click="$store.kkBaru.openAddMember()"
                             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition-all cursor-pointer">
                         <i data-lucide="user-plus" class="w-4 h-4"></i>
-                        <span>Tambah Anggota Sekarang</span>
+                        <span>+ Tambah Anggota Keluarga</span>
                     </button>
                 </div>
             </template>
@@ -252,40 +252,40 @@
             {{-- Member Cards Grid / List --}}
             <div class="space-y-3 pt-1">
                 <template x-for="(m, idx) in $store.kkBaru.anggota" :key="'member-card-' + idx">
-                    <div class="bg-slate-50/70 hover:bg-slate-50 border border-slate-200/90 rounded-2xl p-4 sm:p-5 transition-all space-y-3">
+                    <div class="bg-white hover:bg-slate-50/70 border border-slate-200 rounded-2xl p-4 sm:p-5 transition-all space-y-3 shadow-2xs">
+                        {{-- Card Header: Anggota Keluarga 1, 2, dst. + SHDK Badge --}}
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                            <div class="flex items-center gap-2">
+                                <span class="w-6 h-6 rounded-full bg-blue-50 text-blue-700 font-bold text-xs flex items-center justify-center"
+                                      x-text="idx + 1"></span>
+                                <span class="text-xs font-bold text-slate-700 uppercase tracking-wider"
+                                      x-text="'Anggota Keluarga ' + (idx + 1)"></span>
+                            </div>
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"
+                                  :class="$store.kkBaru.getShdkBadgeClass(m.shdk)"
+                                  x-text="m.shdk">
+                            </span>
+                        </div>
+
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                            <div class="flex items-start gap-3.5">
-                                {{-- Avatar Badge --}}
-                                <div class="w-10 h-10 rounded-xl font-bold flex items-center justify-center flex-shrink-0 mt-0.5 text-xs shadow-2xs"
-                                     :class="m.jenis_kelamin === 'PEREMPUAN' ? 'bg-pink-100 text-pink-700 border border-pink-200' : 'bg-blue-100 text-blue-700 border border-blue-200'">
-                                    <span x-text="'0' + (idx + 1)"></span>
-                                </div>
+                            <div class="space-y-1.5">
+                                <h4 class="text-base font-black text-slate-900 uppercase tracking-wide" x-text="m.nama"></h4>
 
-                                {{-- Main Info --}}
-                                <div>
-                                    <div class="flex items-center gap-2 flex-wrap">
-                                        <h4 class="text-sm font-bold text-slate-900 uppercase" x-text="m.nama"></h4>
-                                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"
-                                              :class="$store.kkBaru.getShdkBadgeClass(m.shdk)"
-                                              x-text="m.shdk">
-                                        </span>
-                                    </div>
-
-                                    <div class="flex items-center gap-3 text-xs text-slate-500 mt-1 flex-wrap font-sans">
-                                        <span class="font-mono text-slate-700 font-semibold" x-text="'NIK ' + $store.kkBaru.maskNik(m.nik)"></span>
+                                <div class="flex items-center gap-2.5 text-xs text-slate-600 flex-wrap font-sans">
+                                    <span class="font-mono text-slate-800 font-bold bg-slate-100 px-2 py-0.5 rounded-md"
+                                          x-text="'NIK: ' + $store.kkBaru.maskNik(m.nik)"></span>
+                                    <span>•</span>
+                                    <span class="font-semibold text-slate-700" x-text="m.jenis_kelamin"></span>
+                                    <template x-if="m.tanggal_lahir">
                                         <span>•</span>
-                                        <span x-text="m.jenis_kelamin"></span>
-                                        <template x-if="m.tanggal_lahir">
-                                            <span>•</span>
-                                        </template>
-                                        <template x-if="m.tanggal_lahir">
-                                            <span class="text-blue-700 font-semibold" x-text="$store.kkBaru.calculateAge(m.tanggal_lahir)"></span>
-                                        </template>
-                                        <span>•</span>
-                                        <span class="text-slate-700" x-text="m.status_kawin"></span>
-                                        <span>•</span>
-                                        <span class="text-slate-600" x-text="m.pekerjaan"></span>
-                                    </div>
+                                    </template>
+                                    <template x-if="m.tanggal_lahir">
+                                        <span class="text-blue-700 font-bold" x-text="$store.kkBaru.calculateAge(m.tanggal_lahir)"></span>
+                                    </template>
+                                    <span>•</span>
+                                    <span class="text-slate-700 font-medium" x-text="m.status_kawin"></span>
+                                    <span>•</span>
+                                    <span class="text-slate-600" x-text="m.pekerjaan"></span>
                                 </div>
                             </div>
 
@@ -293,13 +293,13 @@
                             <div class="flex items-center gap-2 self-end sm:self-center">
                                 <button type="button"
                                         @click="$store.kkBaru.editMember(idx)"
-                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 text-slate-700 font-bold text-xs transition-colors cursor-pointer">
+                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 text-slate-700 font-bold text-xs transition-colors cursor-pointer shadow-2xs">
                                     <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
                                     <span>Edit</span>
                                 </button>
                                 <button type="button"
                                         @click="$store.kkBaru.removeMember(idx)"
-                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-rose-50 hover:text-rose-700 hover:border-rose-300 text-slate-700 font-bold text-xs transition-colors cursor-pointer">
+                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 bg-white hover:bg-rose-50 hover:text-rose-700 hover:border-rose-300 text-slate-700 font-bold text-xs transition-colors cursor-pointer shadow-2xs">
                                     <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                                     <span>Hapus</span>
                                 </button>
@@ -307,17 +307,17 @@
                         </div>
 
                         {{-- Sub Details Row --}}
-                        <div class="pt-2.5 border-t border-slate-200/60 grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] text-slate-600">
+                        <div class="pt-2.5 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] text-slate-500">
                             <div>
-                                <span class="text-slate-400">Tempat Lahir & Agama:</span>
+                                <span>Kelahiran & Agama:</span>
                                 <strong class="text-slate-800 ml-1" x-text="m.tempat_lahir + ' (' + m.agama + ')'"></strong>
                             </div>
                             <div>
-                                <span class="text-slate-400">Orang Tua:</span>
+                                <span>Orang Tua:</span>
                                 <strong class="text-slate-800 ml-1" x-text="'Ayah ' + m.nama_ayah + ' / Ibu ' + m.nama_ibu"></strong>
                             </div>
                             <div>
-                                <span class="text-slate-400">Pendidikan & Kewarganegaraan:</span>
+                                <span>Pendidikan & WN:</span>
                                 <strong class="text-slate-800 ml-1" x-text="m.pendidikan + ' (' + m.kewarganegaraan + ')'"></strong>
                             </div>
                         </div>
@@ -374,21 +374,21 @@
                     <span class="font-bold" x-text="$store.kkBaru.validationError"></span>
                 </div>
 
-                {{-- 1. IDENTITAS POKOK --}}
+                {{-- IDENTITAS --}}
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                     <div class="flex items-center gap-2 text-slate-800 font-bold border-b border-slate-200 pb-2">
                         <i data-lucide="id-card" class="w-4 h-4 text-blue-600"></i>
-                        <span>1. Identitas Pokok</span>
+                        <span>Identitas</span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
+                        <div class="sm:col-span-2">
                             <label class="block font-bold text-slate-800 mb-1">
-                                Nama Lengkap Sesuai KTP/Akta <span class="text-rose-600">*</span>
+                                Nama Lengkap <span class="text-rose-600">*</span>
                             </label>
                             <input type="text"
                                    x-model="$store.kkBaru.formMember.nama"
-                                   placeholder="Contoh: AHMAD FAUZI"
+                                   placeholder="Contoh: AHMAD FAUZI (Sesuai KTP / Akta)"
                                    class="w-full text-xs font-bold uppercase rounded-lg border-slate-300 py-2 px-3 bg-white focus:ring-1 focus:ring-blue-600">
                         </div>
 
@@ -418,31 +418,17 @@
                                 <option value="PEREMPUAN">PEREMPUAN</option>
                             </select>
                         </div>
-
-                        <div>
-                            <label class="block font-bold text-slate-800 mb-1">
-                                Golongan Darah <span class="text-rose-600">*</span>
-                            </label>
-                            <select x-model="$store.kkBaru.formMember.gol_darah"
-                                    class="w-full text-xs font-bold rounded-lg border-slate-300 py-2 px-3 bg-white focus:ring-1 focus:ring-blue-600">
-                                <option value="-">- (TIDAK TAHU)</option>
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="AB">AB</option>
-                                <option value="O">O</option>
-                            </select>
-                        </div>
                     </div>
                 </div>
 
-                {{-- 2. KELAHIRAN & AGAMA --}}
+                {{-- KELAHIRAN --}}
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                     <div class="flex items-center gap-2 text-slate-800 font-bold border-b border-slate-200 pb-2">
                         <i data-lucide="calendar" class="w-4 h-4 text-emerald-600"></i>
-                        <span>2. Kelahiran & Agama</span>
+                        <span>Kelahiran</span>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block font-bold text-slate-800 mb-1">
                                 Tempat Lahir <span class="text-rose-600">*</span>
@@ -478,14 +464,28 @@
                                 <option value="KHONGHUCU">KHONGHUCU</option>
                             </select>
                         </div>
+
+                        <div>
+                            <label class="block font-bold text-slate-800 mb-1">
+                                Golongan Darah <span class="text-rose-600">*</span>
+                            </label>
+                            <select x-model="$store.kkBaru.formMember.gol_darah"
+                                    class="w-full text-xs font-bold rounded-lg border-slate-300 py-2 px-3 bg-white focus:ring-1 focus:ring-blue-600">
+                                <option value="-">- (TIDAK TAHU)</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="AB">AB</option>
+                                <option value="O">O</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                {{-- 3. PENDIDIKAN & PEKERJAAN --}}
+                {{-- PENDIDIKAN & PEKERJAAN --}}
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                     <div class="flex items-center gap-2 text-slate-800 font-bold border-b border-slate-200 pb-2">
                         <i data-lucide="briefcase" class="w-4 h-4 text-amber-600"></i>
-                        <span>3. Pendidikan & Pekerjaan</span>
+                        <span>Pendidikan & Pekerjaan</span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -510,7 +510,7 @@
 
                         <div>
                             <label class="block font-bold text-slate-800 mb-1">
-                                Jenis Pekerjaan <span class="text-rose-600">*</span>
+                                Pekerjaan <span class="text-rose-600">*</span>
                             </label>
                             <input type="text"
                                    x-model="$store.kkBaru.formMember.pekerjaan"
@@ -531,17 +531,17 @@
                     </div>
                 </div>
 
-                {{-- 4. HUBUNGAN KELUARGA & STATUS PERKAWINAN --}}
+                {{-- HUBUNGAN KELUARGA --}}
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                     <div class="flex items-center gap-2 text-slate-800 font-bold border-b border-slate-200 pb-2">
                         <i data-lucide="heart" class="w-4 h-4 text-purple-600"></i>
-                        <span>4. Hubungan Keluarga & Status Perkawinan</span>
+                        <span>Hubungan Keluarga</span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block font-bold text-slate-800 mb-1">
-                                Hubungan dengan Kepala Keluarga (SHDK) <span class="text-rose-600">*</span>
+                                Hubungan dengan Kepala Keluarga <span class="text-rose-600">*</span>
                             </label>
                             <select x-model="$store.kkBaru.formMember.shdk"
                                     class="w-full text-xs font-bold rounded-lg border-slate-300 py-2 px-3 bg-white focus:ring-1 focus:ring-blue-600">
@@ -577,7 +577,7 @@
                              x-transition
                              class="sm:col-span-2 bg-blue-50/70 p-3 rounded-xl border border-blue-200">
                             <label class="block font-bold text-slate-800 mb-1 flex items-center justify-between">
-                                <span>Tanggal Perkawinan Resmi / Tercatat</span>
+                                <span>Tanggal Perkawinan</span>
                                 <span class="text-[10px] text-blue-700 font-semibold">Wajib bila sudah menikah</span>
                             </label>
                             <input type="date"
@@ -587,11 +587,11 @@
                     </div>
                 </div>
 
-                {{-- 5. ORANG TUA & KEWARGANEGARAAN --}}
+                {{-- ORANG TUA --}}
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                     <div class="flex items-center gap-2 text-slate-800 font-bold border-b border-slate-200 pb-2">
-                        <i data-lucide="shield" class="w-4 h-4 text-blue-600"></i>
-                        <span>5. Orang Tua & Kewarganegaraan</span>
+                        <i data-lucide="users" class="w-4 h-4 text-emerald-600"></i>
+                        <span>Orang Tua</span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -614,8 +614,18 @@
                                    placeholder="Nama Ibu Sesuai Akta Lahir"
                                    class="w-full text-xs font-bold uppercase rounded-lg border-slate-300 py-2 px-3 bg-white focus:ring-1 focus:ring-blue-600">
                         </div>
+                    </div>
+                </div>
 
-                        <div class="sm:col-span-2">
+                {{-- KEWARGANEGARAAN --}}
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <div class="flex items-center gap-2 text-slate-800 font-bold border-b border-slate-200 pb-2">
+                        <i data-lucide="globe" class="w-4 h-4 text-blue-600"></i>
+                        <span>Kewarganegaraan</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div>
                             <label class="block font-bold text-slate-800 mb-1">
                                 Kewarganegaraan <span class="text-rose-600">*</span>
                             </label>
@@ -629,7 +639,7 @@
                         {{-- CONDITIONAL FIELDS: Paspor & KITAP (HANYA MUNCUL JIKA WNA) --}}
                         <div x-show="$store.kkBaru.formMember.kewarganegaraan === 'WNA'"
                              x-transition
-                             class="sm:col-span-2 bg-amber-50/80 p-3.5 rounded-xl border border-amber-200 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                             class="bg-amber-50/80 p-3.5 rounded-xl border border-amber-200 grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
                                 <label class="block font-bold text-amber-900 mb-1">
                                     Nomor Paspor (WNA)

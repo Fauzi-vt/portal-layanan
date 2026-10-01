@@ -14,13 +14,37 @@ use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
-    public function showRegistrationForm(): View|RedirectResponse
+    public function showRegistrationForm(Request $request): View|RedirectResponse
     {
         if (Auth::check()) {
             return redirect()->route('dashboard');
         }
 
-        return view('auth.register');
+        $intendedService = null;
+
+        if ($request->has('service')) {
+            $serviceCode = $request->query('service');
+            $intendedService = \App\Models\Service::where('kode_layanan', $serviceCode)
+                ->where('is_active', true)
+                ->first();
+
+            if ($intendedService) {
+                session()->put('url.intended', route('warga.submissions.create', ['service' => $intendedService->kode_layanan]));
+            }
+        } elseif (session()->has('url.intended')) {
+            $intendedUrl = session('url.intended');
+            $parsed = parse_url($intendedUrl);
+            if (isset($parsed['query'])) {
+                parse_str($parsed['query'], $queryParams);
+                if (!empty($queryParams['service'])) {
+                    $intendedService = \App\Models\Service::where('kode_layanan', $queryParams['service'])
+                        ->where('is_active', true)
+                        ->first();
+                }
+            }
+        }
+
+        return view('auth.register', compact('intendedService'));
     }
 
     public function register(Request $request): RedirectResponse
@@ -55,6 +79,6 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('warga.dashboard')->with('success', 'Akun Anda berhasil dibuat. Selamat datang di Portal Layanan Publik!');
+        return redirect()->intended(route('warga.dashboard'))->with('success', 'Akun Anda berhasil dibuat. Selamat datang di Portal Layanan Publik!');
     }
 }

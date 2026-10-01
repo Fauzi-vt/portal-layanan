@@ -86,6 +86,27 @@
                     </p>
                 </div>
 
+                {{-- Banner Konteks Layanan yang Dituju --}}
+                @if (isset($intendedService) && $intendedService)
+                    <div class="rounded-2xl bg-blue-50 border border-blue-200/90 p-4 flex items-start gap-3.5 text-blue-950 shadow-xs">
+                        <div class="w-8 h-8 rounded-xl bg-[#0a2558] text-white flex items-center justify-center flex-shrink-0 mt-0.5 font-bold">
+                            <i data-lucide="layers" class="w-4 h-4"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2">
+                                <p class="text-[11px] font-extrabold uppercase tracking-wider text-blue-800">Layanan yang Dipilih</p>
+                                <span class="px-2 py-0.2 rounded text-[10px] font-bold bg-white text-blue-800 border border-blue-200">
+                                    {{ $intendedService->kode_layanan }}
+                                </span>
+                            </div>
+                            <p class="text-sm font-bold text-slate-900 mt-0.5">{{ $intendedService->nama_layanan }}</p>
+                            <p class="text-xs text-blue-700 mt-0.5">
+                                Silakan lengkapi pendaftaran akun warga. Setelah berhasil, Anda akan langsung dialihkan ke formulir pengajuan layanan ini.
+                            </p>
+                        </div>
+                    </div>
+                @endif
+
                 {{-- Alert Error --}}
                 @if ($errors->any())
                     <div class="rounded-2xl bg-rose-50 border border-rose-200 p-4 flex items-start gap-3.5 text-rose-900 shadow-xs" role="alert">
@@ -244,7 +265,7 @@
                 <div class="pt-3 border-t border-slate-100 text-center">
                     <p class="text-xs sm:text-sm text-slate-600 font-medium">
                         Sudah memiliki akun?
-                        <a href="{{ route('login') }}" class="font-bold text-blue-700 hover:text-blue-900 hover:underline transition-colors ml-1">
+                        <a href="{{ route('login', isset($intendedService) && $intendedService ? ['service' => $intendedService->kode_layanan] : []) }}" class="font-bold text-blue-700 hover:text-blue-900 hover:underline transition-colors ml-1">
                             Masuk ke Akun Anda
                         </a>
                     </p>
