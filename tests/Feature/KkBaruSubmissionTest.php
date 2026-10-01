@@ -53,16 +53,25 @@ class KkBaruSubmissionTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Data Pemohon');
+        $response->assertSee('Data diri Anda sebagai pemohon layanan.');
+        $response->assertSee('Data ini diambil dari profil akun Anda.');
         $response->assertSee('Data Kepala Keluarga');
+        $response->assertSee('Masukkan data kepala keluarga dan alamat tempat tinggal.');
         $response->assertSee('Anggota Keluarga');
+        $response->assertSee('Tambahkan anggota keluarga yang akan tercantum dalam KK.');
         $response->assertSee('+ Tambah Anggota Keluarga');
+        $response->assertSee('Dokumen Pendukung');
+        $response->assertSee('Lengkapi dokumen berikut untuk melanjutkan permohonan.');
+        $response->assertSee('Review Permohonan');
         $response->assertSee('Fauzi Pemohon KK');
         $response->assertSee('3206172005950001');
 
         // Pastikan pola fisik kaku sudah dihilangkan dari UI warga
         $response->assertDontSee('(1) Nama Lengkap');
         $response->assertDontSee('(17) Nama Ibu');
+        $response->assertDontSee('(12) Hubungan Keluarga (SHDK)');
         $response->assertDontSee('Terapkan ke Tabel (Apply)');
+        $response->assertDontSee('Terapkan ke Tabel');
     }
 
     public function test_kk_baru_draft_accepted(): void

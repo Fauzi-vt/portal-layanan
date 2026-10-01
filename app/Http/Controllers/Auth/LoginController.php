@@ -14,13 +14,38 @@ class LoginController extends Controller
     /**
      * Tampilkan form login.
      */
-    public function showLoginForm(): View|RedirectResponse
+    public function showLoginForm(Request $request): View|RedirectResponse
     {
         if (Auth::check()) {
             return $this->redirectByRole();
         }
 
-        return view('auth.login');
+        $intendedService = null;
+
+        // Deteksi konteks layanan publik yang sedang ingin diajukan
+        if ($request->has('service')) {
+            $serviceCode = $request->query('service');
+            $intendedService = \App\Models\Service::where('kode_layanan', $serviceCode)
+                ->where('is_active', true)
+                ->first();
+
+            if ($intendedService) {
+                session()->put('url.intended', route('warga.submissions.create', ['service' => $intendedService->kode_layanan]));
+            }
+        } elseif (session()->has('url.intended')) {
+            $intendedUrl = session('url.intended');
+            $parsed = parse_url($intendedUrl);
+            if (isset($parsed['query'])) {
+                parse_str($parsed['query'], $queryParams);
+                if (!empty($queryParams['service'])) {
+                    $intendedService = \App\Models\Service::where('kode_layanan', $queryParams['service'])
+                        ->where('is_active', true)
+                        ->first();
+                }
+            }
+        }
+
+        return view('auth.login', compact('intendedService'));
     }
 
     /**
@@ -85,7 +110,7 @@ class LoginController extends Controller
             UserRole::SuperAdmin      => redirect()->route('superadmin.dashboard'),
             UserRole::AdminKecamatan  => redirect()->route('kecamatan.dashboard'),
             UserRole::AdminDesa       => redirect()->route('desa.dashboard'),
-            default                   => redirect()->route('warga.dashboard'),
+            default                   => redirect()->intended(route('warga.dashboard')),
         };
     }
 }

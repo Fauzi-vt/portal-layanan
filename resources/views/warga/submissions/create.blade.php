@@ -410,88 +410,187 @@
                 ════════════════════════════════════════════════ --}}
                 <div x-show="activeStep === 1" x-cloak class="step-panel space-y-4">
 
-                    {{-- Info banner --}}
-                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex gap-3 items-start">
-                        <i data-lucide="info" class="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5"></i>
-                        <div class="text-xs text-blue-800 leading-relaxed">
-                            <strong>{{ $isKkBaru ? 'Data Pemohon' : 'Identitas Pemohon' }}.</strong> {{ $isKkBaru ? 'Data diri Anda sebagai pemohon layanan terisi otomatis dari profil akun Anda. Pilih kecamatan tujuan verifikasi, lalu lanjutkan ke langkah berikutnya.' : 'Data Pemohon terisi otomatis dari profil akun Anda. Pilih kecamatan tujuan verifikasi, lalu lanjutkan ke langkah berikutnya.' }}
-                        </div>
-                    </div>
-
-                    {{-- Kecamatan selector --}}
-                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 space-y-5">
-                        <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
-                            <div class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center flex-shrink-0">
-                                <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
-                            </div>
-                            <h3 class="text-sm font-bold text-slate-900">Wilayah Verifikasi</h3>
-                        </div>
-
-                        <div>
-                            <label for="kecamatan_id" class="block text-xs font-semibold text-slate-700 mb-1.5">
-                                Kecamatan Tujuan Verifikasi <span class="text-rose-500">*</span>
-                                <span class="ml-1 text-slate-400 font-normal">(39 Kecamatan Kabupaten Tasikmalaya)</span>
-                            </label>
-                            <select name="kecamatan_id" id="kecamatan_id" required
-                                    class="w-full text-xs font-semibold rounded-xl border border-slate-300 bg-white text-slate-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none py-2.5 px-3 shadow-sm">
-                                @foreach ($kecamatans as $kec)
-                                    <option value="{{ $kec->id }}" {{ old('kecamatan_id', $user->kecamatan_id) == $kec->id ? 'selected' : '' }}>
-                                        Kecamatan {{ $kec->nama_kecamatan }} ({{ $kec->kode_kecamatan }})
-                                    </option>
-                                @endforeach
-                            </select>
-                            <p class="text-[11px] text-slate-500 mt-1.5">
-                                Pilih kecamatan tempat permohonan ini akan diproses. Biasanya sesuai dengan kecamatan domisili Anda.
-                            </p>
-                        </div>
-                    </div>
-
-                    {{-- Pemohon card --}}
-                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 space-y-4">
-                        <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
-                            <div class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center flex-shrink-0">
-                                <i data-lucide="user-circle" class="w-3.5 h-3.5"></i>
-                            </div>
-                            <h3 class="text-sm font-bold text-slate-900">Identitas Pemohon</h3>
-                            <span class="ml-auto inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
-                                <i data-lucide="lock" class="w-3 h-3"></i>
-                                Terisi dari profil akun
-                            </span>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-2">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-black text-sm flex-shrink-0">
-                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                    @if ($isKkBaru)
+                        {{-- ── KK_BARU: STEP 1 DATA PEMOHON ── --}}
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6 space-y-4">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="user-check" class="w-5 h-5"></i>
                                     </div>
                                     <div>
-                                        <p class="text-xs font-black text-slate-900">{{ $user->name }}</p>
-                                        <p class="text-[11px] text-slate-500 font-mono">NIK: {{ $user->nik ?? '—' }}</p>
+                                        <h3 class="text-base font-bold text-slate-900">Data Pemohon</h3>
+                                        <p class="text-xs text-slate-500 mt-0.5">
+                                            Data diri Anda sebagai pemohon layanan.
+                                        </p>
                                     </div>
                                 </div>
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 self-start sm:self-auto">
+                                    <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                                    <span>Data ini diambil dari profil akun Anda.</span>
+                                </span>
                             </div>
-                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-1.5">
-                                <div class="flex items-center gap-2 text-xs text-slate-600">
-                                    <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400 flex-shrink-0"></i>
-                                    <span class="truncate">{{ $user->email }}</span>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-800 mb-1.5">
+                                        Nama Lengkap
+                                    </label>
+                                    <input type="text"
+                                           value="{{ $user->name }}"
+                                           readonly
+                                           class="w-full text-xs font-bold uppercase rounded-xl border border-slate-200 py-2.5 px-3.5 bg-slate-50 text-slate-800 cursor-not-allowed select-none shadow-2xs">
                                 </div>
-                                <div class="flex items-center gap-2 text-xs text-slate-600">
-                                    <i data-lucide="phone" class="w-3.5 h-3.5 text-slate-400 flex-shrink-0"></i>
-                                    <span>{{ $user->phone ?? '—' }}</span>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-800 mb-1.5">
+                                        NIK
+                                    </label>
+                                    <input type="text"
+                                           value="{{ $user->nik ?? '' }}"
+                                           readonly
+                                           class="w-full font-mono text-xs font-bold rounded-xl border border-slate-200 py-2.5 px-3.5 bg-slate-50 text-slate-800 cursor-not-allowed select-none shadow-2xs">
                                 </div>
-                                <div class="flex items-center gap-2 text-xs text-slate-600">
-                                    <i data-lucide="home" class="w-3.5 h-3.5 text-slate-400 flex-shrink-0"></i>
-                                    <span class="truncate">{{ $user->desa?->nama_desa ?? '—' }}, {{ $user->kecamatan?->nama_kecamatan ?? '—' }}</span>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-800 mb-1.5">
+                                        Nomor HP
+                                    </label>
+                                    <input type="text"
+                                           value="{{ $user->phone ?? '' }}"
+                                           readonly
+                                           class="w-full text-xs font-semibold rounded-xl border border-slate-200 py-2.5 px-3.5 bg-slate-50 text-slate-800 cursor-not-allowed select-none shadow-2xs">
                                 </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-800 mb-1.5">
+                                        Email
+                                    </label>
+                                    <input type="email"
+                                           value="{{ $user->email ?? '' }}"
+                                           readonly
+                                           class="w-full text-xs font-semibold rounded-xl border border-slate-200 py-2.5 px-3.5 bg-slate-50 text-slate-800 cursor-not-allowed select-none shadow-2xs">
+                                </div>
+                            </div>
+
+                            <p class="text-[11px] text-slate-500 pt-1">
+                                Data ini diambil dari profil akun Anda. Apabila terdapat perubahan data, silakan perbarui pada pengaturan profil akun warga.
+                            </p>
+                        </div>
+
+                        {{-- Wilayah Verifikasi Card --}}
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6 space-y-4">
+                            <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
+                                <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-bold text-slate-900">Kecamatan Tujuan Verifikasi</h3>
+                                    <p class="text-[11px] text-slate-500">Pilih kantor kecamatan domisili tempat permohonan Kartu Keluarga baru ini diproses.</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="kecamatan_id" class="block text-xs font-bold text-slate-800 mb-1.5">
+                                    Kecamatan Verifikasi <span class="text-rose-600">*</span>
+                                </label>
+                                <select name="kecamatan_id" id="kecamatan_id" required
+                                        class="w-full text-xs font-bold rounded-xl border border-slate-300 bg-white text-slate-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none py-2.5 px-3.5 shadow-2xs">
+                                    @foreach ($kecamatans as $kec)
+                                        <option value="{{ $kec->id }}" {{ old('kecamatan_id', $user->kecamatan_id) == $kec->id ? 'selected' : '' }}>
+                                            Kecamatan {{ $kec->nama_kecamatan }} ({{ $kec->kode_kecamatan }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <p class="text-[11px] text-slate-500 mt-1.5">
+                                    Pilih kecamatan tempat permohonan ini akan diproses. Biasanya sesuai dengan kecamatan domisili Anda.
+                                </p>
+                            </div>
+                        </div>
+                    @else
+                        {{-- Info banner (Non-KK_BARU) --}}
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex gap-3 items-start">
+                            <i data-lucide="info" class="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5"></i>
+                            <div class="text-xs text-blue-800 leading-relaxed">
+                                <strong>Identitas Pemohon.</strong> Data Pemohon terisi otomatis dari profil akun Anda. Pilih kecamatan tujuan verifikasi, lalu lanjutkan ke langkah berikutnya.
                             </div>
                         </div>
 
-                        <p class="text-[11px] text-slate-500">
-                            Data di atas diambil dari profil akun Anda secara otomatis dan tidak dapat diubah di sini.
-                            Jika ada yang tidak sesuai, silakan perbarui melalui halaman <a href="#" class="text-blue-600 underline font-semibold">Profil Akun</a>.
-                        </p>
-                    </div>
+                        {{-- Kecamatan selector --}}
+                        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 space-y-5">
+                            <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+                                <div class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                                </div>
+                                <h3 class="text-sm font-bold text-slate-900">Wilayah Verifikasi</h3>
+                            </div>
+
+                            <div>
+                                <label for="kecamatan_id" class="block text-xs font-semibold text-slate-700 mb-1.5">
+                                    Kecamatan Tujuan Verifikasi <span class="text-rose-500">*</span>
+                                    <span class="ml-1 text-slate-400 font-normal">(39 Kecamatan Kabupaten Tasikmalaya)</span>
+                                </label>
+                                <select name="kecamatan_id" id="kecamatan_id" required
+                                        class="w-full text-xs font-semibold rounded-xl border border-slate-300 bg-white text-slate-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 focus:outline-none py-2.5 px-3 shadow-sm">
+                                    @foreach ($kecamatans as $kec)
+                                        <option value="{{ $kec->id }}" {{ old('kecamatan_id', $user->kecamatan_id) == $kec->id ? 'selected' : '' }}>
+                                            Kecamatan {{ $kec->nama_kecamatan }} ({{ $kec->kode_kecamatan }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <p class="text-[11px] text-slate-500 mt-1.5">
+                                    Pilih kecamatan tempat permohonan ini akan diproses. Biasanya sesuai dengan kecamatan domisili Anda.
+                                </p>
+                            </div>
+                        </div>
+
+                        {{-- Pemohon card --}}
+                        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6 space-y-4">
+                            <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+                                <div class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="user-circle" class="w-3.5 h-3.5"></i>
+                                </div>
+                                <h3 class="text-sm font-bold text-slate-900">Identitas Pemohon</h3>
+                                <span class="ml-auto inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                                    <i data-lucide="lock" class="w-3 h-3"></i>
+                                    Terisi dari profil akun
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-2">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-black text-sm flex-shrink-0">
+                                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-black text-slate-900">{{ $user->name }}</p>
+                                            <p class="text-[11px] text-slate-500 font-mono">NIK: {{ $user->nik ?? '—' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-1.5">
+                                    <div class="flex items-center gap-2 text-xs text-slate-600">
+                                        <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400 flex-shrink-0"></i>
+                                        <span class="truncate">{{ $user->email }}</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-slate-600">
+                                        <i data-lucide="phone" class="w-3.5 h-3.5 text-slate-400 flex-shrink-0"></i>
+                                        <span>{{ $user->phone ?? '—' }}</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs text-slate-600">
+                                        <i data-lucide="home" class="w-3.5 h-3.5 text-slate-400 flex-shrink-0"></i>
+                                        <span class="truncate">{{ $user->desa?->nama_desa ?? '—' }}, {{ $user->kecamatan?->nama_kecamatan ?? '—' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="text-[11px] text-slate-500">
+                                Data di atas diambil dari profil akun Anda secara otomatis dan tidak dapat diubah di sini.
+                                Jika ada yang tidak sesuai, silakan perbarui melalui halaman <a href="#" class="text-blue-600 underline font-semibold">Profil Akun</a>.
+                            </p>
+                        </div>
+                    @endif
 
                     {{-- Formulir fisik notice --}}
                     @if ($service->isHybrid() && $service->template_formulir_path)
@@ -550,12 +649,39 @@
                 @php $docStep = $isKkBaru ? 4 : ($hasFormSection ? 3 : 2); @endphp
                 <div x-show="activeStep === {{ $docStep }}" x-cloak class="step-panel space-y-4">
 
-                    <div class="bg-violet-50 border border-violet-200 rounded-xl p-4 flex gap-3 items-start">
-                        <i data-lucide="paperclip" class="w-4 h-4 text-violet-600 flex-shrink-0 mt-0.5"></i>
-                        <div class="text-xs text-violet-800 leading-relaxed">
-                            <strong>Unggah Berkas Persyaratan.</strong> Dokumen yang ditandai <span class="font-bold text-rose-600">Wajib</span> harus diunggah sebelum mengajukan permohonan. Ukuran file maks 5 MB (PDF, JPG, PNG).
+                    @if ($isKkBaru)
+                        {{-- KK_BARU Header Card --}}
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6 space-y-4">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-violet-50 text-violet-700 border border-violet-100 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="paperclip" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-base font-bold text-slate-900">Dokumen Pendukung</h3>
+                                        <p class="text-xs text-slate-500 mt-0.5">
+                                            Lengkapi dokumen berikut untuk melanjutkan permohonan.
+                                        </p>
+                                    </div>
+                                </div>
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-violet-50 text-violet-700 border border-violet-200 self-start sm:self-auto">
+                                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                                    <span>{{ $service->requirements->count() }} Persyaratan Dokumen</span>
+                                </span>
+                            </div>
+
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Dokumen dengan tanda <strong class="text-rose-600">Dokumen wajib</strong> wajib dilampirkan sebelum mengirimkan permohonan. Format berkas yang didukung: PDF, JPG, PNG (maksimal 5 MB per berkas).
+                            </p>
                         </div>
-                    </div>
+                    @else
+                        <div class="bg-violet-50 border border-violet-200 rounded-xl p-4 flex gap-3 items-start">
+                            <i data-lucide="paperclip" class="w-4 h-4 text-violet-600 flex-shrink-0 mt-0.5"></i>
+                            <div class="text-xs text-violet-800 leading-relaxed">
+                                <strong>Unggah Berkas Persyaratan.</strong> Dokumen yang ditandai <span class="font-bold text-rose-600">Wajib</span> harus diunggah sebelum mengajukan permohonan. Ukuran file maks 5 MB (PDF, JPG, PNG).
+                            </div>
+                        </div>
+                    @endif
 
                     <div class="space-y-3">
                         @foreach ($service->requirements as $req)
@@ -565,23 +691,28 @@
                                     || str_contains($req->nama_persyaratan, 'Formulir');
                             @endphp
 
-                            <div class="doc-upload-card bg-white rounded-xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3"
-                                 :class="{ 'has-file': filePreviews[{{ $req->id }}] }">
-                                <div class="flex items-start justify-between gap-3">
+                            <div class="doc-upload-card bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3 transition-all"
+                                 :class="{ 'has-file border-emerald-300 bg-emerald-50/20': filePreviews[{{ $req->id }}] }">
+                                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                                     <div class="flex items-start gap-3 flex-1">
-                                        <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5
-                                            {{ $isF1Doc ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : ($req->is_required ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-slate-50 text-slate-500 border border-slate-200') }}">
-                                            <i data-lucide="{{ $isF1Doc ? 'file-check' : 'file-up' }}" class="w-4 h-4"></i>
+                                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+                                             :class="filePreviews[{{ $req->id }}] ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : '{{ $isF1Doc ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : ($req->is_required ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-slate-50 text-slate-500 border border-slate-200') }}'">
+                                            <template x-if="filePreviews[{{ $req->id }}]">
+                                                <i data-lucide="check" class="w-5 h-5"></i>
+                                            </template>
+                                            <template x-if="!filePreviews[{{ $req->id }}]">
+                                                <i data-lucide="{{ $isF1Doc ? 'file-check' : 'file-up' }}" class="w-5 h-5"></i>
+                                            </template>
                                         </div>
                                         <div class="flex-1">
                                             <div class="flex items-center gap-2 flex-wrap">
-                                                <h4 class="text-xs font-bold text-slate-900">{{ $req->nama_persyaratan }}</h4>
+                                                <h4 class="text-xs sm:text-sm font-bold text-slate-900">{{ $req->nama_persyaratan }}</h4>
                                                 @if ($isF1Doc)
                                                     <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">✓ Diisi Online — Opsional</span>
                                                 @elseif ($req->is_required)
-                                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200">Wajib</span>
+                                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200">Dokumen wajib</span>
                                                 @else
-                                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">Opsional</span>
+                                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">Dokumen opsional</span>
                                                 @endif
                                             </div>
                                             @if ($req->deskripsi)
@@ -594,23 +725,40 @@
                                             @endif
                                         </div>
                                     </div>
-                                    {{-- File status indicator --}}
-                                    <div class="flex-shrink-0" x-show="filePreviews[{{ $req->id }}]">
-                                        <div class="w-7 h-7 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
-                                            <i data-lucide="check" class="w-4 h-4"></i>
-                                        </div>
+
+                                    {{-- Status Badge --}}
+                                    <div class="flex-shrink-0 self-start sm:self-center">
+                                        <template x-if="filePreviews[{{ $req->id }}]">
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">
+                                                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                                                <span>Sudah diunggah</span>
+                                            </span>
+                                        </template>
+                                        <template x-if="!filePreviews[{{ $req->id }}]">
+                                            @if ($isF1Doc && $hasFormSection)
+                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                                    <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                                                    <span>Sudah diisi online</span>
+                                                </span>
+                                            @else
+                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold {{ $req->is_required ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-slate-100 text-slate-600 border border-slate-200' }}">
+                                                    <i data-lucide="circle" class="w-3.5 h-3.5"></i>
+                                                    <span>Belum diunggah</span>
+                                                </span>
+                                            @endif
+                                        </template>
                                     </div>
                                 </div>
 
                                 {{-- File preview info --}}
                                 <div x-show="filePreviews[{{ $req->id }}]" x-cloak
-                                     class="flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
-                                    <i data-lucide="file-check-2" class="w-3.5 h-3.5 text-green-600 flex-shrink-0"></i>
-                                    <span class="text-[11px] text-green-800 font-semibold truncate" x-text="filePreviews[{{ $req->id }}]?.name"></span>
-                                    <span class="text-[11px] text-green-600 ml-auto flex-shrink-0" x-text="filePreviews[{{ $req->id }}]?.size"></span>
+                                     class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-xl px-3.5 py-2">
+                                    <i data-lucide="file-check-2" class="w-4 h-4 text-emerald-600 flex-shrink-0"></i>
+                                    <span class="text-xs text-emerald-800 font-semibold truncate" x-text="filePreviews[{{ $req->id }}]?.name"></span>
+                                    <span class="text-[11px] text-emerald-600 ml-auto flex-shrink-0 font-mono" x-text="filePreviews[{{ $req->id }}]?.size"></span>
                                 </div>
 
-                                <label class="flex items-center gap-3 cursor-pointer group">
+                                <label class="flex items-center gap-3 cursor-pointer group pt-1">
                                     <div class="flex-1">
                                         <input type="file"
                                                id="doc_{{ $req->id }}"
@@ -619,7 +767,7 @@
                                                {{ ($req->is_required && !$isF1Doc) ? 'required' : '' }}
                                                @change="handleFileChange({{ $req->id }}, $event)"
                                                class="block w-full text-xs text-slate-700
-                                                      file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0
+                                                      file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0
                                                       file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700
                                                       hover:file:bg-blue-100 file:cursor-pointer
                                                       border border-dashed border-slate-300 rounded-xl bg-slate-50/50
