@@ -1503,7 +1503,7 @@
                 'time' => '2 Hari Kerja',
                 'modules' => '3 Dokumen Syarat',
                 'learners' => '39.120 Pemohon',
-                'image' => 'https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=700&q=80',
+                'image' => asset('images/layanan-pindah-antar-kecamatan.jpg'),
                 'url' => route('layanan.show', ['serviceCode' => 'PINDAH_ANTAR_KEC']),
             ],
             [
