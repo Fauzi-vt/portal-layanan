@@ -1448,7 +1448,7 @@
                 'time' => '1 Hari Kerja',
                 'modules' => '2 Dokumen Syarat',
                 'learners' => '84.778 Pemohon',
-                'image' => 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=700&q=80',
+                'image' => asset('images/layanan-ektp.png'),
                 'url' => route('layanan.show', ['serviceCode' => 'EKTP']),
             ],
             [
