@@ -1492,7 +1492,7 @@
                 'time' => '1 Hari Kerja',
                 'modules' => '3 Dokumen Syarat',
                 'learners' => '66.859 Pemohon',
-                'image' => 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=700&q=80',
+                'image' => asset('images/layanan-pindah.jpg'),
                 'url' => route('layanan.show', ['serviceCode' => 'PINDAH_SATU_DESA']),
             ],
             [
