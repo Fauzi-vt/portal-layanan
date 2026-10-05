@@ -1,7 +1,7 @@
     {{-- ═══════════════════════════════════════════════════════════════════════════
-         FOOTER SECTION (Meniru Persis Tata Letak, Warna #355bdc, & Card Referensi AICLASSASEAN)
+         FOOTER SECTION — DISKOMINFO KABUPATEN TASIKMALAYA (#0a2558)
     ═══════════════════════════════════════════════════════════════════════════ --}}
-    <footer style="background-color: #355bdc;" class="text-white text-xs sm:text-sm pt-10 sm:pt-14 pb-8 sm:pb-10 w-full overflow-hidden relative">
+    <footer style="background-color: #0a2558;" class="text-white text-xs sm:text-sm pt-10 sm:pt-14 pb-8 sm:pb-10 w-full overflow-hidden relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             {{-- ── 1. Top White Floating Card Banner ── --}}
@@ -29,10 +29,10 @@
                                    x-model="emailInput" 
                                    placeholder="Enter Your Email" 
                                    required
-                                   class="w-full bg-white border border-slate-300 text-slate-800 placeholder-slate-400 text-xs sm:text-sm rounded-md px-3.5 py-2.5 outline-none focus:border-[#355bdc] focus:ring-2 focus:ring-[#355bdc]/20 transition-all">
+                                   class="w-full bg-white border border-slate-300 text-slate-800 placeholder-slate-400 text-xs sm:text-sm rounded-md px-3.5 py-2.5 outline-none focus:border-[#0a2558] focus:ring-2 focus:ring-[#0a2558]/20 transition-all">
                         </div>
                         <button type="submit" 
-                                class="bg-[#355bdc] hover:bg-[#2748be] text-white text-xs sm:text-sm font-bold px-4 sm:px-6 py-2.5 rounded-md whitespace-nowrap transition-all shadow-sm cursor-pointer flex-shrink-0">
+                                class="bg-[#0a2558] hover:bg-[#0d3070] text-white text-xs sm:text-sm font-bold px-4 sm:px-6 py-2.5 rounded-md whitespace-nowrap transition-all shadow-sm cursor-pointer flex-shrink-0">
                             <span x-show="!subscribed">Get Newsletter</span>
                             <span x-show="subscribed" x-cloak class="flex items-center gap-1">
                                 <svg class="w-4 h-4 text-emerald-300 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -47,32 +47,32 @@
                 {{-- Right: Social Media Icons --}}
                 <div class="flex items-center gap-4 text-slate-700 flex-shrink-0">
                     <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" 
-                       class="w-7 h-7 flex items-center justify-center text-slate-700 hover:text-[#355bdc] hover:scale-110 transition-all" 
+                       class="w-7 h-7 flex items-center justify-center text-slate-700 hover:text-[#0a2558] hover:scale-110 transition-all" 
                        aria-label="Facebook">
                         <i class="fa-brands fa-facebook-f text-base"></i>
                     </a>
                     <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" 
-                       class="w-7 h-7 flex items-center justify-center text-slate-700 hover:text-[#355bdc] hover:scale-110 transition-all" 
+                       class="w-7 h-7 flex items-center justify-center text-slate-700 hover:text-[#0a2558] hover:scale-110 transition-all" 
                        aria-label="Instagram">
                         <i class="fa-brands fa-instagram text-lg"></i>
                     </a>
                     <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" 
-                       class="w-7 h-7 flex items-center justify-center text-slate-700 hover:text-[#355bdc] hover:scale-110 transition-all" 
+                       class="w-7 h-7 flex items-center justify-center text-slate-700 hover:text-[#0a2558] hover:scale-110 transition-all" 
                        aria-label="LinkedIn">
                         <i class="fa-brands fa-linkedin-in text-base"></i>
                     </a>
                     <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" 
-                       class="w-7 h-7 flex items-center justify-center text-slate-700 hover:text-[#355bdc] hover:scale-110 transition-all" 
+                       class="w-7 h-7 flex items-center justify-center text-slate-700 hover:text-[#0a2558] hover:scale-110 transition-all" 
                        aria-label="YouTube">
                         <i class="fa-brands fa-youtube text-lg"></i>
                     </a>
                     <a href="https://x.com" target="_blank" rel="noopener noreferrer" 
-                       class="w-7 h-7 flex items-center justify-center text-slate-700 hover:text-[#355bdc] hover:scale-110 transition-all" 
+                       class="w-7 h-7 flex items-center justify-center text-slate-700 hover:text-[#0a2558] hover:scale-110 transition-all" 
                        aria-label="X (Twitter)">
                         <i class="fa-brands fa-x-twitter text-base"></i>
                     </a>
                     <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" 
-                       class="w-7 h-7 flex items-center justify-center text-slate-700 hover:text-[#355bdc] hover:scale-110 transition-all" 
+                       class="w-7 h-7 flex items-center justify-center text-slate-700 hover:text-[#0a2558] hover:scale-110 transition-all" 
                        aria-label="TikTok">
                         <i class="fa-brands fa-tiktok text-base"></i>
                     </a>
@@ -163,29 +163,5 @@
                 </p>
             </div>
 
-        </div>
-
-        {{-- ── Floating Assistant Card (Sesuai Referensi di Pojok Kanan Bawah) ── --}}
-        <div class="fixed bottom-6 right-6 z-40 bg-white rounded-2xl p-3 px-4 shadow-xl border border-slate-100 hidden sm:flex flex-col items-center text-center max-w-[210px] cursor-pointer hover:shadow-2xl hover:-translate-y-1 transition-all group"
-             @click="openModalPengaduan = true"
-             title="Bantuan & Layanan Pengaduan">
-            {{-- Mascot Icon with Star --}}
-            <div class="relative mb-1">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#355bdc] via-[#ca6673] to-[#ff9800] p-0.5 flex items-center justify-center shadow-xs">
-                    <div class="w-full h-full bg-white rounded-full flex items-center justify-center">
-                        <svg class="w-6 h-6 text-[#355bdc]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                </div>
-                <span class="absolute -top-1 -right-1 text-amber-400 text-xs animate-pulse">✦</span>
-            </div>
-            
-            <p class="text-[11px] font-bold text-slate-800 leading-tight">
-                Hi! Butuh bantuan layanan?
-            </p>
-            <p class="text-[10px] text-slate-500 leading-tight mt-0.5">
-                Konsultasi & Pengaduan Warga
-            </p>
         </div>
     </footer>

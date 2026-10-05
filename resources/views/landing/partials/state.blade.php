@@ -1,4 +1,4 @@
-﻿<script>
+<script>
     function landingApp() {
         return {
           mobileNav: false,
@@ -68,6 +68,13 @@
               clearInterval(this.timer);
           },
 
+          init() {
+              window.addEventListener('open-auth-modal', (e) => {
+                  const tab = (e && e.detail) ? e.detail : 'login';
+                  this.openAuthModal(tab);
+              });
+          },
+
           {{-- PPID & Interactivity State --}}
           showPpidModal: false,
           showPpidSuccessModal: false,
@@ -80,6 +87,76 @@
           ppidSearch: '',
           toast: { show: false, message: '', type: 'success' },
           toastTimeout: null,
+
+          {{-- Auth Modal Popup State (Login & Register Floating Dialog) --}}
+          showAuthModal: {{ ($errors->any() || session('login_failed') || session('register_failed') || request()->has('login') || request()->has('register')) ? 'true' : 'false' }},
+          authTab: '{{ (old('nama_depan') || $errors->has('nama_depan') || $errors->has('nama_belakang') || $errors->has('password_confirmation') || request()->has('register')) ? 'register' : 'login' }}',
+          showPasswordLogin: false,
+          showPasswordReg: false,
+          showPasswordConfirmReg: false,
+
+          openAuthModal(tab = 'login') {
+              window.location.href = tab === 'register' ? '{{ route('register') }}' : '{{ route('login') }}';
+          },
+
+          closeAuthModal() {
+              this.showAuthModal = false;
+          },
+
+          switchAuthTab(tab) {
+              this.authTab = tab;
+              this.$nextTick(() => { window.lucide?.createIcons(); });
+          },
+
+          handleGoogleSignIn() {
+              if (window.Swal) {
+                  Swal.fire({
+                      title: 'Google Sign-In',
+                      text: 'Fitur Masuk dengan Akun Google sedang disiapkan oleh Diskominfo Kab. Tasikmalaya. Silakan masuk menggunakan Email / NIK dan kata sandi Anda.',
+                      icon: 'info',
+                      confirmButtonColor: '#3264e6',
+                      customClass: { popup: 'rounded-2xl shadow-2xl p-6' }
+                  });
+              } else {
+                  alert('Fitur Google Sign-In sedang disiapkan.');
+              }
+          },
+
+          handleForgotPassword() {
+              if (window.Swal) {
+                  Swal.fire({
+                      title: 'Lupa Kata Sandi?',
+                      text: 'Silakan hubungi administrator Dinas Kominfo Kabupaten Tasikmalaya atau hubungi Call Center 112 untuk verifikasi identitas dan bantuan pemulihan kata sandi akun Anda.',
+                      icon: 'info',
+                      confirmButtonColor: '#3264e6',
+                      customClass: { popup: 'rounded-2xl shadow-2xl p-6' }
+                  });
+              } else {
+                  alert('Silakan hubungi administrator Diskominfo untuk pemulihan kata sandi.');
+              }
+          },
+
+          showTermsModal() {
+              if (window.Swal) {
+                  Swal.fire({
+                      title: 'Terms & Conditions',
+                      text: 'Ketentuan dan Persyaratan Penggunaan Layanan Publik Terpadu Pemerintah Kabupaten Tasikmalaya.',
+                      icon: 'info',
+                      confirmButtonColor: '#3264e6'
+                  });
+              }
+          },
+
+          showPrivacyModal() {
+              if (window.Swal) {
+                  Swal.fire({
+                      title: 'Privacy Policy',
+                      text: 'Kebijakan Privasi dan Perlindungan Data Pemohon Layanan Publik Pemerintah Kabupaten Tasikmalaya.',
+                      icon: 'info',
+                      confirmButtonColor: '#3264e6'
+                  });
+              }
+          },
 
           triggerToast(msg, type = 'success') {
               if (this.toastTimeout) clearTimeout(this.toastTimeout);

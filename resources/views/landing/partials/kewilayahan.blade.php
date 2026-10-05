@@ -1,4 +1,4 @@
-﻿    @php
+    @php
         $kecamatanTableData = $kecamatans->map(function ($kec) {
             $actualDesas = $kec->desas ?? collect();
             $desaCount = $kec->total_desa;
@@ -27,7 +27,7 @@
     @endphp
 
     <section id="kewilayahan"
-             class="pt-12 pb-20 bg-[#8cb7ee] relative overflow-hidden"
+             class="py-20 bg-gradient-to-b from-slate-50 via-white to-slate-50/80 border-t border-slate-200/80 relative overflow-hidden scroll-mt-14"
              x-data="{
                  searchQuery: '',
                  perPage: 10,
@@ -93,109 +93,215 @@
                  }
              }">
 
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {{-- Subtle ambient blur decorative accents --}}
+        <div class="absolute -top-32 -right-32 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-slate-400/5 rounded-full blur-3xl pointer-events-none"></div>
 
-            {{-- 1. Dark Navy Title Banner Pill (Identik dengan Screenshot) --}}
-            <div class="flex justify-center mb-6">
-                <div class="bg-[#0e3a6c] text-white font-bold text-lg sm:text-2xl px-8 sm:px-14 py-3 rounded-lg shadow-md border border-white/10 tracking-wide text-center">
-                    Tabel Data Kecamatan Kabupaten Tasikmalaya
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+            {{-- 1. Section Header: Executive Government Style --}}
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-[#0a2558] border border-blue-200/80 text-xs font-bold shadow-2xs mb-3">
+                    <i data-lucide="map" class="w-3.5 h-3.5 text-[#0a2558]"></i>
+                    <span>Pemerintah Kabupaten Tasikmalaya</span>
+                    <span class="w-1 h-1 rounded-full bg-blue-300"></span>
+                    <span class="text-slate-500 font-medium">Data Administrasi Kewilayahan</span>
+                </div>
+
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                    Tabel Data Kecamatan & Kelurahan
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed max-w-2xl mx-auto">
+                    Transparansi data persebaran wilayah administratif meliputi <strong>39 Kecamatan</strong>, <strong>351 Desa/Kelurahan</strong>, serta cakupan Rukun Warga (RW) dan Rukun Tetangga (RT) di Kabupaten Tasikmalaya.
+                </p>
+
+                {{-- Quick Summary KPI Cards --}}
+                <div class="flex flex-wrap items-center justify-center gap-3 pt-6">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs text-xs font-semibold text-slate-700">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#0a2558]"></span>
+                        <span>Total: <strong class="text-slate-900 font-extrabold">39 Kecamatan</strong></span>
+                    </div>
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs text-xs font-semibold text-slate-700">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                        <span>Total: <strong class="text-slate-900 font-extrabold">351 Desa / Kelurahan</strong></span>
+                    </div>
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs text-xs font-semibold text-slate-700">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                        <span>Status Sistem: <strong class="text-emerald-700 font-extrabold">Terintegrasi Online</strong></span>
+                    </div>
                 </div>
             </div>
 
             {{-- 2. White Card Container --}}
-            <div class="bg-white rounded-2xl shadow-xl border border-slate-200/80 p-5 sm:p-8">
+            <div class="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200/80 overflow-hidden">
 
-                {{-- Controls Row: Filter (Left) & Show (Right) --}}
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6">
-                    {{-- Filter Input --}}
-                    <div class="flex items-center gap-2">
-                        <label for="kecamatanFilter" class="text-sm font-semibold text-slate-700">Filter:</label>
-                        <div class="relative w-full sm:w-64">
-                            <input id="kecamatanFilter"
-                                   type="text"
-                                   x-model="searchQuery"
-                                   @input="currentPage = 1"
-                                   placeholder="Type to filter..."
-                                   class="w-full pl-3 pr-9 py-1.5 text-sm bg-white border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 text-slate-800 placeholder-slate-400">
-                            <div class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                {{-- Controls Toolbar: Search (Left) & Show Entries + Counter (Right) --}}
+                <div class="p-4 sm:p-5 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3.5">
+                    
+                    {{-- Search Input with Clear Button --}}
+                    <div class="relative w-full sm:w-80">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <input id="kecamatanFilter"
+                               type="text"
+                               x-model="searchQuery"
+                               @input="currentPage = 1"
+                               placeholder="Cari kecamatan, kode, atau desa..."
+                               class="w-full pl-9 pr-9 py-2 text-xs sm:text-sm bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0a2558]/20 focus:border-[#0a2558] text-slate-800 placeholder-slate-400 shadow-2xs transition-all">
+                        <button x-show="searchQuery"
+                                @click="searchQuery = ''; currentPage = 1"
+                                type="button"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                                title="Hapus pencarian">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    {{-- Right Controls: Results Count & Show Dropdown --}}
+                    <div class="flex items-center justify-between sm:justify-end gap-3 text-xs">
+                        <div class="text-slate-500 font-medium">
+                            Ditemukan <strong class="text-[#0a2558] font-bold" x-text="filteredData.length"></strong> wilayah
+                        </div>
+
+                        <div class="flex items-center gap-1.5">
+                            <label for="showPerPage" class="font-semibold text-slate-600">Tampilkan:</label>
+                            <div class="relative">
+                                <select id="showPerPage"
+                                        x-model="perPage"
+                                        @change="currentPage = 1"
+                                        class="appearance-none bg-white border border-slate-200 rounded-xl px-3 py-1.5 pr-8 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#0a2558]/20 focus:border-[#0a2558] shadow-2xs cursor-pointer">
+                                    <option value="10">10 data</option>
+                                    <option value="25">25 data</option>
+                                    <option value="50">50 data</option>
+                                    <option value="999">Semua</option>
+                                </select>
+                                <svg class="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
                             </div>
                         </div>
                     </div>
-
-                    {{-- Show Per Page Select --}}
-                    <div class="flex items-center justify-end gap-2">
-                        <label for="showPerPage" class="text-sm font-semibold text-slate-700">Show:</label>
-                        <div class="relative">
-                            <select id="showPerPage"
-                                    x-model="perPage"
-                                    @change="currentPage = 1"
-                                    class="appearance-none bg-white border border-slate-300 rounded px-3 py-1.5 pr-8 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 cursor-pointer">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="999">Semua</option>
-                            </select>
-                            <svg class="w-4 h-4 text-slate-500 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </div>
-                    </div>
                 </div>
 
-                {{-- Table Responsive Wrapper --}}
-                <div class="overflow-x-auto rounded border border-slate-200">
+                {{-- Table Responsive Area --}}
+                <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left border-collapse">
-                        {{-- Blue Header Sesuai Screenshot --}}
+                        {{-- Executive Navy Header --}}
                         <thead>
-                            <tr class="bg-[#0088e8] text-white font-bold select-none text-xs sm:text-sm">
-                                <th scope="col" @click="sortBy('nama')" class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-[#007cd3] transition-colors">
-                                    <div class="flex items-center gap-1.5">
-                                        <span>Kecamatan</span>
-                                        <span class="text-sky-200 text-xs" :class="{ 'text-white font-extrabold': sortCol === 'nama' }">â†•</span>
+                            <tr class="bg-[#0a2558] text-white font-bold select-none text-xs tracking-wider uppercase">
+                                <th scope="col" class="py-3.5 px-4 sm:px-5 w-14 text-center text-blue-200 font-semibold">
+                                    No
+                                </th>
+                                <th scope="col" @click="sortBy('nama')" class="py-3.5 px-4 sm:px-6 cursor-pointer hover:bg-[#0d3070] transition-colors group">
+                                    <div class="flex items-center justify-between gap-2">
+                                        <span>Kecamatan & Kode</span>
+                                        <span class="inline-flex items-center text-blue-200 group-hover:text-white"
+                                              :class="{ 'text-amber-300 font-black': sortCol === 'nama' }">
+                                            <svg class="w-3.5 h-3.5 transition-transform" :class="sortCol === 'nama' && !sortAsc ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 11l5-5 5 5M7 13l5 5 5-5" />
+                                            </svg>
+                                        </span>
                                     </div>
                                 </th>
-                                <th scope="col" @click="sortBy('desa_count')" class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-[#007cd3] transition-colors">
-                                    <div class="flex items-center gap-1.5">
-                                        <span>Kelurahan</span>
-                                        <span class="text-sky-200 text-xs" :class="{ 'text-white font-extrabold': sortCol === 'desa_count' }">â†•</span>
+                                <th scope="col" @click="sortBy('desa_count')" class="py-3.5 px-4 sm:px-6 cursor-pointer hover:bg-[#0d3070] transition-colors group text-center sm:text-left">
+                                    <div class="flex items-center justify-center sm:justify-between gap-2">
+                                        <span>Desa / Kelurahan</span>
+                                        <span class="inline-flex items-center text-blue-200 group-hover:text-white"
+                                              :class="{ 'text-amber-300 font-black': sortCol === 'desa_count' }">
+                                            <svg class="w-3.5 h-3.5 transition-transform" :class="sortCol === 'desa_count' && !sortAsc ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 11l5-5 5 5M7 13l5 5 5-5" />
+                                            </svg>
+                                        </span>
                                     </div>
                                 </th>
-                                <th scope="col" @click="sortBy('rw_count')" class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-[#007cd3] transition-colors">
-                                    <div class="flex items-center gap-1.5">
+                                <th scope="col" @click="sortBy('rw_count')" class="py-3.5 px-4 sm:px-6 cursor-pointer hover:bg-[#0d3070] transition-colors group text-center">
+                                    <div class="flex items-center justify-center gap-1.5">
                                         <span>RW</span>
-                                        <span class="text-sky-200 text-xs" :class="{ 'text-white font-extrabold': sortCol === 'rw_count' }">â†•</span>
+                                        <span class="inline-flex items-center text-blue-200 group-hover:text-white"
+                                              :class="{ 'text-amber-300 font-black': sortCol === 'rw_count' }">
+                                            <svg class="w-3 h-3 transition-transform" :class="sortCol === 'rw_count' && !sortAsc ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 11l5-5 5 5M7 13l5 5 5-5" />
+                                            </svg>
+                                        </span>
                                     </div>
                                 </th>
-                                <th scope="col" @click="sortBy('rt_count')" class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-[#007cd3] transition-colors">
-                                    <div class="flex items-center gap-1.5">
+                                <th scope="col" @click="sortBy('rt_count')" class="py-3.5 px-4 sm:px-6 cursor-pointer hover:bg-[#0d3070] transition-colors group text-center">
+                                    <div class="flex items-center justify-center gap-1.5">
                                         <span>RT</span>
-                                        <span class="text-sky-200 text-xs" :class="{ 'text-white font-extrabold': sortCol === 'rt_count' }">â†•</span>
+                                        <span class="inline-flex items-center text-blue-200 group-hover:text-white"
+                                              :class="{ 'text-amber-300 font-black': sortCol === 'rt_count' }">
+                                            <svg class="w-3 h-3 transition-transform" :class="sortCol === 'rt_count' && !sortAsc ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 11l5-5 5 5M7 13l5 5 5-5" />
+                                            </svg>
+                                        </span>
                                     </div>
                                 </th>
-                                <th scope="col" class="py-3 px-4 sm:px-6 text-center">
-                                    Detail
+                                <th scope="col" class="py-3.5 px-4 sm:px-6 text-center w-28">
+                                    Aksi
                                 </th>
                             </tr>
                         </thead>
 
                         {{-- Body Rows --}}
-                        <tbody class="divide-y divide-slate-200 bg-white">
+                        <tbody class="divide-y divide-slate-100 bg-white">
                             <template x-for="(item, idx) in paginatedData" :key="item.id">
-                                <tr class="hover:bg-sky-50/40 transition-colors text-slate-700">
-                                    <td class="py-3.5 px-4 sm:px-6 font-medium text-slate-900">
-                                        <span x-text="item.nama"></span>
+                                <tr @click="openDetail(item)"
+                                    class="odd:bg-white even:bg-slate-50/40 hover:bg-blue-50/50 transition-colors cursor-pointer group text-slate-700">
+                                    
+                                    {{-- Index Number --}}
+                                    <td class="py-3.5 px-4 sm:px-5 text-center text-xs font-semibold text-slate-400 font-mono"
+                                        x-text="((currentPage - 1) * (perPage >= 999 ? 0 : perPage)) + idx + 1">
                                     </td>
-                                    <td class="py-3.5 px-4 sm:px-6 text-slate-600" x-text="item.desa_count"></td>
-                                    <td class="py-3.5 px-4 sm:px-6 text-slate-600" x-text="item.rw_count"></td>
-                                    <td class="py-3.5 px-4 sm:px-6 text-slate-600" x-text="item.rt_count"></td>
+
+                                    {{-- Kecamatan & Kode Wilayah --}}
+                                    <td class="py-3.5 px-4 sm:px-6">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-lg bg-blue-50 text-[#0a2558] border border-blue-100 flex items-center justify-center flex-shrink-0 group-hover:bg-[#0a2558] group-hover:text-white transition-all shadow-2xs">
+                                                <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-slate-900 group-hover:text-[#0a2558] transition-colors text-sm" x-text="item.nama"></div>
+                                                <div class="text-[10px] text-slate-400 font-mono tracking-wider" x-text="item.kode"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    {{-- Desa / Kelurahan Count Badge --}}
+                                    <td class="py-3.5 px-4 sm:px-6 text-center sm:text-left">
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-50/80 text-[#0a2558] border border-blue-100/90 shadow-2xs">
+                                            <i data-lucide="home" class="w-3.5 h-3.5 text-blue-500"></i>
+                                            <span x-text="item.desa_count + ' Desa'"></span>
+                                        </span>
+                                    </td>
+
+                                    {{-- RW Count Badge --}}
                                     <td class="py-3.5 px-4 sm:px-6 text-center">
+                                        <span class="inline-flex items-center justify-center min-w-[50px] px-2 py-0.5 rounded-md text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200/60 font-mono"
+                                              x-text="item.rw_count">
+                                        </span>
+                                    </td>
+
+                                    {{-- RT Count Badge --}}
+                                    <td class="py-3.5 px-4 sm:px-6 text-center">
+                                        <span class="inline-flex items-center justify-center min-w-[50px] px-2 py-0.5 rounded-md text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200/60 font-mono"
+                                              x-text="item.rt_count">
+                                        </span>
+                                    </td>
+
+                                    {{-- Action Button --}}
+                                    <td class="py-3.5 px-4 sm:px-6 text-center" @click.stop>
                                         <button type="button"
                                                 @click="openDetail(item)"
-                                                class="inline-block bg-[#102a43] hover:bg-[#0a2558] text-white text-xs font-semibold px-4 py-1.5 rounded shadow-2xs transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-600/30">
-                                            Detail
+                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-[#0a2558] text-slate-700 hover:text-white border border-slate-200 hover:border-[#0a2558] transition-all shadow-2xs group/btn cursor-pointer">
+                                            <span>Detail</span>
+                                            <svg class="w-3 h-3 transition-transform group-hover/btn:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+                                            </svg>
                                         </button>
                                     </td>
                                 </tr>
@@ -203,8 +309,21 @@
 
                             {{-- Empty State --}}
                             <tr x-show="filteredData.length === 0">
-                                <td colspan="5" class="py-10 text-center text-slate-400">
-                                    <p class="font-medium text-sm">Tidak ada data kecamatan yang sesuai dengan filter pencarian.</p>
+                                <td colspan="6" class="py-12 text-center text-slate-500 bg-slate-50/50">
+                                    <div class="w-12 h-12 rounded-2xl bg-white border border-slate-200 text-slate-400 flex items-center justify-center mx-auto mb-2.5 shadow-2xs">
+                                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <p class="font-bold text-sm text-slate-700">Tidak ada kecamatan yang cocok</p>
+                                    <p class="text-xs text-slate-400 mt-0.5 max-w-sm mx-auto">
+                                        Pencarian dengan kata kunci "<span class="font-bold text-slate-700" x-text="searchQuery"></span>" tidak menemukan hasil.
+                                    </p>
+                                    <button type="button"
+                                            @click="searchQuery = ''; currentPage = 1"
+                                            class="mt-3 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-[#0a2558] bg-blue-50 hover:bg-blue-100 transition-colors cursor-pointer">
+                                        Reset Filter Pencarian
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -212,7 +331,7 @@
                 </div>
 
                 {{-- Pagination & Summary Footer --}}
-                <div class="mt-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-slate-600">
+                <div class="p-4 sm:p-5 border-t border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600">
                     <div>
                         Menampilkan
                         <span class="font-bold text-slate-900" x-text="filteredData.length === 0 ? 0 : ((currentPage - 1) * perPage + 1)"></span>
@@ -220,31 +339,39 @@
                         <span class="font-bold text-slate-900" x-text="Math.min(currentPage * perPage, filteredData.length)"></span>
                         dari
                         <span class="font-bold text-slate-900" x-text="filteredData.length"></span>
-                        data kecamatan
+                        wilayah kecamatan
                     </div>
 
                     <div class="flex items-center gap-1" x-show="totalPages > 1">
                         <button type="button"
                                 @click="currentPage = Math.max(1, currentPage - 1)"
                                 :disabled="currentPage === 1"
-                                class="px-3 py-1.5 rounded border border-slate-200 text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed font-medium transition-colors">
-                            Sebelumnya
+                                class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed font-semibold transition-all shadow-2xs flex items-center gap-1 cursor-pointer">
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            <span>Sebelumnya</span>
                         </button>
 
-                        <template x-for="p in totalPages" :key="p">
-                            <button type="button"
-                                    @click="currentPage = p"
-                                    x-text="p"
-                                    class="px-3 py-1.5 rounded border font-medium transition-colors"
-                                    :class="currentPage === p ? 'bg-[#0088e8] border-[#0088e8] text-white font-bold' : 'border-slate-200 text-slate-700 hover:bg-slate-100'">
-                            </button>
-                        </template>
+                        <div class="flex items-center gap-1 px-1">
+                            <template x-for="p in totalPages" :key="p">
+                                <button type="button"
+                                        @click="currentPage = p"
+                                        x-text="p"
+                                        class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border text-xs font-bold transition-all flex items-center justify-center shadow-2xs cursor-pointer"
+                                        :class="currentPage === p ? 'bg-[#0a2558] border-[#0a2558] text-white shadow-xs' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-100'">
+                                </button>
+                            </template>
+                        </div>
 
                         <button type="button"
                                 @click="currentPage = Math.min(totalPages, currentPage + 1)"
                                 :disabled="currentPage === totalPages"
-                                class="px-3 py-1.5 rounded border border-slate-200 text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed font-medium transition-colors">
-                            Selanjutnya
+                                class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed font-semibold transition-all shadow-2xs flex items-center gap-1 cursor-pointer">
+                            <span>Selanjutnya</span>
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -394,7 +521,7 @@
                         </a>
                     @else
                         <a href="{{ route('login') }}"
-                           class="px-5 py-2 text-xs font-bold text-white bg-[#0a2558] hover:bg-[#0d3070] rounded-xl shadow-md transition-all">
+                           class="px-5 py-2 text-xs font-bold text-white bg-[#0a2558] hover:bg-[#0d3070] rounded-xl shadow-md transition-all cursor-pointer">
                             Masuk & Ajukan Layanan
                         </a>
                     @endauth

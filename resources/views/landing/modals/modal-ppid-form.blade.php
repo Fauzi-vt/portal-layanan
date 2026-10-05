@@ -1,4 +1,4 @@
-﻿    {{-- 1. MODAL: FORMULIR PERMOHONAN INFORMASI PUBLIK (PPID ONLINE) --}}
+    {{-- 1. MODAL: FORMULIR PERMOHONAN INFORMASI PUBLIK (PPID ONLINE) --}}
     <div x-show="showPpidModal"
          x-cloak
          class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
@@ -233,3 +233,5 @@
             </form>
 
         </div>
+
+    </div>

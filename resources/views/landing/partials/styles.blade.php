@@ -29,8 +29,8 @@
             margin-bottom: 36px;
         }
         .aiclass-filter-btn {
-            color: #666666;
-            border: solid 1px #666666;
+            color: #475569;
+            border: solid 1.5px #cbd5e1;
             background: #ffffff;
             font-weight: 700;
             font-size: 0.95rem;
@@ -41,11 +41,21 @@
             outline: none;
             text-decoration: none;
         }
-        .aiclass-filter-btn.active, .aiclass-filter-btn:hover {
-            background: linear-gradient(-90deg, #ca6673 0%, #9177c7 50%, #4796e3 100%) !important;
+        .aiclass-filter-btn:hover {
+            color: #0a2558;
+            border-color: #0a2558;
+            background: #f8fafc;
+        }
+        .aiclass-filter-btn.active {
+            background: #0a2558 !important;
             color: #ffffff !important;
-            border-color: transparent !important;
-            box-shadow: 0 4px 14px rgba(71, 150, 227, 0.25);
+            border-color: #0a2558 !important;
+            box-shadow: 0 4px 14px rgba(10, 37, 88, 0.25);
+        }
+        .aiclass-filter-btn.active:hover {
+            background: #0d3070 !important;
+            color: #ffffff !important;
+            border-color: #0d3070 !important;
         }
         /* ── Track Carousel ── */
         .aiclass-track {
@@ -61,12 +71,12 @@
             display: none;
         }
 
-        /* ── Base Card: Sudut 90 Derajat (Kotak Siku), Memuat Tepat 4 Card di Layar Desktop ── */
+        /* ── Base Card: Sudut Siku 90 Derajat Luar, Gambar Melengkung (Rounded 16px), Garis & Tombol Persis Referensi ── */
         .aiclass-card {
             background: #ffffff;
-            border: 1.5px solid #94a3b8;
+            border: 1px solid #71717a;
             border-radius: 0px;
-            padding: 14px 14px 0 14px;
+            padding: 15px 15px 0 15px;
             text-align: left;
             text-decoration: none;
             display: flex;
@@ -74,11 +84,11 @@
             justify-content: space-between;
             position: relative;
             overflow: hidden;
-            height: 405px;
+            height: 406px;
             box-sizing: border-box;
             flex-shrink: 0;
             transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-            box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
             /* Default 4 card: (100% - 3 * 20px gap) / 4 */
             width: calc((100% - 60px) / 4);
             min-width: calc((100% - 60px) / 4);
@@ -108,18 +118,18 @@
 
         .aiclass-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-            border-color: #475569;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+            border-color: #3f3f46;
         }
         .aiclass-card .card-img-wrap {
-            border-radius: 0px;
+            border-radius: 16px;
             overflow: hidden;
             aspect-ratio: 16 / 9;
             width: 100%;
             background-color: #f1f5f9;
         }
         .aiclass-card .card-img-wrap img {
-            border-radius: 0px;
+            border-radius: 16px;
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -130,14 +140,14 @@
             transform: scale(1.05);
         }
         .aiclass-card .tags {
-            margin-top: 10px;
+            margin-top: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .aiclass-card .tags .competency {
             display: inline-block;
-            border-radius: 4px;
+            border-radius: 5px;
             background-color: #355bdc;
             font-weight: 700;
             padding: 3px 8px;
@@ -149,7 +159,7 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            border-radius: 4px;
+            border-radius: 5px;
             background-color: #e84435;
             font-weight: 700;
             padding: 3px 8px;
@@ -158,38 +168,48 @@
             line-height: 1.2;
         }
         .aiclass-card h5 {
-            margin-top: 8px;
+            margin-top: 10px;
             margin-bottom: 0;
             font-weight: 700;
             font-size: 1.05rem;
             color: #0f172a;
-            height: 52px;
+            height: 50px;
             display: flex;
             align-items: center;
             line-height: 1.35;
             overflow: hidden;
         }
+        .aiclass-card .card-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+        }
         .aiclass-card .meta-row {
-            margin-top: 8px;
-            border-top: solid 1px #000000;
-            border-bottom: solid 1px #000000;
-            font-size: 0.72rem;
-            color: #333333;
+            width: 100%;
+            margin-top: 12px;
+            border-top: 1px solid #71717a;
+            border-bottom: 1px solid #71717a;
+            font-size: 0.75rem;
+            color: #52525b;
             padding: 6px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
         .aiclass-card .btn-detail {
             background-color: #ff9800;
             font-weight: 700;
             color: #ffffff !important;
-            border-radius: 8px 8px 0 0;
+            border-radius: 14px 14px 0 0;
             font-size: 0.78rem;
-            padding: 8px 24px;
-            display: inline-block;
+            padding: 6px 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 0;
+            vertical-align: bottom;
             transition: background-color 0.2s ease;
             text-decoration: none;
             border: none;
@@ -212,7 +232,7 @@
         .aiclass-counter {
             font-size: 0.95rem;
             font-weight: 700;
-            color: #1e293b;
+            color: #0a2558;
             min-width: 45px;
             flex-shrink: 0;
             letter-spacing: -0.01em;
@@ -232,7 +252,7 @@
             top: 0;
             left: 0;
             height: 100%;
-            background: #e84435;
+            background: #0a2558;
             border-radius: 99px;
             transition: left 0.15s ease-out, width 0.2s ease;
         }
@@ -246,7 +266,7 @@
             width: 38px;
             height: 38px;
             border-radius: 50%;
-            border: solid 1.5px #94a3b8;
+            border: solid 1.5px #cbd5e1;
             background: #ffffff;
             color: #475569;
             display: flex;
@@ -258,10 +278,10 @@
             outline: none;
         }
         .aiclass-nav-arrow:hover {
-            border-color: #0f172a;
-            color: #0f172a;
-            background-color: #f8fafc;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            border-color: #0a2558;
+            color: #0a2558;
+            background-color: #f0f7ff;
+            box-shadow: 0 2px 6px rgba(10, 37, 88, 0.12);
         }
         .aiclass-nav-arrow:active {
             transform: scale(0.94);
@@ -269,7 +289,7 @@
 
         /* â”€â”€ Exact AICLASSASEAN Style Header Login Button â”€â”€ */
         .btn-join {
-            background-color: #355bdc;
+            background-color: #0a2558;
             color: #ffffff !important;
             font-weight: 700;
             padding: 5px 6px 5px 12px;
@@ -281,7 +301,7 @@
             font-size: 0.85rem;
             line-height: 1.2;
             transition: all 0.25s ease;
-            box-shadow: 0 2px 6px rgba(53, 91, 220, 0.2);
+            box-shadow: 0 2px 6px rgba(10, 37, 88, 0.2);
             cursor: pointer;
         }
         .btn-join span {
@@ -290,7 +310,7 @@
             justify-content: center;
             background-color: #ffffff;
             border-radius: 4px;
-            color: #355bdc;
+            color: #0a2558;
             width: 20px;
             height: 20px;
             margin-left: 8px;
@@ -298,13 +318,13 @@
             transition: transform 0.2s ease;
         }
         .btn-join:hover {
-            background: linear-gradient(-90deg, #ca6673 0%, #9177c7 50%, #4796e3 100%) !important;
+            background: #0d3070 !important;
             color: #ffffff !important;
-            box-shadow: 0 4px 14px rgba(71, 150, 227, 0.35);
+            box-shadow: 0 4px 14px rgba(10, 37, 88, 0.35);
         }
         .btn-join:hover span {
             transform: translateX(2px);
-            color: #ca6673;
+            color: #0d3070;
         }
 
         [x-cloak] { display: none !important; }

@@ -1,4 +1,4 @@
-﻿    {{-- 5. MODAL: LAYANAN ASPIRASI & PENGADUAN (SP4N-LAPOR!) --}}
+    {{-- 5. MODAL: LAYANAN ASPIRASI & PENGADUAN (SP4N-LAPOR!) --}}
     <div x-show="showPengaduanModal"
          x-cloak
          class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
@@ -90,3 +90,5 @@
             </div>
 
         </div>
+
+    </div>

@@ -1,4 +1,4 @@
-﻿    {{-- 2. MODAL: BUKTI TANDA TERIMA / SUKSES REGISTRASI PERMOHONAN PPID --}}
+    {{-- 2. MODAL: BUKTI TANDA TERIMA / SUKSES REGISTRASI PERMOHONAN PPID --}}
     <div x-show="showPpidSuccessModal"
          x-cloak
          class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
@@ -90,3 +90,5 @@
             </div>
 
         </div>
+
+    </div>

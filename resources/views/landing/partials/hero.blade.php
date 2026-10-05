@@ -1,4 +1,4 @@
-﻿    <section class="relative text-white pt-20 sm:pt-24 pb-32 sm:pb-36 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-[580px] sm:min-h-[640px] flex items-center justify-center"
+    <section class="relative text-white pt-20 sm:pt-24 pb-32 sm:pb-36 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-[580px] sm:min-h-[640px] flex items-center justify-center"
              @mouseenter="stopAutoPlay()"
              @mouseleave="startAutoPlay()">
 
@@ -51,12 +51,12 @@
                     {{-- CTA Buttons --}}
                     <div class="pt-6 flex flex-wrap justify-center gap-4">
                         <a :href="slide.ctaLink"
-                           class="px-7 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 flex items-center gap-2">
+                           class="px-7 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer">
                             <span x-text="slide.ctaText"></span>
                             <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </a>
                         <a :href="slide.btnSecLink"
-                           class="px-7 py-3.5 rounded-full text-xs sm:text-sm font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md transition-all flex items-center gap-2">
+                           class="px-7 py-3.5 rounded-full text-xs sm:text-sm font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md transition-all flex items-center gap-2 cursor-pointer">
                             <span x-text="slide.btnSec"></span>
                         </a>
                     </div>

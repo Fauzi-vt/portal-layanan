@@ -177,11 +177,11 @@
             
             {{-- Header (Meniru Persis Tata Letak & Tipografi Referensi) --}}
             <div class="text-center mb-4">
-                <h3 style="color: #355bdc; font-weight: 800; font-size: 1rem; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px;">
+                <h3 style="color: #0a2558; font-weight: 800; font-size: 1rem; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px;">
                     LAYANAN KAMI
                 </h3>
                 <h4 style="font-weight: 700; font-size: 2.5rem; letter-spacing: -0.02em; margin-bottom: 24px; line-height: 1.2;">
-                    <span style="color: #e84435;">Layanan</span> <span style="color: #000000;">Terpopuler Kami</span>
+                    <span style="color: #0a2558;">Layanan</span> <span style="color: #0f172a;">Terpopuler Kami</span>
                 </h4>
 
                 {{-- Filter Pills Bar (Meniru Persis Bentuk, Border, & Gradien Tombol Aktif) --}}
@@ -248,17 +248,17 @@
                                 <h5 x-text="item.title"></h5>
                             </div>
 
-                            <div>
-                                {{-- Metadata Row with Black Borders --}}
+                            <div class="card-bottom">
+                                {{-- Metadata Row with Borders --}}
                                 <div class="meta-row">
                                     <span style="display: flex; align-items: center; gap: 6px;">
-                                        <svg class="w-3.5 h-3.5 inline-block text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg class="w-3.5 h-3.5 inline-block text-[#52525b]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                         </svg>
                                         <span x-text="item.modules"></span>
                                     </span>
                                     <span style="display: flex; align-items: center; gap: 6px;">
-                                        <svg class="w-3.5 h-3.5 inline-block text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg class="w-3.5 h-3.5 inline-block text-[#52525b]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                         </svg>
                                         <span x-text="item.learners"></span>

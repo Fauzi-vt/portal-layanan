@@ -1,4 +1,4 @@
-﻿    <header class="fixed top-0 inset-x-0 z-50 bg-white/98 backdrop-blur-md border-b border-slate-200/80 shadow-2xs">
+    <header class="fixed top-0 inset-x-0 z-50 bg-white/98 backdrop-blur-md border-b border-slate-200/80 shadow-2xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-[58px] flex items-center justify-between">
             
             {{-- Left Side: Brand Logo + Slogan/Co-brand + "Katalog Layanan" Button --}}
@@ -21,7 +21,7 @@
                     
                     <button type="button"
                             @click="dropdownLayanan = !dropdownLayanan; dropdownPpid = false; $nextTick(() => window.lucide?.createIcons())"
-                            class="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-[#ea546c] hover:bg-[#d9445c] text-white text-xs font-bold flex items-center gap-1.5 shadow-2xs hover:shadow-xs transition-all cursor-pointer focus:outline-none">
+                            class="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-[#0a2558] hover:bg-[#0d3070] text-white text-xs font-bold flex items-center gap-1.5 shadow-2xs hover:shadow-xs transition-all cursor-pointer focus:outline-none">
                         <svg class="w-3.5 h-3.5 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -313,7 +313,6 @@
                     <span class="text-[10px] font-bold text-slate-700">ID</span>
                 </div>
 
-                {{-- Exact AICLASSASEAN Style Login Button: [.btn-join] --}}
                 @auth
                     <a href="{{ route('dashboard') }}" class="nav-link btn-join">
                         Dashboard <span><i class="fa-solid fa-chevron-right"></i></span>
@@ -345,14 +344,14 @@
                 <button type="button"
                         @click="mobileLayanan = !mobileLayanan"
                         class="w-full py-2 px-3 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-800 flex items-center justify-between text-xs">
-                    <span class="flex items-center gap-1.5 text-[#ea546c] font-bold">
+                    <span class="flex items-center gap-1.5 text-[#0a2558] font-bold">
                         <svg class="w-3.5 h-3.5 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                         <span>Katalog Layanan</span>
                     </span>
                     <svg class="w-3.5 h-3.5 transition-transform duration-200 text-slate-400"
-                         :class="mobileLayanan ? 'rotate-180 text-[#ea546c]' : ''"
+                         :class="mobileLayanan ? 'rotate-180 text-[#0a2558]' : ''"
                          fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
@@ -362,7 +361,7 @@
                     <a href="{{ route('layanan.show', ['serviceCode' => 'KK_BARU']) }}" @click="mobileNav = false" class="block py-1.5 px-2.5 rounded-lg hover:bg-slate-100 text-slate-700 hover:text-[#0a2558]">ðŸ‘¨â€ðŸ‘©â€ðŸ‘§â€ðŸ‘¦ Kartu Keluarga (KK)</a>
                     <a href="{{ route('layanan.show', ['serviceCode' => 'PINDAH_SATU_DESA']) }}" @click="mobileNav = false" class="block py-1.5 px-2.5 rounded-lg hover:bg-slate-100 text-slate-700 hover:text-[#0a2558]">ðŸšš Perpindahan Domisili</a>
                     <a href="{{ route('layanan.show', ['serviceCode' => 'NIKAH']) }}" @click="mobileNav = false" class="block py-1.5 px-2.5 rounded-lg hover:bg-slate-100 text-slate-700 hover:text-[#0a2558]">ðŸ“œ Dispensasi & Keterangan</a>
-                    <a href="#layanan" @click="mobileNav = false" class="block py-1.5 px-2.5 rounded-lg text-[#ea546c] font-bold hover:underline">Lihat Semua 8 Layanan &rarr;</a>
+                    <a href="#layanan" @click="mobileNav = false" class="block py-1.5 px-2.5 rounded-lg text-[#0a2558] font-bold hover:underline">Lihat Semua 8 Layanan &rarr;</a>
                 </div>
             </div>
 
@@ -401,9 +400,15 @@
             </button>
 
             <div class="pt-2 border-t border-slate-100 flex justify-center">
-                <a href="{{ route('login') }}" class="nav-link btn-join w-full justify-center text-center">
-                    Login<span><i class="fa-solid fa-chevron-right"></i></span>
-                </a>
+                @auth
+                    <a href="{{ route('dashboard') }}" class="nav-link btn-join w-full justify-center text-center">
+                        Dashboard<span><i class="fa-solid fa-chevron-right"></i></span>
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" class="nav-link btn-join w-full justify-center text-center">
+                        Login<span><i class="fa-solid fa-chevron-right"></i></span>
+                    </a>
+                @endauth
             </div>
         </div>
     </header>
