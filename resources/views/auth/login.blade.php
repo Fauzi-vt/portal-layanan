@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-slate-50">
+<html lang="id" class="h-full bg-slate-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,304 +22,244 @@
             -moz-osx-font-smoothing: grayscale;
         }
         body { letter-spacing: -0.01em; }
-        h1, h2, h3 { letter-spacing: -0.02em; }
         [data-lucide] { display: inline-block; vertical-align: middle; }
-
-        /* Floating background elements */
-        .ambient-glow {
-            filter: blur(80px);
-            opacity: 0.45;
-            pointer-events: none;
-        }
     </style>
 </head>
-<body class="min-h-screen bg-[#f1f5f9] text-slate-800 flex flex-col justify-center items-center p-4 sm:p-6 lg:p-8 relative overflow-x-hidden">
+<body class="min-h-screen bg-slate-900/40 relative flex flex-col justify-between p-4 sm:p-6 select-none overflow-x-hidden">
 
     {{-- ═══════════════════════════════════════════════════════════════════════════
-         AMBIENT BACKGROUND LIGHTS & PATTERN
+         UNDERLYING BACKDROP (BLURRED PORTAL LANDING AESTHETIC)
     ═══════════════════════════════════════════════════════════════════════════ --}}
-    <div class="fixed -top-32 -left-32 w-96 h-96 rounded-full bg-blue-400 ambient-glow"></div>
-    <div class="fixed -bottom-32 -right-32 w-96 h-96 rounded-full bg-teal-400 ambient-glow"></div>
-    <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-indigo-200/30 ambient-glow"></div>
+    <div class="fixed inset-0 bg-gradient-to-br from-slate-100 via-slate-50 to-blue-50/40 -z-20"></div>
 
-    {{-- Subtle Grid Pattern --}}
-    <div class="fixed inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40 pointer-events-none"></div>
+    {{-- Decorative Background Circles / Accents --}}
+    <div class="fixed -top-24 -left-24 w-96 h-96 rounded-full bg-blue-400/20 blur-3xl pointer-events-none -z-10"></div>
+    <div class="fixed -bottom-24 -right-24 w-96 h-96 rounded-full bg-rose-400/15 blur-3xl pointer-events-none -z-10"></div>
+    <div class="fixed inset-0 bg-slate-900/25 backdrop-blur-[2px] -z-10 pointer-events-none"></div>
 
     {{-- ═══════════════════════════════════════════════════════════════════════════
-         FLOATING TOP NAVIGATION / CLOSE BUTTON
+         TOP BAR: BRAND LOGO & BACK TO HOME
     ═══════════════════════════════════════════════════════════════════════════ --}}
-    <div class="fixed top-4 sm:top-6 right-4 sm:right-6 z-50 flex items-center gap-3">
-        <a href="{{ url('/') }}"
-           class="group flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/90 hover:bg-white text-slate-700 hover:text-slate-950 border border-slate-200/80 shadow-sm hover:shadow-md transition-all backdrop-blur-md"
-           title="Tutup dan kembali ke Halaman Utama">
-            <span class="text-xs sm:text-sm font-semibold hidden sm:inline-block">Kembali ke Beranda</span>
-            <div class="w-7 h-7 rounded-xl bg-slate-100 group-hover:bg-rose-50 text-slate-500 group-hover:text-rose-600 flex items-center justify-center transition-all group-hover:rotate-90">
-                <i data-lucide="x" class="w-4 h-4"></i>
-            </div>
+    <header class="w-full max-w-6xl mx-auto flex items-center justify-between py-2 px-2 sm:px-4 z-20">
+        <a href="{{ url('/') }}" class="flex items-center gap-3 group">
+            <img src="{{ asset('images/logo.png') }}" alt="Dishub Kominfo Kab. Tasikmalaya" class="h-9 sm:h-10 w-auto object-contain bg-white/90 px-2 py-1 rounded-xl shadow-xs">
         </a>
-    </div>
+
+        <a href="{{ url('/') }}"
+           class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 hover:bg-white text-slate-700 hover:text-slate-950 text-xs font-semibold shadow-xs border border-slate-200/80 transition-all cursor-pointer">
+            <span>Kembali ke Beranda</span>
+            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </a>
+    </header>
 
     {{-- ═══════════════════════════════════════════════════════════════════════════
-         MAIN LOGIN CARD CONTAINER
+         MAIN LOGIN MODAL CARD
     ═══════════════════════════════════════════════════════════════════════════ --}}
-    <div class="relative z-10 w-full max-w-5xl bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden my-auto grid grid-cols-1 lg:grid-cols-12">
+    <main class="my-auto py-6 flex items-center justify-center z-10">
+        <div class="relative w-full max-w-[760px] bg-white rounded-2xl shadow-2xl p-6 sm:p-9 border border-slate-100 overflow-hidden">
+            
+            {{-- Quick Close Button --}}
+            <a href="{{ url('/') }}"
+               class="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer"
+               title="Tutup dan kembali ke Halaman Utama">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </a>
 
-        {{-- ── LEFT COLUMN: LOGIN FORM ── --}}
-        <div class="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-between">
-            <div class="space-y-6">
+            {{-- 2-Column Grid Layout matching Reference Image --}}
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-7 md:gap-9 items-start select-text">
 
-                {{-- Mobile Brand Logo Header --}}
-                <div class="flex items-center justify-between lg:hidden pb-4 border-b border-slate-100">
-                    <a href="{{ url('/') }}">
-                        <img src="{{ asset('images/logo2.png') }}" alt="Dishub Kominfo" class="h-9 w-auto object-contain">
+                {{-- ── LEFT COLUMN: TAB NAVIGATION & GOOGLE SIGN-IN ── --}}
+                <div class="md:col-span-5 flex flex-col space-y-3.5 pt-1">
+                    
+                    {{-- Active Login Tab Button --}}
+                    <div class="w-full py-2.5 px-4 rounded-lg text-white font-bold text-sm text-center shadow-xs cursor-default select-none transition-all"
+                         style="background: linear-gradient(90deg, #5185ec 0%, #ba588a 100%);">
+                        Login
+                    </div>
+
+                    {{-- Inactive Register Tab Button --}}
+                    <a href="{{ route('register', request()->query()) }}"
+                       class="w-full py-2.5 px-4 rounded-lg bg-[#f1f4f8] hover:bg-slate-200 text-slate-700 hover:text-slate-900 font-semibold text-sm text-center transition-colors">
+                        Register
                     </a>
-                    <span class="text-xs font-bold px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-100">
-                        OSS HUB
-                    </span>
+
+                    {{-- Switch Prompt Text --}}
+                    <div class="pt-3 text-xs leading-relaxed">
+                        <p class="text-slate-500 font-normal">Don't have an account?</p>
+                        <a href="{{ route('register', request()->query()) }}" class="font-bold text-slate-900 hover:text-blue-600 transition-colors inline-block mt-0.5">
+                            Register Now!
+                        </a>
+                    </div>
+
+                    {{-- Google Sign-In Button --}}
+                    <div class="pt-2">
+                        <button type="button"
+                                onclick="Swal.fire({ title: 'Google Sign-In', text: 'Fitur Masuk dengan Akun Google sedang disiapkan oleh Diskominfo Kab. Tasikmalaya. Silakan masuk menggunakan Email / NIK dan kata sandi Anda.', icon: 'info', confirmButtonColor: '#3264e6', customClass: { popup: 'rounded-2xl shadow-2xl p-6' } })"
+                                class="w-full py-2.5 px-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 flex items-center justify-center gap-2.5 shadow-2xs transition-all cursor-pointer group">
+                            {{-- Google 'G' Icon --}}
+                            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
+                                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+                            </svg>
+                            <span class="text-[11px] font-bold tracking-wider uppercase text-slate-700 group-hover:text-slate-900">
+                                CONTINUE WITH GOOGLE
+                            </span>
+                        </button>
+                    </div>
+
+                    {{-- Security Badge Note --}}
+                    <div class="pt-2 text-[11px] text-slate-400 flex items-center gap-1.5">
+                        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+                        <span>Enkripsi Resmi SSL 256-bit</span>
+                    </div>
+
                 </div>
 
-                {{-- Heading --}}
-                <div>
-                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                        Selamat Datang Kembali
-                    </h1>
-                    <p class="text-sm text-slate-500 mt-1.5 font-medium">
-                        Silakan masuk dengan akun Anda untuk mengakses portal layanan publik.
-                    </p>
-                </div>
+                {{-- ── RIGHT COLUMN: LOGIN FORM FIELDS ── --}}
+                <div class="md:col-span-7 flex flex-col justify-between pt-1">
 
-                {{-- Banner Konteks Layanan yang Dituju --}}
-                @if (isset($intendedService) && $intendedService)
-                    <div class="rounded-2xl bg-blue-50 border border-blue-200/90 p-4 flex items-start gap-3.5 text-blue-950 shadow-xs">
-                        <div class="w-8 h-8 rounded-xl bg-[#0a2558] text-white flex items-center justify-center flex-shrink-0 mt-0.5 font-bold">
-                            <i data-lucide="layers" class="w-4 h-4"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2">
-                                <p class="text-[11px] font-extrabold uppercase tracking-wider text-blue-800">Layanan yang Dipilih</p>
-                                <span class="px-2 py-0.2 rounded text-[10px] font-bold bg-white text-blue-800 border border-blue-200">
-                                    {{ $intendedService->kode_layanan }}
-                                </span>
+                    {{-- Intended Service Banner --}}
+                    @if (isset($intendedService) && $intendedService)
+                        <div class="mb-3 px-3.5 py-2 rounded-xl bg-blue-50 border border-blue-200/90 text-xs text-[#0a2558] flex items-center justify-between shadow-2xs">
+                            <div class="truncate mr-2">
+                                <span class="text-[10px] uppercase font-bold text-blue-700 block">Layanan Terpilih:</span>
+                                <strong class="truncate block text-slate-900">{{ $intendedService->nama_layanan }}</strong>
                             </div>
-                            <p class="text-sm font-bold text-slate-900 mt-0.5">{{ $intendedService->nama_layanan }}</p>
-                            <p class="text-xs text-blue-700 mt-0.5">
-                                Silakan masuk ke akun Anda. Setelah berhasil, Anda akan langsung dialihkan ke formulir pengajuan layanan ini.
-                            </p>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white border border-blue-200 text-blue-800 flex-shrink-0">
+                                {{ $intendedService->kode_layanan }}
+                            </span>
                         </div>
-                    </div>
-                @endif
+                    @endif
 
-                {{-- Alert Error --}}
-                @if ($errors->any())
-                    <div class="rounded-2xl bg-rose-50 border border-rose-200 p-4 flex items-start gap-3.5 text-rose-900 shadow-xs" role="alert">
-                        <div class="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center flex-shrink-0 mt-0.5 font-bold">
-                            <i data-lucide="alert-circle" class="w-5 h-5"></i>
-                        </div>
-                        <div class="flex-1">
-                            <p class="text-xs font-bold text-rose-900 uppercase tracking-wider">Login Gagal</p>
-                            <p class="text-sm text-rose-700 mt-0.5 font-medium">{{ $errors->first() }}</p>
-                        </div>
-                    </div>
-                @endif
-
-                {{-- Alert Success / Logged Out --}}
-                @if (session('success'))
-                    <div class="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 flex items-center gap-3.5 text-emerald-900 shadow-xs">
-                        <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0 font-bold">
-                            <i data-lucide="check-circle" class="w-5 h-5"></i>
-                        </div>
-                        <p class="text-sm font-semibold text-emerald-800">{{ session('success') }}</p>
-                    </div>
-                @endif
-
-                {{-- Form --}}
-                <form method="POST" action="{{ route('login') }}" class="space-y-5" id="loginForm">
-                    @csrf
-
-                    {{-- Email / NIK Field --}}
-                    <div class="space-y-1.5">
-                        <label for="login" class="block text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">
-                            Alamat Email / NIK
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                <i data-lucide="mail" class="w-5 h-5"></i>
+                    {{-- Error Alert --}}
+                    @if ($errors->any())
+                        <div class="mb-3.5 p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-800 flex items-start gap-2.5 shadow-2xs" role="alert">
+                            <i data-lucide="alert-circle" class="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5"></i>
+                            <div>
+                                <p class="font-bold text-rose-900">Login Gagal</p>
+                                <p class="text-rose-700 mt-0.5">{{ $errors->first() }}</p>
                             </div>
+                        </div>
+                    @endif
+
+                    {{-- Success Alert --}}
+                    @if (session('success'))
+                        <div class="mb-3.5 p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 flex items-center gap-2.5 shadow-2xs">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600 flex-shrink-0"></i>
+                            <p class="font-semibold">{{ session('success') }}</p>
+                        </div>
+                    @endif
+
+                    {{-- Login Form --}}
+                    <form method="POST" action="{{ route('login') }}" class="space-y-3.5" id="loginForm">
+                        @csrf
+
+                        {{-- Email / NIK Input --}}
+                        <div class="space-y-1">
                             <input
                                 type="text"
                                 id="login"
                                 name="login"
                                 value="{{ old('login') }}"
-                                placeholder="nama@email.com atau 3206..."
+                                placeholder="rifafauzi044@gmail.com"
                                 required
                                 autofocus
-                                class="w-full pl-11 pr-4 py-3 rounded-xl text-sm sm:text-base text-slate-900 bg-slate-50/70 border border-slate-200 focus:bg-white focus:border-[#0a2558] focus:ring-4 focus:ring-blue-500/15 outline-none placeholder:text-slate-400 transition-all font-medium"
+                                class="w-full px-4 py-2.5 rounded-lg bg-[#edf3fa] text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#3264e6]/30 font-medium transition-all"
                             >
                         </div>
-                    </div>
 
-                    {{-- Password Field with Eye Toggle --}}
-                    <div class="space-y-1.5">
-                        <div class="flex items-center justify-between">
-                            <label for="password" class="block text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wider">
-                                Kata Sandi
-                            </label>
-                            <a href="#"
-                               onclick="Swal.fire({ title: 'Lupa Kata Sandi?', text: 'Silakan hubungi administrator Dinas Kominfo Kabupaten Tasikmalaya untuk bantuan pemulihan akun.', icon: 'info', confirmButtonColor: '#0a2558', customClass: { popup: 'rounded-2xl shadow-2xl p-6' } }); return false;"
-                               class="text-xs sm:text-sm font-semibold text-blue-700 hover:text-blue-900 hover:underline transition-colors">
-                                Lupa Kata Sandi?
-                            </a>
-                        </div>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                <i data-lucide="lock" class="w-5 h-5"></i>
-                            </div>
+                        {{-- Password Input with Eye Toggle --}}
+                        <div class="space-y-1 relative">
                             <input
                                 type="password"
                                 id="password"
                                 name="password"
-                                placeholder="••••••••••••"
+                                placeholder="••••••••"
                                 required
-                                class="w-full pl-11 pr-12 py-3 rounded-xl text-sm sm:text-base text-slate-900 bg-slate-50/70 border border-slate-200 focus:bg-white focus:border-[#0a2558] focus:ring-4 focus:ring-blue-500/15 outline-none placeholder:text-slate-400 transition-all font-medium"
+                                class="w-full px-4 py-2.5 pr-11 rounded-lg bg-[#edf3fa] text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#3264e6]/30 font-medium transition-all"
                             >
                             <button type="button"
                                     id="togglePassword"
-                                    class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+                                    class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
                                     title="Tampilkan / Sembunyikan Kata Sandi">
-                                <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
-                                <i data-lucide="eye-off" id="eyeOffIcon" class="w-5 h-5 hidden"></i>
+                                <i data-lucide="eye" id="eyeIcon" class="w-4 h-4"></i>
+                                <i data-lucide="eye-off" id="eyeOffIcon" class="w-4 h-4 hidden"></i>
                             </button>
                         </div>
-                    </div>
 
-                    {{-- Remember Me Checkbox --}}
-                    <div class="flex items-center justify-between pt-1">
-                        <label class="flex items-center gap-2.5 cursor-pointer select-none">
-                            <input type="checkbox"
-                                   name="remember"
-                                   id="remember"
-                                   class="w-4 h-4 rounded border-slate-300 text-[#0a2558] focus:ring-blue-500 cursor-pointer">
-                            <span class="text-xs sm:text-sm text-slate-600 font-medium">Ingat saya di perangkat ini</span>
-                        </label>
-                    </div>
+                        {{-- Remember Me & Forget Password Row --}}
+                        <div class="flex items-center justify-between pt-1 text-xs">
+                            <label class="flex items-center gap-2 cursor-pointer select-none text-slate-700">
+                                <input type="checkbox"
+                                       name="remember"
+                                       id="remember"
+                                       class="w-3.5 h-3.5 rounded border-slate-300 text-[#3264e6] focus:ring-[#3264e6] cursor-pointer">
+                                <span class="text-xs text-slate-700 font-medium">Remember me</span>
+                            </label>
 
-                    {{-- Submit Button --}}
-                    <div class="pt-2">
-                        <button
-                            type="submit"
-                            id="submitBtn"
-                            class="w-full py-3.5 px-6 rounded-xl text-sm sm:text-base font-bold bg-[#0a2558] hover:bg-[#0d3070] text-white shadow-lg shadow-blue-950/20 hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer group hover:-translate-y-0.5 active:translate-y-0"
-                        >
-                            <span id="btnText" class="flex items-center gap-2">
-                                <span>Masuk ke Akun</span>
-                                <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
-                            </span>
-                            <span id="btnLoading" class="hidden items-center gap-2">
-                                <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
-                                <span>Memverifikasi akun...</span>
-                            </span>
-                        </button>
-                    </div>
-                </form>
+                            <a href="#"
+                               onclick="Swal.fire({ title: 'Lupa Kata Sandi?', text: 'Silakan hubungi administrator Dinas Kominfo Kabupaten Tasikmalaya atau hubungi Call Center 112 untuk verifikasi identitas dan bantuan pemulihan kata sandi akun Anda.', icon: 'info', confirmButtonColor: '#3264e6', customClass: { popup: 'rounded-2xl shadow-2xl p-6' } }); return false;"
+                               class="text-xs font-bold text-slate-900 hover:text-blue-600 transition-colors">
+                                Forget Password?
+                            </a>
+                        </div>
 
-                {{-- Register Footer Link --}}
-                <div class="pt-4 border-t border-slate-100 text-center">
-                    <p class="text-xs sm:text-sm text-slate-600 font-medium">
-                        Belum memiliki akun?
-                        <a href="{{ route('register', isset($intendedService) && $intendedService ? ['service' => $intendedService->kode_layanan] : []) }}" class="font-bold text-blue-700 hover:text-blue-900 hover:underline transition-colors ml-1">
-                            Daftar Akun Baru Sekarang
-                        </a>
-                    </p>
+                        {{-- Submit Button --}}
+                        <div class="pt-2">
+                            <button
+                                type="submit"
+                                id="submitBtn"
+                                class="w-full py-2.5 sm:py-3 px-4 rounded-lg bg-[#3264e6] hover:bg-[#2552c7] text-white font-bold text-sm shadow-md shadow-blue-500/25 hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                            >
+                                <span id="btnText">Submit</span>
+                                <span id="btnLoading" class="hidden items-center gap-2">
+                                    <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+                                    <span>Memverifikasi...</span>
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+
                 </div>
 
-            </div>
-
-            {{-- Security & Privacy Footer Note --}}
-            <div class="mt-8 pt-4 flex items-center justify-center gap-2 text-xs text-slate-400">
-                <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
-                <span>Portal Layanan Publik Terenkripsi SSL 256-bit</span>
-            </div>
-        </div>
-
-        {{-- ── RIGHT COLUMN: BRANDING & HIGHLIGHTS ── --}}
-        <div class="lg:col-span-5 relative text-white flex flex-col justify-between p-8 sm:p-12 overflow-hidden"
-             style="background: linear-gradient(135deg, #0a2558 0%, #113470 50%, #1a4a8d 100%)">
-
-            {{-- Background decorative shapes --}}
-            <div class="absolute -top-12 -right-12 w-64 h-64 rounded-full bg-white/5 pointer-events-none"></div>
-            <div class="absolute -bottom-16 -left-16 w-64 h-64 rounded-full bg-white/5 pointer-events-none"></div>
-            <div class="absolute top-1/2 right-4 w-32 h-32 rounded-full bg-teal-400/10 blur-2xl pointer-events-none"></div>
-
-            <div class="relative z-10 space-y-8">
-                {{-- Official Logo Badge --}}
-                <div class="bg-white/95 rounded-2xl p-4 sm:p-5 shadow-lg max-w-[280px]">
-                    <img src="{{ asset('images/logo.png') }}" alt="Dishub Kominfo - Pelayanan Terpadu Satu Pintu" class="h-10 sm:h-12 w-auto object-contain mx-auto">
-                </div>
-
-                {{-- Highlight Information --}}
-                <div class="space-y-3">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/20 text-teal-200 text-xs font-bold border border-teal-300/30">
-                        <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
-                        Portal Resmi Terpadu
-                    </div>
-                    <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
-                        Satu Pintu untuk Seluruh Layanan Administrasi Publik
-                    </h2>
-                    <p class="text-sm text-blue-100/90 leading-relaxed font-normal">
-                        Nikmati kemudahan pengajuan izin, pemantauan berkas permohonan secara real-time, dan layanan terintegrasi antar 39 kecamatan se-Kabupaten Tasikmalaya.
-                    </p>
-                </div>
-
-                {{-- Feature Points --}}
-                <div class="space-y-4 pt-2">
-                    <div class="flex items-start gap-3.5">
-                        <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 text-teal-300">
-                            <i data-lucide="zap" class="w-4 h-4"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-white">Proses Cepat & Transparan</p>
-                            <p class="text-xs text-blue-200/80 mt-0.5">Ajukan permohonan tanpa antre langsung dari rumah.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-3.5">
-                        <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 text-teal-300">
-                            <i data-lucide="bell-ring" class="w-4 h-4"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-white">Notifikasi Real-time</p>
-                            <p class="text-xs text-blue-200/80 mt-0.5">Dapatkan kabar pembaruan status izin seketika.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-3.5">
-                        <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 text-teal-300">
-                            <i data-lucide="badge-check" class="w-4 h-4"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-white">Dokumen Resmi Terverifikasi</p>
-                            <p class="text-xs text-blue-200/80 mt-0.5">Penerbitan surat izin resmi berstandar Pemkab.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Footer Note --}}
-            <div class="relative z-10 pt-8 mt-6 border-t border-white/10 flex items-center justify-between text-xs text-blue-200/70">
-                <span>&copy; {{ date('Y') }} Dinas Kominfo</span>
-                <span>Kabupaten Tasikmalaya</span>
             </div>
 
         </div>
-
-    </div>
+    </main>
 
     {{-- ═══════════════════════════════════════════════════════════════════════════
-         INTERACTIVE SCRIPTS
+         FLOATING ASSISTANT BADGE WIDGET (BOTTOM-RIGHT)
+    ═══════════════════════════════════════════════════════════════════════════ --}}
+    <footer class="w-full max-w-6xl mx-auto flex items-center justify-between text-xs text-slate-500 py-2 px-4 z-20">
+        <div class="text-[11px] text-slate-400">
+            &copy; {{ date('Y') }} Dinas Komunikasi dan Informatika Kabupaten Tasikmalaya
+        </div>
+
+        <div class="bg-white/95 backdrop-blur-md border border-slate-200/80 rounded-2xl p-2 sm:px-3 sm:py-2 shadow-lg flex items-center gap-2.5 pointer-events-auto">
+            <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="message-square-heart" class="w-4 h-4 text-blue-600"></i>
+            </div>
+            <div class="hidden sm:block text-left text-[11px] leading-tight">
+                <p class="font-bold text-slate-800">Hi! Butuh bantuan layanan?</p>
+                <p class="text-slate-500">Konsultasi & Pengaduan Warga</p>
+            </div>
+        </div>
+    </footer>
+
+    {{-- ═══════════════════════════════════════════════════════════════════════════
+         SCRIPTS: LUCIDE & PASSWORD TOGGLE & SUBMIT STATE
     ═══════════════════════════════════════════════════════════════════════════ --}}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
         });
 
         // Password Visibility Toggle
